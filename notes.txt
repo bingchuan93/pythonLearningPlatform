@@ -1,0 +1,13 @@
+#FFFFFF
+orange - mood lifter (main page)
+#F95700
+
+green - concentration (in learning)
+#8EA604
+
+blue - productivity (quiz/exercise (maybe))
+#29339B
+
+text
+#221E22
+#3F4045
