@@ -7,7 +7,13 @@ class Page extends Component {
         return (
             <div id="page">
                 <div className="full-screen-bg" />
-                {this.props.children}
+                <div className="content">
+                    <div className="header d-flex justify-content-end w-100">
+                        {this.props.headerContents}
+                    </div>
+                    <h1>{this.props.title}</h1>
+                    {this.props.children}
+                </div>
             </div>
         );
     }
