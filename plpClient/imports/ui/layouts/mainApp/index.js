@@ -6,7 +6,7 @@ class MainApp extends Component {
     render() {
         console.log('MainApp loaded');
         return (
-            <div>
+            <div id="app">
                 <Header />
                 <Body />
                 {/* <SideMenu /> */}

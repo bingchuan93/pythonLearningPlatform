@@ -8,6 +8,7 @@ const userState = (state = initialState, action) => {
         case 'USER/SET':
             return { ...state, user: payload.user };
         case 'USER/RESET':
+            Meteor.logout();
             return { ...initialState };
     }
     return state;

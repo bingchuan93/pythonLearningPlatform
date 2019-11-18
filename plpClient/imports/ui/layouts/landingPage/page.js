@@ -10,7 +10,6 @@ class Page extends Component {
         if (_.isEqual(prevProps.user && this.props.user)) {
             this.props.dispatch({ type: 'USER/SET', payload: { user: this.props.user } });
         }
-        console.log(this.props.user);
     }
 
     render() {

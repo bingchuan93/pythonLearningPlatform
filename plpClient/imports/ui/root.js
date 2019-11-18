@@ -3,8 +3,9 @@ import { Provider } from 'react-redux';
 import { store, persistor } from '/imports/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import RedirectWhenAuthedRoute from '/imports/routes/component/redirectWhenAuthedRoute';
-import { ConnectedRouter, routerActions } from 'connected-react-router';
+import RedirectWhenAuthedRoute from '/imports/routes/components/redirectWhenAuthedRoute';
+import PrivateRoute from '/imports/routes/components/privateRoute';
+import { ConnectedRouter } from 'connected-react-router';
 import history from '/imports/history';
 import rootRoutes from '/imports/routes/root';
 
@@ -19,6 +20,9 @@ const Root = () => (
                         }
                         else if (route.redirectIfAuthed){
                             return <RedirectWhenAuthedRoute path={route.path} exact={route.exact} component={route.component} key={key} />
+                        }
+                        else if (route.private) {
+							return <PrivateRoute path={route.path} exact={route.exact} component={route.component} key={key} />;
                         }
                         else {
                             return <Route path={route.path} exact={route.exact} component={route.component} key={key} />
