@@ -23,3 +23,5 @@ meteortesting:mocha               # A package for writing and running your meteo
 johanbrook:publication-collector  # Test a Meteor publication by collecting its output
 fourseven:scss
 static-html
+accounts-password
+react-meteor-data

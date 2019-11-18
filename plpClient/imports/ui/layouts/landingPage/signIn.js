@@ -16,7 +16,7 @@ class SignIn extends Component {
                     <Button className="m-3" color="secondary" size="sm" onClick={() => this.props.dispatch(push('/sign-up'))}>Sign up!</Button>
                 }
             >
-                <div>
+                <div className='sign-in'>
                     <Card body>
                         <Form>
                             <FormGroup>

@@ -11,7 +11,11 @@ class RedirectWhenAuthedRoute extends Component {
                 <Route
                     {...routeProps}
                     render={(props) => (
-                        <RouteComponent {...props} />
+                        this.props.userState.user ? (
+                            <Redirect to={{ pathname: (location.state && location.state.from) ? location.state.from.pathname : '/' }} />
+                        ) : (
+                            <RouteComponent {...props} />
+                        )
                     )}
                 />
             </React.Fragment>
@@ -20,7 +24,8 @@ class RedirectWhenAuthedRoute extends Component {
 }
 
 export default connect(
-    ({ router }) => ({
-        router
+    ({ router, userState }) => ({
+        router,
+        userState
     })
 )(RedirectWhenAuthedRoute);

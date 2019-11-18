@@ -1,12 +1,12 @@
-// import Home from '/imports/ui/components/app/body/content/home';
+import MainApp from '/imports/ui/layouts/mainApp';
 
 const contentRoutes = [{
-    // name: 'home',
-    // path: [
-    //     '/',
-    // ],
-    // exact: true,
-    // component: Home
+    name: 'main-app',
+    path: [
+        '/',
+    ],
+    exact: true,
+    component: MainApp
 }];
 
 export default contentRoutes;
