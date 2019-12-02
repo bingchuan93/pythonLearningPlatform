@@ -11,7 +11,7 @@ class SignUp extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            form : {
+            form: {
                 username: '',
                 password: '',
                 group: '',
@@ -31,7 +31,8 @@ class SignUp extends Component {
                 this.setState({ isSigningUp: false });
                 console.log(error);
                 if (!error) {
-                    
+                    this.props.dispatch({ type: 'USER/SET', payload: { user: Meteor.user() }});
+                    this.props.dispatch(push('/')); // bc: Redirect immediately or requeste for sign in again?
                 }
                 else {
 
@@ -72,7 +73,7 @@ class SignUp extends Component {
                                                 username: e.target.value.trim()
                                             }
                                         })
-                                    }}    
+                                    }}
                                 />
                             </FormGroup>
                             <FormGroup>
