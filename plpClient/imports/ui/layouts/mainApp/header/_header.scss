@@ -1,10 +1,21 @@
 #app {
     .header {
+        .logo {
+            height: 60px;
+        }
+
         height: $header-height;
         border-bottom: 1px solid #dddddd;
         position: absolute;
         top: 0px;
         left: 0px;
         right: 0px;
+    }
+
+    .header-menu {
+        position: absolute;
+        right: 0px;
+        top: 0px;
+        height: $header-height;
     }
 }
