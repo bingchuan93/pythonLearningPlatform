@@ -6,6 +6,9 @@ class Header extends Component {
     render() {
         return (
             <div className="header">
+                <div className="header-logo">
+                    
+                </div>
                 <Button
                     color="secondary"
                     onClick={() => this.props.dispatch({ type: 'USER/RESET' })}
