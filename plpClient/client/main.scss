@@ -3,6 +3,8 @@
 
 $header-height: 60px;
 
+$mood-2l: #ffd2ba;
+
 @import url('https://fonts.googleapis.com/css?family=Comfortaa&display=swap');
 @import "../imports/ui/layouts/mainApp/header/header";
 @import "../imports/ui/layouts/mainApp/body/body";
@@ -12,6 +14,30 @@ body * {
     border-radius: 0px !important;
 }
 
+.font-2xs {
+    font-size: 0.5rem;
+}
+
+.font-xs {
+    font-size: 0.75rem;
+}
+
 .font-sm {
     font-size: 0.85rem;
+}
+
+.font-md {
+    font-size: 1rem;
+}
+
+.font-lg {
+    font-size: 1.5rem;
+}
+
+.font-xl {
+    font-size: 2rem;
+}
+
+.clickable {
+    cursor: pointer;
 }

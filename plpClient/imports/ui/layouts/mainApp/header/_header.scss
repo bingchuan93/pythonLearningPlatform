@@ -1,21 +1,32 @@
 #app {
     .header {
-        .logo {
-            height: 60px;
+        .side-menu-toggle {
+            position: absolute;
+            left: 0px;
+            height: $header-height;
+            width: $header-height;
+        }
+
+        .header-logo {
+            .logo {
+                height: 60px;
+            }
+
+
+        }
+
+        .header-menu {
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            height: $header-height;
         }
 
         height: $header-height;
-        border-bottom: 1px solid #dddddd;
+        box-shadow: 0px -5px 20px 0px $mood-2l;
         position: absolute;
         top: 0px;
         left: 0px;
         right: 0px;
-    }
-
-    .header-menu {
-        position: absolute;
-        right: 0px;
-        top: 0px;
-        height: $header-height;
     }
 }
