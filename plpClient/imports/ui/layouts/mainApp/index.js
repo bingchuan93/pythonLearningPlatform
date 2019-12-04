@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Header from '/imports/ui/layouts/mainApp/header';
 import Body from '/imports/ui/layouts/mainApp/body';
+import SideMenu from '/imports/ui/layouts/mainApp/sideMenu';
 import { connect } from 'react-redux';
 
 class MainApp extends Component {
@@ -11,7 +12,7 @@ class MainApp extends Component {
             <div id="app">
                 <Header />
                 <Body />
-                {/* <SideMenu /> */}
+                <SideMenu />
             </div>
         );
     }

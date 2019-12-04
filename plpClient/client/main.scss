@@ -2,16 +2,27 @@
 }
 
 $header-height: 60px;
+$side-menu-width: 300px;
 
 $mood-2l: #ffd2ba;
+$font-color: #221E22;
 
 @import url('https://fonts.googleapis.com/css?family=Comfortaa&display=swap');
 @import "../imports/ui/layouts/mainApp/header/header";
+@import "../imports/ui/layouts//mainApp//sideMenu/sideMenu";
 @import "../imports/ui/layouts/mainApp/body/body";
+@import "../imports/ui/layouts/mainApp/body/dashboard/dashboard";
+@import "../imports/ui/layouts/mainApp/body/lessons/lessons";
 
 body * {
     font-family: 'Comfortaa', cursive;
     border-radius: 0px !important;
+    color: $font-color;
+
+    .content-header {
+        padding: 20px 0px;
+        font-size: 2rem;
+    }
 }
 
 .font-2xs {
@@ -36,6 +47,10 @@ body * {
 
 .font-xl {
     font-size: 2rem;
+}
+
+.font-2xl {
+    font-size: 3rem;
 }
 
 .clickable {

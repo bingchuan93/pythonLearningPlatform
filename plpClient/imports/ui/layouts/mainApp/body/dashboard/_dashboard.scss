@@ -1,0 +1,18 @@
+#app {
+    .dashboard {
+        .menu-button {
+            &.lesson {
+                background-color: seagreen;
+            }
+            &.quiz {
+                background-color: steelblue;
+            }
+            &.test {
+                background-color: orange;
+            }
+            &.resume {
+                background-color: slategray;
+            }
+        }
+    }
+}

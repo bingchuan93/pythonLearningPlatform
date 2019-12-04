@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Button, Nav, Dropdown, DropdownItem, DropdownToggle, DropdownMenu } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Nav, Dropdown, DropdownItem, DropdownToggle, DropdownMenu } from 'reactstrap';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import config from '/imports/config';
 
 class Header extends Component {
@@ -16,10 +16,10 @@ class Header extends Component {
         return (
             <React.Fragment>
                 <div className="header">
-                    <div className="side-menu-toggle d-flex flex-column justify-content-center align-items-center clickable">
+                    <div className="side-menu-toggle d-flex flex-column justify-content-center align-items-center clickable" onClick={() => this.props.dispatch({ type: 'SIDE_MENU/SET', payload: { isSideMenuOpen: !this.props.appState.isSideMenuOpen }})}>
                         <span className="font-weight-bold">☰</span>
                     </div>
-                    <div className="header-logo d-flex justify-content-center clickable" onClick={() => this.props.dispatch(push('/'))}>
+                    <div className="header-logo d-flex justify-content-center clickable" onClick={() => this.props.dispatch(push('/main'))}>
                         <div>
                             <img className="logo mr-1" src="/img/logo.png" />
                         </div>
@@ -42,7 +42,7 @@ class Header extends Component {
 }
 
 export default connect(
-    ({ userState }) => ({
-        userState
+    ({ appState }) => ({
+        appState
     })
 )(Header);

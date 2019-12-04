@@ -12,7 +12,7 @@ class RedirectWhenAuthedRoute extends Component {
                     {...routeProps}
                     render={(props) => (
                         this.props.userState.user ? (
-                            <Redirect to={{ pathname: (location.state && location.state.from) ? location.state.from.pathname : '/' }} />
+                            <Redirect to={{ pathname: (location.state && location.state.from) ? location.state.from.pathname : '/main' }} />
                         ) : (
                             <RouteComponent {...props} />
                         )

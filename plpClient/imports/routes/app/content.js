@@ -1,12 +1,21 @@
-import MainApp from '/imports/ui/layouts/mainApp';
+import Dashboard from '/imports/ui/layouts/mainApp/body/dashboard';
+import Lessons from '/imports/ui/layouts/mainApp/body/lessons';
 
 const contentRoutes = [{
-    name: 'main-app',
-    path: [
-        '/',
-    ],
+    path: '/',
     exact: true,
-    component: MainApp
+    redirect: true,
+    pathTo: '/main'
+}, {
+    path: '/main',
+    name: 'dashboard',
+    title: 'Dashboard',
+    component: Dashboard,
+}, {
+    path: '/lessons',
+    name: 'lessons',
+    title: 'Lessons',
+    component: Lessons,
 }];
 
 export default contentRoutes;

@@ -1,0 +1,36 @@
+#app {
+    .side-menu {
+        &.open {
+            left: 0px;
+        }
+
+        position: absolute;
+        top: 0px;
+        left: -$side-menu-width;
+        height: 100vh;
+        background-color: #fff9e4;
+        width: $side-menu-width;
+        z-index: 10;
+
+        transition: left 0.3s;
+    }
+
+    .side-menu-overlay {
+        &.open {
+            visibility: visible;
+            opacity: 0.5;
+        }
+
+        visibility: hidden;
+        background-color: #FFFFFF;
+        opacity: 0;
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        left: 0px;
+        bottom: 0px;
+        z-index: 5;
+
+        transition: opacity 0.3s;
+    }
+}
