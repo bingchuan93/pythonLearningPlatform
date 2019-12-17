@@ -10,19 +10,19 @@ class Dashboard extends Component {
             <div className="dashboard">
                 <Row className="pt-5">
                     <Col className="mb-3">
-                        <div className="menu-button lesson clickable p-3" onClick={() => { this.props.dispatch(push('/lessons')) }} >
+                        <div className="menu-button lesson clickable p-3" onClick={() => this.props.dispatch(push('/lessons'))} >
                             <SVGIcon icon="lesson" marginLeft="auto" marginRight="auto" />
                             <div className="mt-3 text-center font-lg">Lessons</div>
                         </div>
                     </Col>
                     <Col className="mb-3">
-                        <div className="menu-button quiz clickable p-3" onClick={() => { }} >
+                        <div className="menu-button quiz clickable p-3" onClick={() => this.props.dispatch(push('/quizzes'))} >
                             <SVGIcon icon="quiz" marginLeft="auto" marginRight="auto" />
                             <div className="mt-3 text-center font-lg">Quizzes</div>
                         </div>
                     </Col>
                     <Col className="mb-3">
-                        <div className="menu-button test clickable p-3" onClick={() => { }} >
+                        <div className="menu-button test clickable p-3" onClick={() => this.props.dispatch(push('/tests'))} >
                             <SVGIcon icon="test" marginLeft="auto" marginRight="auto" />
                             <div className="mt-3 text-center font-lg">Tests</div>
                         </div>

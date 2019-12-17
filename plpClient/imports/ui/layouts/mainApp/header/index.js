@@ -19,7 +19,7 @@ class Header extends Component {
                     <div className="side-menu-toggle d-flex flex-column justify-content-center align-items-center clickable" onClick={() => this.props.dispatch({ type: 'SIDE_MENU/SET', payload: { isSideMenuOpen: !this.props.appState.isSideMenuOpen }})}>
                         <span className="font-weight-bold">☰</span>
                     </div>
-                    <div className="header-logo d-flex justify-content-center clickable" onClick={() => this.props.dispatch(push('/main'))}>
+                    <div className="header-logo d-flex justify-content-center clickable" onClick={() => this.props.dispatch(push('/'))}>
                         <div>
                             <img className="logo mr-1" src="/img/logo.png" />
                         </div>
