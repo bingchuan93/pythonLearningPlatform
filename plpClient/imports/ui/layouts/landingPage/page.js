@@ -13,6 +13,7 @@ class Page extends Component {
     }
 
     render() {
+        console.log('page.js');
         return (
             <div id="page">
                 <div className="full-screen-bg" />

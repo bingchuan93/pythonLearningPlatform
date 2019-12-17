@@ -50,6 +50,7 @@ class SignUp extends Component {
 
     render() {
         const { form } = this.state;
+        console.log('signUp.js');
         return (
             <Page
                 title='Sign up with us!'

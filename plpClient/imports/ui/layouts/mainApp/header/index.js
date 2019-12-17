@@ -29,7 +29,7 @@ class Header extends Component {
                         <Dropdown nav isOpen={this.state.isDropDownOpen} toggle={() => this.setState({ isDropDownOpen: !this.state.isDropDownOpen })}>
                             <DropdownToggle nav caret>Account</DropdownToggle>
                             <DropdownMenu>
-                                <DropdownItem header>Hi, {Meteor.user().username}</DropdownItem>
+                                <DropdownItem header>Hi, {this.props.userState.user ? this.props.userState.user.username : ''}</DropdownItem>
                                 <DropdownItem divider />
                                 <DropdownItem onClick={() => this.props.dispatch({ type: 'USER/RESET' })} >Sign out</DropdownItem>
                             </DropdownMenu>
@@ -42,7 +42,8 @@ class Header extends Component {
 }
 
 export default connect(
-    ({ appState }) => ({
-        appState
+    ({ appState, userState }) => ({
+        appState,
+        userState
     })
 )(Header);

@@ -8,7 +8,7 @@ import appState from './appState';
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: [],
+    whitelist: ['userState'],
 }
 
 export default (history) => persistCombineReducers(persistConfig, {

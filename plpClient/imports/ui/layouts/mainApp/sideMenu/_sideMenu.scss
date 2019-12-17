@@ -1,5 +1,24 @@
 #app {
     .side-menu {
+        .brand {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            width: $side-menu-width;
+        }
+
+        .menu-items {
+            .menu-item {
+                transition: background-color 0.3s;
+            }
+
+            .menu-item:hover {
+                background-color: $mood;
+            }
+
+            height: 100%;
+        }
+
         &.open {
             left: 0px;
         }

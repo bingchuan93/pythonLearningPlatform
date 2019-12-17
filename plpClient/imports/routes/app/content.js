@@ -5,9 +5,9 @@ const contentRoutes = [{
     path: '/',
     exact: true,
     redirect: true,
-    pathTo: '/main'
+    pathTo: '/dashboard'
 }, {
-    path: '/main',
+    path: '/dashboard',
     name: 'dashboard',
     title: 'Dashboard',
     component: Dashboard,

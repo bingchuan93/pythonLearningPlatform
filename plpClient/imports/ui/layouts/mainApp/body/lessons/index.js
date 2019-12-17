@@ -40,7 +40,6 @@ const lessons = [{
 
 class Lessons extends Component {
     render() {
-        console.log('test');
         return (
             <div className="lessons">
                 <div className="content-header">
@@ -59,7 +58,7 @@ class Lessons extends Component {
                         <tbody>
                             {lessons.map((lesson, idx) => {
                                 return (
-                                    <tr>
+                                    <tr key={idx}>
                                         <th scope="row">{lesson.id}</th>
                                         <td>{lesson.name}</td>
                                         <td>{lesson.length}</td>

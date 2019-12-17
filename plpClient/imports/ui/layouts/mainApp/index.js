@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 class MainApp extends Component {
     render() {
         console.log('MainApp loaded');
-        console.log(Meteor.user());
         return (
             <div id="app">
                 <Header />

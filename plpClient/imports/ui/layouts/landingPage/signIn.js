@@ -43,6 +43,7 @@ class SignIn extends Component {
 
     render() {
         const { username, password } = this.state;
+        console.log('signIn.js');
         return (
             <Page
                 title='Welcome to Python Learning Platform'
@@ -75,4 +76,8 @@ class SignIn extends Component {
     }
 }
 
-export default connect()(SignIn);
+export default connect(
+    ({ userState }) => ({
+        userState
+    })
+)(SignIn);
