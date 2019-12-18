@@ -16,6 +16,10 @@
         }
 
         .header-menu {
+            .sign-out:hover {
+                color: orange;
+            }
+
             position: absolute;
             right: 0px;
             top: 0px;

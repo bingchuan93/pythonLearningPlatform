@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 
 class MainApp extends Component {
     render() {
-        console.log('MainApp loaded');
         return (
             <div id="app">
                 <Header />

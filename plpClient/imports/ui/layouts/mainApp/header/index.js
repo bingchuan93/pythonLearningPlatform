@@ -16,7 +16,7 @@ class Header extends Component {
         return (
             <React.Fragment>
                 <div className="header">
-                    <div className="side-menu-toggle d-flex flex-column justify-content-center align-items-center clickable" onClick={() => this.props.dispatch({ type: 'SIDE_MENU/SET', payload: { isSideMenuOpen: !this.props.appState.isSideMenuOpen }})}>
+                    <div className="side-menu-toggle d-flex flex-column justify-content-center align-items-center clickable" onClick={() => this.props.dispatch({ type: 'SIDE_MENU/SET', payload: { isSideMenuOpen: !this.props.appState.isSideMenuOpen } })}>
                         <span className="font-weight-bold">☰</span>
                     </div>
                     <div className="header-logo d-flex justify-content-center clickable" onClick={() => this.props.dispatch(push('/'))}>
@@ -25,7 +25,13 @@ class Header extends Component {
                         </div>
                         <span className="align-self-center" >{config.appName}</span>
                     </div>
-                    <Nav className="header-menu d-flex flex-column justify-content-center mr-2">
+                    <div className="header-menu d-flex justify-content-end align-items-center mr-4">
+                        {this.props.userState.user &&
+                            <div className="mr-5">Hi, {this.props.userState.user.username} ( {this.props.userState.user.profile.tutorialGroup} )</div>
+                        }
+                        <div className="clickable sign-out" onClick={() => this.props.dispatch({ type: 'USER/RESET' })} >Sign out</div>
+                    </div>
+                    {/* <Nav className="header-menu d-flex flex-column justify-content-center mr-2">
                         <Dropdown nav isOpen={this.state.isDropDownOpen} toggle={() => this.setState({ isDropDownOpen: !this.state.isDropDownOpen })}>
                             <DropdownToggle nav caret>Account</DropdownToggle>
                             <DropdownMenu>
@@ -34,7 +40,7 @@ class Header extends Component {
                                 <DropdownItem onClick={() => this.props.dispatch({ type: 'USER/RESET' })} >Sign out</DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
-                    </Nav>
+                    </Nav> */}
                 </div>
             </React.Fragment>
         );

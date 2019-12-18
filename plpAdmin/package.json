@@ -1,19 +1,18 @@
 {
-  "name": "plpClient",
+  "name": "plpAdmin",
   "private": true,
   "scripts": {
     "start": "meteor run",
     "test": "meteor test --once --driver-package meteortesting:mocha",
-    "web": "set METEOR_PACKAGE_DIRS=..\\plpPackage&&meteor --port 7000",
-    "web2": "meteor --port 7000"
+    "web": "set METEOR_PACKAGE_DIRS=..\\plpPackage&&meteor --port 8000"
   },
   "dependencies": {
-    "@babel/runtime": "^7.7.4",
+    "@babel/runtime": "^7.6.0",
     "bootstrap": "^4.4.1",
     "connected-react-router": "^6.6.1",
     "history": "^4.10.1",
     "lodash": "^4.17.15",
-    "meteor-node-stubs": "^0.4.1",
+    "meteor-node-stubs": "^1.0.0",
     "randomstring": "^1.1.5",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
