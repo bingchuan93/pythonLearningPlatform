@@ -1,0 +1,21 @@
+#console {
+    .header {
+        .header-logo {
+            height: inherit;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            font-size: 1.25rem;
+        }
+
+        .header-menu {
+            height: inherit;
+            position: absolute;
+            top: 0px;
+            right: 0px;
+        }
+
+        height: $header-height;
+        border-bottom: 1px solid $border-light-color
+    }
+}

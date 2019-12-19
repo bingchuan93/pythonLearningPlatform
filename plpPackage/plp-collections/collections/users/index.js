@@ -90,10 +90,10 @@ if (Meteor.isServer) {
             let userId = Accounts.findUserByUsername(admin);
             if (!userId) {
                 userId = Accounts.createUser({ username: admin, password: '123', profile: {} });
+                Roles.setUserRoles(userId, [], 'plp');
+                Roles.addUsersToRoles(userId, 'super-admin', 'plp-admin');
             }
-            Roles.setUserRoles(userId, [], 'plp');
-            Roles.addUsersToRoles(userId, 'super-admin', 'plp-admin');
-        })
+        });
     }
     createSuperAdmin();
 }

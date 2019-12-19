@@ -5,8 +5,6 @@ import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import Page from './page';
 
-import './landingPage.scss';
-
 class SignIn extends Component {
     constructor(props) {
         super(props);
@@ -30,7 +28,6 @@ class SignIn extends Component {
             this.setState({ isSigningIn: true });
             Meteor.loginWithPassword({ username }, password, (error) => {
                 this.setState({ isSigningIn: false });
-                console.log(error);
                 if (!error) {
                     this.props.dispatch({ type: 'USER/SET', payload: { user: Meteor.user() }});
                     this.props.dispatch(push('/'));
@@ -46,27 +43,34 @@ class SignIn extends Component {
         const { username, password } = this.state;
         return (
             <Page
-                title='Welcome to Python Learning Platform'
-                headerContents={
-                    <Button className="m-3" color="secondary" size="sm" onClick={() => this.props.dispatch(push('/sign-up'))}>Sign up!</Button>
+                // title='Python Learning Platform Admin'
+                title={
+                    <div className="d-flex flex-column">
+                        <img src="/img/logo.png" style={{ height: 300, marginTop: -80 }}/>
+                        <h1>Admin Panel</h1>
+                    </div>
                 }
+                // headerClass="d-flex justify-content-center"
+                // headerContents={
+                //     <img src="/img/logo.png" style={{ height: 125, marginTop: -10 }}/>
+                // }
             >
                 <div className='sign-in'>
                     <Card body>
                         <Form>
                             <FormGroup>
                                 <Label className="font-sm">Username</Label>
-                                <Input type="text" name="username" value={username} onKeyPress={(e) => this.handleInputEnter(e)} onChange={(e) => this.setState({ username: e.target.value })} />
+                                <Input type="text" name="username" value={username} autoComplete="off" onKeyPress={(e) => this.handleInputEnter(e)} onChange={(e) => this.setState({ username: e.target.value })} />
                             </FormGroup>
                             <FormGroup>
                                 <Label className="font-sm">Password</Label>
-                                <Input type="password" name="password" value={password} onKeyPress={(e) => this.handleInputEnter(e)} onChange={(e) => this.setState({ password: e.target.value })} />
+                                <Input type="password" name="password" value={password} autoComplete="off" onKeyPress={(e) => this.handleInputEnter(e)} onChange={(e) => this.setState({ password: e.target.value })} />
                             </FormGroup>
                             <FormText className="mt-4 mb-2 text-center">
                                 <Link to='/'>Forgot password?</Link>
                             </FormText>
                             <div className="d-flex justify-content-center">
-                                <Button color="primary" style={{ width: 100 }} onClick={this.signIn} >Log in</Button>
+                                <Button color="secondary" style={{ width: 100 }} onClick={this.signIn} >Log in</Button>
                             </div>
                         </Form>
                     </Card>

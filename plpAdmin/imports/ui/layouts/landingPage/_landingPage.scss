@@ -1,0 +1,68 @@
+#page {
+    .full-screen-bg {
+        background-image: radial-gradient(
+            circle 1600px at top left,
+            #1f2025,
+            $main-color
+        );
+        position: absolute;
+        height: 100vh;
+        width: 100vw;
+        top: 0;
+        left: 0;
+    }
+
+    & > div:last-child {
+        position: relative;
+        z-index: 10;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+    }
+
+    .content {
+        height: 100vh;
+        width: 100vw;
+
+        .header {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+        }
+
+        h1 {
+            margin: -50px 0px 50px;
+            text-align: center;
+            color: $light-font-color;
+        }
+
+        .card {
+            .form-group {
+                label {
+                    color: $light-font-color;
+                }
+
+                input {
+                    background-color: transparent !important;
+                    border: none;
+                    border-bottom: 1px solid $light-font-color;
+                    color: $light-font-color;
+                }
+
+                input:focus {
+                    box-shadow: none;
+                }
+            }
+
+            a {
+                color: #ADADAD;
+            }
+
+            width: 400px;
+            background-color: transparent;
+            border: none;
+            margin-top: -20px;
+        }
+    }
+}

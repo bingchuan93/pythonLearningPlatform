@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage/session';
 
 import userState from './userState';
 import appState from './appState';
+import contentState from './contentState';
 
 const persistConfig = {
     key: 'root',
@@ -15,4 +16,5 @@ export default (history) => persistCombineReducers(persistConfig, {
     router: connectRouter(history),
     userState,
     appState,
+    contentState,
 });

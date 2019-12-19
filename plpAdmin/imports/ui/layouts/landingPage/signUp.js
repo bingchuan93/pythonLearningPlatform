@@ -5,8 +5,6 @@ import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
 import Page from './page';
 
-import './landingPage.scss';
-
 class SignUp extends Component {
     constructor(props) {
         super(props);

@@ -1,0 +1,15 @@
+#console {
+    .side-menu {
+        .menu-item {
+            @include fade-hover($main-light-color);
+
+            color: $light-font-color;
+            padding: 0.5rem 0rem 0.5rem 0.5rem;
+        }
+
+        height: $body-height;
+        width: 230px;
+        background-color: $main-color;
+        color: $light-font-color;
+    }
+}

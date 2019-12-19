@@ -1,0 +1,63 @@
+$header-height: 50px;
+$body-height: calc(100vh - #{$header-height} - 1px);
+
+$font-color: #3c4b64;
+$light-font-color: #DDDDDD;
+$border-light-color: #d6d6d6;
+$main-color: #3c4b64;
+$main-light-color: #5b7095;
+$link-hover-bg-color: #EDEEF0;
+
+@mixin fade-hover($hover-color) {
+    transition: background-color 0.3s;
+
+    &:hover {
+        background-color: $hover-color;
+    }
+}
+
+@import url('https://fonts.googleapis.com/css?family=Fira+Sans+Condensed:300&display=swap');
+@import "../imports/ui/layouts/landingPage/landingPage";
+@import "../imports/ui/layouts/console/header/header";
+@import "../imports/ui/layouts/console/body/body";
+@import "../imports/ui/layouts/console/body/sideMenu/sideMenu";
+
+@import "../imports/ui/components/fetchableReactTable";
+
+body * {
+    font-family: 'Fira Sans Condensed', sans-serif;
+    border-radius: 0px !important;
+    color: $font-color;
+}
+
+.font-2xs {
+    font-size: 0.5rem;
+}
+
+.font-xs {
+    font-size: 0.75rem;
+}
+
+.font-sm {
+    font-size: 0.85rem;
+}
+
+.font-md {
+    font-size: 1rem;
+}
+
+.font-lg {
+    font-size: 1.5rem;
+}
+
+.font-xl {
+    font-size: 2rem;
+}
+
+.font-2xl {
+    font-size: 3rem;
+}
+
+.clickable {
+    cursor: pointer;
+}

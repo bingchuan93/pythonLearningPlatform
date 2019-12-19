@@ -3,8 +3,6 @@ import { connect } from 'react-redux';
 import { withTracker } from 'meteor/react-meteor-data';
 import _ from 'lodash';
 
-import './landingPage.scss';
-
 class Page extends Component {
     componentDidUpdate(prevProps, prevState) {
         if (!_.isEqual(prevProps.user, this.props.user)) {
@@ -17,10 +15,10 @@ class Page extends Component {
             <div id="page">
                 <div className="full-screen-bg" />
                 <div className="content">
-                    <div className="header d-flex justify-content-end w-100">
+                    <div className={'header w-100 ' + (this.props.headerClass ? this.props.headerClass : '')}>
                         {this.props.headerContents}
                     </div>
-                    <h1>{this.props.title}</h1>
+                    {this.props.title}
                     {this.props.children}
                 </div>
             </div>
