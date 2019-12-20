@@ -2,7 +2,7 @@ import React from 'react';
 
 const Spinner = (props) => (
     <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" stroke="#000">
-        <g fill="none" fill-rule="evenodd" stroke-width="2">
+        <g fill="none" style={{ fillRule: 'evenodd', strokeWidth: 2 }}>
             <circle cx="22" cy="22" r="1">
                 <animate attributeName="r"
                     begin="0s" dur="1.8s"

@@ -10,6 +10,13 @@ class Students extends Component {
             Header: 'Username',
             accessor: data => data.username
         }, {
+            id: 'isArchived',
+            accessor: 'isArchived',
+            Header: 'Is Archived',
+            accessor: data => data.isArchived,
+            searchAlgorithm: 'boolean',
+            filterable: false,
+        }, {
             id: 'createdAt',
             accessor: 'createdAt',
             Header: 'Created At',
@@ -27,7 +34,7 @@ class Students extends Component {
                 <FetchableReactTable
                     dataEndPoint={'Students.list'}
                     columns={columns}
-                    // defaultFiltered={[{ id: 'isArchived', value: 'false' }]}
+                    defaultFiltered={[{ id: 'isArchived', value: 'false' }]}
                     getTdProps={(state, rowInfo, column) => {
                         return {
                             // onClick: (e) => { this.handleView(rowInfo, column) }
