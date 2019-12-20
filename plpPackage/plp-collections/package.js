@@ -16,7 +16,6 @@ Package.onUse(function(api) {
     'ecmascript',
 		'aldeed:collection2@3.0.0',
 		'accounts-password',
-		'alanning:roles',
 		'matb33:collection-hooks',
   ]);
   api.mainModule('plp-client.js', 'client');
