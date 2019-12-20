@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import moment from 'moment';
 import FetchableReactTable from '/imports/ui/components/fetchableReactTable';
 
 class Students extends Component {
@@ -9,9 +10,15 @@ class Students extends Component {
             Header: 'Username',
             accessor: data => data.username
         }, {
-            id: 'profile.tutorialGroup',
-            Header: 'Tutorial Group',
-            accessor: data => data.profile.tutorialGroup
+            id: 'createdAt',
+            accessor: 'createdAt',
+            Header: 'Created At',
+            accessor: data => (
+                <React.Fragment>
+                    {moment(data.createdAt).format("YYYY-MM-DD h:mma")}
+                </React.Fragment>
+            ),
+            filterable: false,
         }];
 
         return (

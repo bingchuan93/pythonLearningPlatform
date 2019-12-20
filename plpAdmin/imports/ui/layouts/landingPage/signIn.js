@@ -23,10 +23,12 @@ class SignIn extends Component {
     }
 
     signIn = () => {
+        console.log('signing in');
         const { username, password } = this.state;
         if (username && password) {
             this.setState({ isSigningIn: true });
             Meteor.loginWithPassword({ username }, password, (error) => {
+                console.log(error);
                 this.setState({ isSigningIn: false });
                 if (!error) {
                     this.props.dispatch({ type: 'USER/SET', payload: { user: Meteor.user() }});

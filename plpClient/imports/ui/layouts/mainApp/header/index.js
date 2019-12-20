@@ -27,7 +27,7 @@ class Header extends Component {
                     </div>
                     <div className="header-menu d-flex justify-content-end align-items-center mr-4">
                         {this.props.userState.user &&
-                            <div className="mr-5">Hi, {this.props.userState.user.username} ( {this.props.userState.user.profile.tutorialGroup} )</div>
+                            <div className="mr-5">Hi, {this.props.userState.user.username}</div>
                         }
                         <div className="clickable sign-out" onClick={() => this.props.dispatch({ type: 'USER/RESET' })} >Sign out</div>
                     </div>

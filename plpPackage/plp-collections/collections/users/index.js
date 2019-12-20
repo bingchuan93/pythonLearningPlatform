@@ -2,10 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { Accounts } from 'meteor/accounts-base';
 
-Meteor.users.after.insert(function(userId, doc) {
-    Roles.addUsersToRoles(this._id, 'user', 'plp');
-});
-
 const userProfile = new SimpleSchema({
     firstName: {
         type: String,
@@ -26,10 +22,11 @@ const userProfile = new SimpleSchema({
         defaultValue: ''
     },
     tutorialGroup: {
-        type: String,
+        type: Object,
+        blackbox: true,
         label: 'Tutorial Group',
         optional: false,
-        defaultValue: ''
+        defaultValue: {}
     }
 });
 
@@ -47,10 +44,11 @@ Meteor.users.schema = new SimpleSchema({
         optional: true,
         blackbox: true
     },
-    roles: {
-        type: Object,
-        optional: true,
-        blackbox: true
+    role: {
+        type: String,
+        optional: false,
+        label: 'Role',
+        defaultValue: 'user'
     },
     passwordUpdatedAt: {
         type: Date,
@@ -87,13 +85,18 @@ if (Meteor.isServer) {
     function createSuperAdmin() {
         const admins = ['wee'];
         admins.forEach((admin, key) => {
-            let userId = Accounts.findUserByUsername(admin);
-            if (!userId) {
-                userId = Accounts.createUser({ username: admin, password: '123', profile: {} });
-                Roles.setUserRoles(userId, [], 'plp');
-                Roles.addUsersToRoles(userId, 'super-admin', 'plp-admin');
+            try {
+                let userId = Accounts.findUserByUsername(admin);
+                if (!userId) {
+                    userId = Accounts.createUser({ username: admin, password: '123', profile: {} });
+                    Meteor.users.update(userId, { $set: { role: 'super-admin' } });
+                }
+            }
+            catch (e) {
+                console.log(e);
             }
         });
     }
+
     createSuperAdmin();
 }

@@ -5,7 +5,7 @@ if (Meteor.isServer) {
         if (attemptInfo.error) {
             return attemptInfo.error;
         }
-        else if (!Roles.userIsInRole(attemptInfo.user._id, 'user', 'plp')) {
+        else if (attemptInfo.user.role != 'users') {
             return false;
         }
         else if (attemptInfo.type == 'resume') {

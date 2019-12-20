@@ -22,7 +22,8 @@ class SignUp extends Component {
 
     handleSignUp = () => {
         const { username, password, tutorialGroup } = this.state.form;
-        const profile = { tutorialGroup };
+        // const profile = { tutorialGroup };
+        const profile = {}
         let errorMsg = null;
 
         if (username && password) {
