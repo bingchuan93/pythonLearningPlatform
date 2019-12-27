@@ -1,0 +1,143 @@
+.base-modal {
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    overflow: auto;
+}
+
+.base-modal .modal-backdrop {
+    top: 0;
+    left: 0;
+    background-color: $main-color;
+    opacity: 0.5;
+    z-index: 1040;
+}
+
+.base-modal .modal-dialog {
+    z-index: 1050;
+}
+
+.base-modal .modal-content {
+    background-color: #fff;
+    background-clip: unset;
+}
+
+.base-modal .modal-header {
+    display: flex;
+    padding: 8px 22px 6px;
+    border-bottom: 1px solid $border-light-color;
+}
+
+.base-modal .close-button {
+    background-color: transparent;
+    cursor: pointer;
+    line-height: 1;
+    opacity: 0.5;
+    transform: translate(6px, -2px);
+}
+
+.base-modal .close-button:hover {
+    opacity: 0.75;
+}
+
+.base-modal .modal-body {
+    padding: 24px 24px .5rem;
+}
+
+.base-modal .modal-footer {
+    padding: 10px 24px 20px 24px;
+    border-top: none;
+}
+
+.base-modal .modal-footer>div {
+    width: 80%;
+}
+
+.base-modal .modal-footer a {
+    color: var(--link-hover-color) !important;
+}
+
+.base-modal .modal-body .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    padding-top: 30px;
+    z-index: 3;
+    background-color: rgba(255, 255, 255, 0.7);
+}
+
+#console.mobile .base-modal .modal-backdrop {
+    display: none;
+}
+
+#console.mobile .base-modal .modal-dialog {
+    max-width: 100%;
+}
+
+#console.mobile .base-modal .modal-header {
+    position: fixed;
+    top: 0px;
+    height: var(--mobile-modal-header-height);
+    width: 100%;
+    background-color: #FFF;
+    z-index: 5;
+}
+
+#console.mobile .base-modal .modal-body {
+    margin-top: var(--mobile-modal-header-height);
+    padding-top: 12px;
+    padding-bottom: 60px;
+}
+
+#console.mobile .base-modal .modal-content {
+    border: 0px;
+    min-height: 100vh;
+}
+
+#console.mobile .base-modal .modal-footer {
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    padding: 10px 0px 0px;
+}
+
+#console.mobile .base-modal .modal-footer>div {
+    position: absolute;
+    bottom: 48px;
+    padding: 0px 24px;
+}
+
+#console.mobile .base-modal .modal-footer>div {
+    align-self: flex-start;
+    width: 100%;
+}
+
+#console.mobile .base-modal .modal-footer>.btn {
+    margin: 10px 0px 0px 0px;
+    width: 100%;
+}
+
+.base-modal.mode-view .form-control,
+.base-modal.mode-view .input-group-text,
+.base-modal.mode-view .css-ssi0ig-container>div, 
+.base-modal.mode-view .css-1pcexqc-container>div, 
+.base-modal.mode-view .react-switch-bg, 
+input[readonly] {
+    border-color: #eee !important;
+}
+
+.base-modal.mode-view .css-1wy0on6 {
+    display: none;
+}
+
+.react-switch {
+    opacity: 1 !important;
+}
+
+.react-switch-bg {
+    border: 1px solid #ced4da;
+}

@@ -1,15 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import Spinner from '/imports/ui/components/icons/spinner';
+import { Button } from 'reactstrap';
+import Loader from '/imports/ui/components/icons/loader';
+import TestBase from '/imports/ui/layouts/console/modal/testBase';
 
 class Dashboard extends Component {
     render() {
-        console.log('dashboard');
         return (
             <div className="dashboard">
                 <h1>Dashboard</h1>
-                <Spinner />
-            </div>
+                <Loader />
+                <Button
+                    color="primary"
+                    onClick={() => this.props.dispatch({
+                        type: 'MODAL/OPEN',
+                        payload: {
+                            modal: TestBase,
+                            modalProps: {
+                                id: 123
+                            },
+                            prevLocation: { pathname: '/students' }
+                        }
+                })}>Test modal</Button>
+            </div >
         );
     }
 }

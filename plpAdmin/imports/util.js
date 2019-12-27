@@ -1,3 +1,4 @@
+import { matchPath } from 'react-router';
 import _ from 'lodash';
 
 export const getRegRemoveSpecialChar = (value) => {
@@ -65,4 +66,14 @@ export const composeSubscriptionFiltersFieldsSort = (columns, filtered, sorted) 
         sort[sorted[0].id] = (sorted[0].desc ? -1 : 1);
     }
     return { filters, fields, sort };
+}
+
+export const getMatchedRoute = (route, matchingRoutes) => {
+    for (var key in matchingRoutes) {
+        const matched = matchPath(route, matchingRoutes[key]);
+        if (matched) {
+            return { ...matchingRoutes[key], matched };
+        }
+    }
+    return false;
 }

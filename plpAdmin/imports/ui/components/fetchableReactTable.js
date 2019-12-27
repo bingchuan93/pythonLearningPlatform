@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import ReactTable from 'react-table';
-import Spinner from '/imports/ui/components/icons/spinner';
+import Loader from '/imports/ui/components/icons/loader';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Checkbox from '/imports/ui/components/checkbox';
@@ -157,7 +157,7 @@ class FetchableReactTable extends Component {
                 filterable={true}
                 sortable={true}
                 noDataText={'No data found'}
-                loadingText={<Spinner />}
+                loadingText={<Loader />}
                 previousText={<FontAwesomeIcon icon={faChevronLeft} />}
                 nextText={<FontAwesomeIcon icon={faChevronRight} />}
                 columns={this.props.showCheckbox ? [checkboxColumn, ...columns] : columns}

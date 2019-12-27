@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Spinner = (props) => (
+const Loader = (props) => (
     <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" stroke="#000">
         <g fill="none" style={{ fillRule: 'evenodd', strokeWidth: 2 }}>
             <circle cx="22" cy="22" r="1">
@@ -38,9 +38,9 @@ const Spinner = (props) => (
         </g>
     </svg>
 );
-Spinner.defaultProps = {
+Loader.defaultProps = {
     width: 50,
     height: 80,
     fill: '#888'
 }
-export default Spinner;
+export default Loader;

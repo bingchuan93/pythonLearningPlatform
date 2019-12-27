@@ -23,6 +23,7 @@ $link-hover-bg-color: #EDEEF0;
 @import "../imports/ui/layouts/console/body/sideMenu/sideMenu";
 
 @import "../imports/ui/components/fetchableReactTable";
+@import "../imports/ui/components/modal/base";
 
 body * {
     font-family: 'Fira Sans Condensed', sans-serif;
@@ -60,4 +61,43 @@ body * {
 
 .clickable {
     cursor: pointer;
+}
+
+.btn.btn-create {
+    background-color: #979754;
+    color: #FFFFFF !important;
+    border: none;
+
+    &:hover {
+        background-color: #B9B979;
+    }
+}
+.btn.btn-create > div {
+    color: #FFFFFF;
+}
+
+.btn.btn-delete {
+    background-color: #977f54;
+    color: #FFFFFF !important;
+    border: none;
+
+    &:hover {
+        background-color: #b9a279;
+    }
+}
+.btn.btn-delete > div {
+    color: #FFFFFF;
+}
+
+.btn.btn-update {
+    background-color: #563b65;
+    color: #FFFFFF !important;
+    border: none;
+
+    &:hover {
+        background-color: #6d537b;
+    }
+}
+.btn.btn-update > div {
+    color: #FFFFFF;
 }
