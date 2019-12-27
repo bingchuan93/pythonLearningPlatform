@@ -6,6 +6,7 @@ import userState from './userState';
 import appState from './appState';
 import contentState from './contentState';
 import modalState from './modalState';
+import alertState from './alertState';
 
 const persistConfig = {
     key: 'root',
@@ -19,4 +20,5 @@ export default (history) => persistCombineReducers(persistConfig, {
     appState,
     contentState,
     modalState,
+    alertState,
 });

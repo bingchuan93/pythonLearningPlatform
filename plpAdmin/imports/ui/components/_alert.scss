@@ -1,0 +1,54 @@
+.alert-modal {
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    overflow: hidden;
+}
+
+.alert-modal .alert-backdrop {
+    top: 0;
+    left: 0;
+    background-color: $main-color;
+    opacity: 0.5;
+    z-index: 1040;
+}
+
+.alert-modal .alert-dialog {
+    max-width: 500px;
+    z-index: 1050;
+    padding: 20px;
+    pointer-events: none;
+}
+
+.alert-modal .alert-content {
+    background-color: #fff;
+    pointer-events: auto;
+}
+
+.alert-modal .alert-body {
+    padding: 24px;
+}
+
+.alert-modal .alert-icon {
+    text-align: center;
+}
+
+.alert-modal .alert-footer {
+    padding: 0px 24px 20px;
+}
+
+.alert-modal .alert-footer .close-button {
+    margin-left: 0px;
+}
+
+.alert-modal .alert-footer .close-button > div {
+    color: #FFFFFF;
+}
+
+#app.mobile .alert-modal .alert-footer {
+    padding: 0px 12px 12px;
+}
+
+#app.mobile .alert-modal .alert-footer>.btn {
+    flex: 1;
+}

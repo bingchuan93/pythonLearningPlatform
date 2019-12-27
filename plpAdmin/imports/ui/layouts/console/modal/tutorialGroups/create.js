@@ -9,7 +9,7 @@ class TutorialGroupsCreate extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isSubmitting: false
+            isSubmitting: true
         }
     }
 
@@ -21,24 +21,24 @@ class TutorialGroupsCreate extends Component {
                 this.props.dispatch(push('/tutorial-groups/view/' + result.valueOf()));
                 this.props.dispatch({ type: 'CONTENT/FETCHABLE_TABLE_FORCE_FETCH' });
             } else {
-                // this.props.dispatch({
-                //     type: 'ALERT/OPEN', payload: {
-                //         alertProps: {
-                //             body: (
-                //                 <React.Fragment>
-                //                     <div className="alert-icon mb-2">
-                //                         <ErrorIcon />
-                //                     </div>
-                //                     <div style={{ textAlign: "center" }}>
-                //                         {error.reason}
-                //                     </div>
-                //                 </React.Fragment>
-                //             ),
-                //             closeOnBgClick: true,
-                //             showCloseButton: true,
-                //         }
-                //     }
-                // });
+                this.props.dispatch({
+                    type: 'ALERT/OPEN', payload: {
+                        alertProps: {
+                            body: (
+                                <React.Fragment>
+                                    <div className="alert-icon mb-2">
+                                        {/* <ErrorIcon /> */}
+                                    </div>
+                                    <div style={{ textAlign: "center" }}>
+                                        {error.reason}
+                                    </div>
+                                </React.Fragment>
+                            ),
+                            closeOnBgClick: true,
+                            showCloseButton: true,
+                        }
+                    }
+                });
             }
         });
     }

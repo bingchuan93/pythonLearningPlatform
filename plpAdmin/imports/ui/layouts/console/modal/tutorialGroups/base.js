@@ -74,7 +74,8 @@ class TutorialGroupsBase extends Component {
                                             value={form.name}
                                             validators={['required']}
                                             onChange={(e) => {
-                                                this.setState=({
+                                                console.log(e.target.value);
+                                                this.setState({
                                                     form: {
                                                         ...form,
                                                         name: e.target.value
@@ -100,7 +101,7 @@ class TutorialGroupsBase extends Component {
                                             value={form.academicYear}
                                             validators={['required']}
                                             onChange={(e) => {
-                                                this.setState=({
+                                                this.setState({
                                                     form: {
                                                         ...form,
                                                         academicYear: e.target.value
@@ -126,7 +127,7 @@ class TutorialGroupsBase extends Component {
                                             value={form.semester}
                                             validators={['required']}
                                             onChange={(e) => {
-                                                this.setState=({
+                                                this.setState({
                                                     form: {
                                                         ...form,
                                                         semester: e.target.value

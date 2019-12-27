@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Loader = (props) => (
-    <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" stroke="#000">
+    <svg width="44" height="44" viewBox="0 0 44 44" xmlns="http://www.w3.org/2000/svg" stroke={props.stroke} style={{ width: props.width, height: props.height }}>
         <g fill="none" style={{ fillRule: 'evenodd', strokeWidth: 2 }}>
             <circle cx="22" cy="22" r="1">
                 <animate attributeName="r"
@@ -41,6 +41,6 @@ const Loader = (props) => (
 Loader.defaultProps = {
     width: 50,
     height: 80,
-    fill: '#888'
+    store: '#000'
 }
 export default Loader;
