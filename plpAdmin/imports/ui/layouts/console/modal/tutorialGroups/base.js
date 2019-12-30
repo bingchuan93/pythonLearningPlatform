@@ -7,7 +7,7 @@ import { ValidatorForm } from 'react-form-validator-core';
 import TextValidator from '/imports/ui/components/validators/text';
 import Loader from '/imports/ui/components/icons/loader';
 
-class TutorialGroupsBase extends Component {
+class TutorialGroupBase extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -32,10 +32,12 @@ class TutorialGroupsBase extends Component {
             this.setState({ isFetching: false });
             if (!error) {
                 this.setState({
-                    ...this.state.form,
-                    name: result.name,
-                    academicYear: result.academicYear,
-                    semester: result.semester
+                    form : {
+                        ...this.state.form,
+                        name: result.name,
+                        academicYear: result.academicYear,
+                        semester: result.semester
+                    }
                 });
             }
         })
@@ -74,11 +76,10 @@ class TutorialGroupsBase extends Component {
                                             value={form.name}
                                             validators={['required']}
                                             onChange={(e) => {
-                                                console.log(e.target.value);
                                                 this.setState({
                                                     form: {
                                                         ...form,
-                                                        name: e.target.value
+                                                        name: e.target.value.toUpperCase()
                                                     }
                                                 })
                                             }}
@@ -150,4 +151,4 @@ class TutorialGroupsBase extends Component {
     }
 }
 
-export default connect()(TutorialGroupsBase);
+export default connect()(TutorialGroupBase);

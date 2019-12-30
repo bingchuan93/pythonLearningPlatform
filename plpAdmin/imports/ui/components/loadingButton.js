@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'reactstrap';
-import Loader from '/imports/ui/components/icons/loader';
+import ActivityIndicator from '/imports/ui/components/icons/activityIndicator';
 
 class LoadingButton extends Component {
     constructor(props) {
@@ -30,7 +30,7 @@ class LoadingButton extends Component {
             <Button {...restProps} disabled={isLoading}>
                 <div ref={this.buttonContentRef} style={{ minWidth: '50px', display: 'inline-flex', justifyContent: 'center', alignItems: 'center' }}>
                     {isLoading ? (
-                        <Loader height={10} fill={this.props.fill} />
+                        <ActivityIndicator height={10} fill={this.props.fill} stroke="#FFF"/>
                     ) : (
                             children
                         )}

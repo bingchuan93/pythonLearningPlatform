@@ -64,6 +64,10 @@ body * {
     cursor: pointer;
 }
 
+.btn.btn-primary > div {
+    color: #FFFFFF;
+}
+
 .btn.btn-create {
     background-color: #979754;
     color: #FFFFFF !important;
@@ -100,5 +104,15 @@ body * {
     }
 }
 .btn.btn-update > div {
+    color: #FFFFFF;
+}
+
+.badge.badge-positive {
+    background-color: #3b9e57;
+    color: #FFFFFF;
+}
+
+.badge.badge-negative {
+    background-color: #9e3b3b;
     color: #FFFFFF;
 }

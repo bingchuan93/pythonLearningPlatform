@@ -5,7 +5,7 @@ import LoadingButton from '/imports/ui/components/loadingButton';
 // import ErrorIcon from '/imports/ui/components/icons/error';
 import { push } from 'connected-react-router';
 
-class TutorialGroupCreate extends Component {
+class TutorialGroupUpdate extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -13,12 +13,12 @@ class TutorialGroupCreate extends Component {
         }
     }
 
-    handleCreate = (form, image) => {
+    handleUpdate = (form, image) => {
         this.setState({ isSubmitting: true });
-        Meteor.call('TutorialGroups.create', form, (error, result) => {
+        Meteor.call('TutorialGroups.update', this.props.id, form, (error, result) => {
             this.setState({ isSubmitting: false });
             if (!error) {
-                this.props.dispatch(push('/tutorial-groups/view/' + result.valueOf()));
+                this.props.dispatch(push('/tutorial-groups/view/' + this.props.id));
                 this.props.dispatch({ type: 'CONTENT/FETCHABLE_TABLE_FORCE_FETCH' });
             } else {
                 this.props.dispatch({
@@ -46,12 +46,13 @@ class TutorialGroupCreate extends Component {
     render() {
         return (
             <TutorialGroupBase
-                title="Create Tutorial Group"
-                mode="create"
-                formSubmit={this.handleCreate}
+                title="Update Tutorial Group"
+                mode="update"
+                id={this.props.id}
+                formSubmit={this.handleUpdate}
                 footer={
-                    <LoadingButton color="create" size="sm" type="submit" form="tutorial-group-form" isLoading={this.state.isSubmitting}>
-                        Create
+                    <LoadingButton color="update" size="sm" type="submit" form="tutorial-group-form" isLoading={this.state.isSubmitting}>
+                        Save
                     </LoadingButton>
                 }
             />
@@ -59,4 +60,4 @@ class TutorialGroupCreate extends Component {
     }
 }
 
-export default connect()(TutorialGroupCreate);
+export default connect()(TutorialGroupUpdate);

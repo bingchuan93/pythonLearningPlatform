@@ -41,6 +41,6 @@ const Loader = (props) => (
 Loader.defaultProps = {
     width: 50,
     height: 80,
-    store: '#000'
+    stroke: '#000'
 }
 export default Loader;
