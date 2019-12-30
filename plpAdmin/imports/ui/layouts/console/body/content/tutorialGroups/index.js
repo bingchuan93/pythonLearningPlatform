@@ -4,6 +4,7 @@ import { push } from 'connected-react-router';
 import moment from 'moment';
 import { Button, Badge } from 'reactstrap';
 import FetchableReactTable from '/imports/ui/components/fetchableReactTable';
+import ValidatorForm from 'react-form-validator-core/lib/ValidatorForm';
 
 class TutorialGroups extends Component {
     handleView = (rowInfo, column) => {
@@ -101,6 +102,14 @@ class TutorialGroups extends Component {
             id: 'name',
             Header: 'Name',
             accessor: data => data.name
+        }, {
+            id: 'academicYear',
+            Header: 'Academic Year',
+            accessor: data => data.academicYear
+        }, {
+            id: 'semester',
+            Header: 'Semester',
+            accessor: data => data.semester
         }, {
             id: 'isArchived',
             accessor: 'isArchived',

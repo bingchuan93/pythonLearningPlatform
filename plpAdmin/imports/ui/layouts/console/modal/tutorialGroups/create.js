@@ -17,10 +17,30 @@ class TutorialGroupCreate extends Component {
         this.setState({ isSubmitting: true });
         Meteor.call('TutorialGroups.create', form, (error, result) => {
             this.setState({ isSubmitting: false });
-            if (!error) {
-                this.props.dispatch(push('/tutorial-groups/view/' + result.valueOf()));
+            this.props.dispatch(push('/tutorial-groups'));
+            this.props.dispatch({ type: 'MODAL/RESET' });
+            if (!error && !result.error) {
+                this.props.dispatch({
+                    type: 'ALERT/OPEN', payload: {
+                        alertProps: {
+                            body: (
+                                <div style={{ textAlign: "center" }}>
+                                    Tutorial Groups successfully created
+                                </div>
+                            ),
+                            closeOnBgClick: true,
+                            showConfirmButton: true,
+                            confirmButtonText: 'Done',
+                            confirmButtonCallback: (e, closeAlert) => {
+                                e.preventDefault();
+                                closeAlert();
+                            },
+                            showCloseButton: false
+                        }
+                    }
+                });
                 this.props.dispatch({ type: 'CONTENT/FETCHABLE_TABLE_FORCE_FETCH' });
-            } else {
+            } else if (error || result.error) {
                 this.props.dispatch({
                     type: 'ALERT/OPEN', payload: {
                         alertProps: {
@@ -30,7 +50,19 @@ class TutorialGroupCreate extends Component {
                                         {/* <ErrorIcon /> */}
                                     </div>
                                     <div style={{ textAlign: "center" }}>
-                                        {error.reason}
+                                        {error ? (
+                                            error.reason
+                                        ) : (
+                                                <React.Fragment>
+                                                    {result.data.map((data, key) => {
+                                                        return (
+                                                            <div key={key}>
+                                                                {data.name}: {data.error}
+                                                            </div>
+                                                        );
+                                                    })}
+                                                </React.Fragment>
+                                            )}
                                     </div>
                                 </React.Fragment>
                             ),

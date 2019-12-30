@@ -13,6 +13,7 @@ class TutorialGroupBase extends Component {
         this.state = {
             isFetching: false,
             form: {
+                names: [''],
                 name: '',
                 academicYear: new Date().getFullYear(),
                 semester: 0,
@@ -157,23 +158,65 @@ class TutorialGroupBase extends Component {
                                         <Label className="control-label mb-0 font-weight-bold">Name</Label>
                                     </Col>
                                     <Col md={8}>
-                                        <TextValidator
-                                            className="form-control"
-                                            type="text"
-                                            name="name"
-                                            value={form.name}
-                                            validators={['required']}
-                                            onChange={(e) => {
+                                        {this.props.mode == 'create' ? (
+                                            <React.Fragment>
+                                                {form.names.map((name, key) => {
+                                                    return (
+                                                        <FormGroup key={key}>
+                                                            <TextValidator
+                                                                className="form-control"
+                                                                type="text"
+                                                                name="name"
+                                                                value={name}
+                                                                validators={['required']}
+                                                                onChange={(e) => {
+                                                                    const newNames = [...form.names];
+                                                                    newNames[key] = e.target.value.toUpperCase()
+                                                                    this.setState({
+                                                                        form: {
+                                                                            ...form,
+                                                                            names: newNames
+                                                                        }
+                                                                    })
+                                                                }}
+                                                                errorMessages={['Name is required']}
+                                                                readOnly={this.props.mode == 'read'}
+                                                            />
+                                                        </FormGroup>
+                                                    );
+                                                })}
+                                            </React.Fragment>
+                                        ) : (
+                                            <TextValidator
+                                                className="form-control"
+                                                type="text"
+                                                name="name"
+                                                value={form.name}
+                                                validators={['required']}
+                                                onChange={(e) => {
+                                                    this.setState({
+                                                        form: {
+                                                            ...form,
+                                                            name: e.target.value.toUpperCase()
+                                                        }
+                                                    })
+                                                }}
+                                                errorMessages={['Name is required']}
+                                                readOnly={this.props.mode == 'read'}
+                                            />
+                                        )}
+                                        {this.props.mode == 'create' &&
+                                            <Button className="mt-2" block color="create" onClick={() => {
+                                                const newNames = [...form.names];
+                                                newNames.push('');
                                                 this.setState({
                                                     form: {
                                                         ...form,
-                                                        name: e.target.value.toUpperCase()
+                                                        names: newNames
                                                     }
-                                                })
-                                            }}
-                                            errorMessages={['Name is required']}
-                                            readOnly={this.props.mode == 'read'}
-                                        />
+                                                });
+                                            }}>Add Names</Button>
+                                        }
                                     </Col>
                                 </Row>
                             </FormGroup>

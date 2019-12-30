@@ -10,31 +10,38 @@ Meteor.methods({
             const count = TutorialGroups.find(filters).count();
             return { data: tutorialGroups, count: count };
         }
-        catch(e) {
+        catch (e) {
             if (e.reason) {
                 throw new Meteor.Error(e.error, e.reason);
             }
             throw new Meteor.Error('error', 'Fail to list tutorial groups');
         }
     },
-    'TutorialGroups.create' (form) {
-        try {
-            const _id = TutorialGroups.insert({
-                name: form.name,
-                academicYear: form.academicYear,
-                semester: form.semester
-            });
-
-            return _id;
-        }
-        catch(e) {
-            if (e.reason) {
-                throw new Meteor.Error(e.error, e.reason);
+    async 'TutorialGroups.create'(form) {
+        const namesNotAdded = [];
+        form.names.forEach((name) => {
+            try {
+                TutorialGroups.insert({
+                    name: name,
+                    academicYear: form.academicYear,
+                    semester: form.semester
+                });
             }
-            throw new Meteor.Error('error', 'Fail to create tutorial groups');
+            catch (e) {
+                if (e.reason) {
+                    namesNotAdded.push({ name: name, error: e.reason });
+                }
+                namesNotAdded.push({ name: name, error: 'Fail to create tutorial group' });
+            }
+        });
+        if ( namesNotAdded.length > 0 ) {
+            return { error: true, data: namesNotAdded };
+        }
+        else {
+            return { error: false };
         }
     },
-    'TutorialGroups.update' (id, form) {
+    'TutorialGroups.update'(id, form) {
         try {
             TutorialGroups.update(new Mongo.ObjectID(id), {
                 $set: {
@@ -44,40 +51,40 @@ Meteor.methods({
                 }
             });
         }
-        catch(e) {
+        catch (e) {
             if (e.reason) {
                 throw new Meteor.Error(e.error, e.reason);
             }
             throw new Meteor.Error('error', 'Fail to update tutorial groups');
         }
     },
-    'TutorialGroups.archive' (_id) {
+    'TutorialGroups.archive'(_id) {
         try {
             TutorialGroups.update(_id, { $set: { isArchived: true } });
         }
-        catch(e) {
+        catch (e) {
             if (e.reason) {
                 throw new Meteor.Error(e.error, e.reason);
             }
             throw new Meteor.Error('error', 'Fail to archive tutorial group');
         }
     },
-    'TutorialGroups.restore' (_id) {
+    'TutorialGroups.restore'(_id) {
         try {
             TutorialGroups.update(_id, { $set: { isArchived: false } });
         }
-        catch(e) {
+        catch (e) {
             if (e.reason) {
                 throw new Meteor.Error(e.error, e.reason);
             }
             throw new Meteor.Error('error', 'Fail to restore tutorial group');
         }
     },
-    'TutorialGroups.getById' (id) {
+    'TutorialGroups.getById'(id) {
         try {
             return TutorialGroups.findOne(new Mongo.ObjectID(id));
         }
-        catch(e) {
+        catch (e) {
             if (e.reason) {
                 throw new Meteor.Error(e.error, e.reason);
             }
