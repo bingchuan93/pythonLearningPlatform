@@ -4,7 +4,8 @@
   "scripts": {
     "start": "meteor run",
     "test": "meteor test --once --driver-package meteortesting:mocha",
-    "web": "set METEOR_PACKAGE_DIRS=..\\plpPackage&&set MONGO_URL=mongodb://127.0.0.1:7001/meteor&&meteor --port 8000"
+    "web": "set METEOR_PACKAGE_DIRS=..\\plpPackage&&set MONGO_URL=mongodb://127.0.0.1:7001/meteor&&meteor --port 8000",
+    "web-mac": "export METEOR_PACKAGE_DIRS=../plpPackage&&export MONGO_URL=mongodb://127.0.0.1:7001/meteor&&meteor run --port 8000"
   },
   "dependencies": {
     "@babel/runtime": "^7.6.0",

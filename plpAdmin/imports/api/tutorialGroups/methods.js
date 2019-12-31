@@ -17,7 +17,7 @@ Meteor.methods({
             throw new Meteor.Error('error', 'Fail to list tutorial groups');
         }
     },
-    async 'TutorialGroups.create'(form) {
+    'TutorialGroups.create'(form) {
         const namesNotAdded = [];
         form.names.forEach((name) => {
             try {

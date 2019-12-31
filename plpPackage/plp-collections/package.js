@@ -10,19 +10,19 @@ Package.describe({
   documentation: 'README.md'
 });
 
-Package.onUse(function(api) {
+Package.onUse(function (api) {
   api.versionsFrom('1.8.1');
   api.use([
     'ecmascript',
-		'aldeed:collection2@3.0.0',
-		'accounts-password',
-		'matb33:collection-hooks',
+    'aldeed:collection2@3.0.0',
+    'accounts-password',
+    'matb33:collection-hooks',
   ]);
   api.mainModule('plp-client.js', 'client');
   api.mainModule('plp-server.js', 'server');
 });
 
-Package.onTest(function(api) {
+Package.onTest(function (api) {
   api.use('ecmascript');
   api.use('tinytest');
   api.use('plp-package');

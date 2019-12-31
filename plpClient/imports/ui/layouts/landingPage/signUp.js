@@ -1,12 +1,25 @@
 import React, { Component } from 'react';
-import { Card, Form, FormGroup, FormText, Input, Button, Label } from 'reactstrap';
+import { Card, FormGroup, Row, Col, Button, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import _ from 'lodash';
+import { ValidatorForm } from 'react-form-validator-core';
+import TextValidator from '/imports/ui/components/validators/text';
+import SelectValidator from '/imports/ui/components/validators/select';
 import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
+import { getTutorialGroupOptions } from '/imports/util';
 import Page from './page';
 
 import './landingPage.scss';
 
+ValidatorForm.addValidationRule('isPassword', (password) => {
+    if (!password) {
+        return true;
+    }
+    else {
+        return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}$/.test(password);
+    }
+});
 class SignUp extends Component {
     constructor(props) {
         super(props);
@@ -14,16 +27,23 @@ class SignUp extends Component {
             form: {
                 username: '',
                 password: '',
-                tutorialGroup: '',
+                tutorialGroupId: '',
             },
+            tutorialGroupOptions: [],
             isSigningUp: false
         }
     }
 
+    componentDidMount() {
+        getTutorialGroupOptions((tutorialGroupOptions) => {
+            this.setState({ tutorialGroupOptions });
+        });
+    }
+
     handleSignUp = () => {
         const { username, password, tutorialGroup } = this.state.form;
-        // const profile = { tutorialGroup };
-        const profile = {}
+        const profile = { tutorialGroup: tutorialGroupId };
+        // const profile = {}
         let errorMsg = null;
 
         if (username && password) {
@@ -32,7 +52,7 @@ class SignUp extends Component {
                 this.setState({ isSigningUp: false });
                 console.log(error);
                 if (!error) {
-                    this.props.dispatch({ type: 'USER/SET', payload: { user: Meteor.user() }});
+                    this.props.dispatch({ type: 'USER/SET', payload: { user: Meteor.user() } });
                     this.props.dispatch(push('/')); // bc: Redirect immediately or requeste for sign in again?
                 }
                 else {
@@ -60,10 +80,17 @@ class SignUp extends Component {
             >
                 <div className="sign-up">
                     <Card body>
-                        <Form>
+                        <ValidatorForm
+                            id="signup-form"
+                            instantValidate={false}
+                            onSubmit={() => {
+                                this.handleSignUp();
+                            }}
+                        >
                             <FormGroup>
                                 <Label className="font-sm">Username</Label>
-                                <Input
+                                <TextValidator
+                                    className="form-control"
                                     type="text"
                                     name="username"
                                     value={form.username}
@@ -75,11 +102,14 @@ class SignUp extends Component {
                                             }
                                         })
                                     }}
+                                    validators={['required']}
+                                    errorMessages={['Username is required']}
                                 />
                             </FormGroup>
                             <FormGroup>
                                 <Label className="font-sm">Password</Label>
-                                <Input
+                                <TextValidator
+                                    className="form-control"
                                     type="password"
                                     name="password"
                                     value={form.password}
@@ -91,28 +121,32 @@ class SignUp extends Component {
                                             }
                                         })
                                     }}
+                                    validators={['required']}
+                                    errorMessages={['Password is required']}
                                 />
                             </FormGroup>
                             <FormGroup>
                                 <Label className="font-sm">Tutorial Group</Label>
-                                <Input
-                                    type="text"
-                                    name="group"
-                                    value={form.tutorialGroup}
+                                <SelectValidator
+                                    placeholder="Tutorial group"
+                                    validators={['required']}
+                                    value={_.find(this.state.tutorialGroupOptions, { value: form.tutorialGroupId })}
                                     onChange={(e) => {
                                         this.setState({
                                             form: {
                                                 ...form,
-                                                tutorialGroup: e.target.value.trim()
+                                                tutorialGroupId: e.value
                                             }
                                         })
                                     }}
+                                    options={this.state.tutorialGroupOptions}
+                                    errorMessages={['Tutorial group is required']}
                                 />
                             </FormGroup>
-                            <div className="d-flex justify-content-center mt-4">
-                                <Button color="primary" style={{ width: 100 }} onClick={this.handleSignUp}>Sign up</Button>
-                            </div>
-                        </Form>
+                        </ValidatorForm>
+                        <div className="d-flex justify-content-center mt-4">
+                            <Button color="primary" type="submit" form="signup-form" style={{ width: 100 }} onClick={this.handleSignUp}>Sign up</Button>
+                        </div>
                     </Card>
                 </div>
             </Page>
