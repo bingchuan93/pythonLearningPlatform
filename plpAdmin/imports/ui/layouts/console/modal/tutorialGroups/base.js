@@ -5,13 +5,16 @@ import BaseModal from '/imports/ui/components/modal/base';
 import { FormGroup, Row, Col, Label, Button } from 'reactstrap';
 import { ValidatorForm } from 'react-form-validator-core';
 import TextValidator from '/imports/ui/components/validators/text';
+import SelectValidator from '/imports/ui/components/validators/select';
 import Loader from '/imports/ui/components/icons/loader';
+import { getSemesterTypeOptions } from '/imports/util';
 
 class TutorialGroupBase extends Component {
     constructor(props) {
         super(props);
         this.state = {
             isFetching: false,
+            semesterOptions: [],
             form: {
                 names: [''],
                 name: '',
@@ -26,6 +29,7 @@ class TutorialGroupBase extends Component {
         if (this.props.id) {
             this.getTutorialGroup(this.props.id);
         }
+        this.setState({ semesterOptions: getSemesterTypeOptions() });
     }
 
     getTutorialGroup = (id) => {
@@ -187,24 +191,24 @@ class TutorialGroupBase extends Component {
                                                 })}
                                             </React.Fragment>
                                         ) : (
-                                            <TextValidator
-                                                className="form-control"
-                                                type="text"
-                                                name="name"
-                                                value={form.name}
-                                                validators={['required']}
-                                                onChange={(e) => {
-                                                    this.setState({
-                                                        form: {
-                                                            ...form,
-                                                            name: e.target.value.toUpperCase()
-                                                        }
-                                                    })
-                                                }}
-                                                errorMessages={['Name is required']}
-                                                readOnly={this.props.mode == 'read'}
-                                            />
-                                        )}
+                                                <TextValidator
+                                                    className="form-control"
+                                                    type="text"
+                                                    name="name"
+                                                    value={form.name}
+                                                    validators={['required']}
+                                                    onChange={(e) => {
+                                                        this.setState({
+                                                            form: {
+                                                                ...form,
+                                                                name: e.target.value.toUpperCase()
+                                                            }
+                                                        })
+                                                    }}
+                                                    errorMessages={['Name is required']}
+                                                    readOnly={this.props.mode == 'read'}
+                                                />
+                                            )}
                                         {this.props.mode == 'create' &&
                                             <Button className="mt-2" block color="create" onClick={() => {
                                                 const newNames = [...form.names];
@@ -252,22 +256,21 @@ class TutorialGroupBase extends Component {
                                         <Label className="control-label mb-0 font-weight-bold">Semester</Label>
                                     </Col>
                                     <Col md={8}>
-                                        <TextValidator
-                                            className="form-control"
-                                            type="text"
-                                            name="name"
-                                            value={form.semester}
+                                        <SelectValidator
+                                            placeholder="Semester"
                                             validators={['required']}
+                                            value={_.find(this.state.semesterOptions, { value: form.semester })}
                                             onChange={(e) => {
                                                 this.setState({
                                                     form: {
                                                         ...form,
-                                                        semester: e.target.value
+                                                        semester: e.value
                                                     }
                                                 })
                                             }}
+                                            options={this.state.semesterOptions}
                                             errorMessages={['Semester is required']}
-                                            readOnly={this.props.mode == 'read'}
+                                            isDisabled={this.props.mode == 'read'}
                                         />
                                     </Col>
                                 </Row>
@@ -285,10 +288,10 @@ class TutorialGroupBase extends Component {
                                         this.handleRestore(new Mongo.ObjectID(this.props.id))
                                     }}>Restore</Button>
                                 ) : (
-                                    <Button color="secondary" size="sm" onClick={() => {
-                                        this.handleArchive(new Mongo.ObjectID(this.props.id))
-                                    }}>Archive</Button>
-                                )}
+                                        <Button color="secondary" size="sm" onClick={() => {
+                                            this.handleArchive(new Mongo.ObjectID(this.props.id))
+                                        }}>Archive</Button>
+                                    )}
                             </React.Fragment>
                         }
                         {this.props.footer}

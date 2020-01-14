@@ -5,6 +5,7 @@ import moment from 'moment';
 import { Button, Badge } from 'reactstrap';
 import FetchableReactTable from '/imports/ui/components/fetchableReactTable';
 import ValidatorForm from 'react-form-validator-core/lib/ValidatorForm';
+import constants from '/imports/constants';
 
 class TutorialGroups extends Component {
     handleView = (rowInfo, column) => {
@@ -109,7 +110,7 @@ class TutorialGroups extends Component {
         }, {
             id: 'semester',
             Header: 'Semester',
-            accessor: data => data.semester
+            accessor: data => constants.semesterTypes[data.semester]
         }, {
             id: 'isArchived',
             accessor: 'isArchived',

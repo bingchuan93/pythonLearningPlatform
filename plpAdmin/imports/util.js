@@ -1,5 +1,78 @@
 import { matchPath } from 'react-router';
 import _ from 'lodash';
+import moment from 'moment';
+import constants from '/imports/constants';
+
+const semesterDetails = [{ // to shift to settings
+    sem: 'one',
+    date: {
+        start: {
+            day: 12,
+            month: 8
+        },
+        end: {
+            day: 15,
+            month: 11
+        }
+    }
+}, {
+    sem: 'two',
+    date: {
+        start: {
+            day: 13,
+            month: 1
+        },
+        end: {
+            day: 17,
+            month: 4
+        }
+    }
+}, {
+    sem: 'special-term-1',
+    date: {
+        start: {
+            day: 11,
+            month: 5
+        },
+        end: {
+            day: 12,
+            month: 6
+        }
+    }
+}, {
+    sem: 'special-term-2',
+    date: {
+        start: {
+            day: 22,
+            month: 6
+        },
+        end: {
+            day: 24,
+            month: 7
+        }
+    }
+}];
+
+export const getSemOneDate = (semId) => {
+    const semester = _.find(semesterDetails, (semesterDetail) => {
+        return semesterDetail.sem == semId;
+    });
+    const startDate = moment().set({
+        'year': new Date().getFullYear(),
+        'month': semester.date.start.month - 1,
+        'date': semester.date.start.day
+    })
+
+    const endDate = moment().set({
+        'year': new Date().getFullYear(),
+        'month': semester.date.end.month - 1,
+        'date': semester.date.end.day
+    })
+
+    return {
+        startDate, endDate
+    }
+}
 
 export const getRegRemoveSpecialChar = (value) => {
     return new RegExp('^.*' + value.replace(/[-[\]{}()*+?.,\\/^$|#\s]/g, "\\$&") + '.*$', 'i');
@@ -76,4 +149,15 @@ export const getMatchedRoute = (route, matchingRoutes) => {
         }
     }
     return false;
+}
+
+export const getSemesterTypeOptions = () => {
+    const options = Object.keys(constants.semesterTypes).map(key => {
+        return {
+            value: key,
+            label: constants.semesterTypes[key]
+        }
+    })
+    console.log(options);
+    return options;
 }
