@@ -157,7 +157,31 @@ export const getSemesterTypeOptions = () => {
             value: key,
             label: constants.semesterTypes[key]
         }
-    })
-    console.log(options);
+    });
     return options;
+}
+
+export const getAssessmentTypeOptions = () => {
+    const options = Object.keys(constants.assessmentTypes).map(key => {
+        return {
+            value: key,
+            label: constants.assessmentTypes[key]
+        }
+    });
+    return options;
+}
+
+export const getTutorialGroupOptions = (callback) => {
+    Meteor.call('TutorialGroups.getAll', (error, result) => {
+        const options = [];
+        if (!error) {
+            result.forEach((element) => {
+                options.push({
+                    label: element.name,
+                    value: element._id.valueOf()
+                })
+            });
+            callback(options);
+        }
+    })
 }

@@ -1,6 +1,7 @@
 import Dashboard from '/imports/ui/layouts/console/body/content/dashboard';
 import Students from '/imports/ui/layouts/console/body/content/students';
 import TutorialGroups from '/imports/ui/layouts/console/body/content/tutorialGroups';
+import Assessments from '/imports/ui/layouts/console/body/content/assessments';
 
 const contentRoutes = [{
     path: '/',
@@ -25,6 +26,12 @@ const contentRoutes = [{
     name: 'tutorial-groups',
     title: 'Tutorial Groups',
     component: TutorialGroups,
+    showInSideMenu: true,
+}, {
+    path: '/assessments',
+    name: 'assessments',
+    title: 'Assessments',
+    component: Assessments,
     showInSideMenu: true,
 }];
 

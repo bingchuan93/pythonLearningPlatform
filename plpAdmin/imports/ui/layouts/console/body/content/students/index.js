@@ -1,9 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { push } from 'connected-react-router';
 import moment from 'moment';
 import FetchableReactTable from '/imports/ui/components/fetchableReactTable';
 
 class Students extends Component {
+    handleView = (rowInfo, column) => {
+        if (column.id != 'actions' && column.id != 'checkbox' && rowInfo) {
+            this.props.dispatch(push('/students/view/' + rowInfo.original._id.valueOf()));
+        }
+    }
+
     render() {
         const columns = [{
             id: 'username',
@@ -37,7 +44,7 @@ class Students extends Component {
                     defaultFiltered={[{ id: 'isArchived', value: 'false' }]}
                     getTdProps={(state, rowInfo, column) => {
                         return {
-                            // onClick: (e) => { this.handleView(rowInfo, column) }
+                            onClick: (e) => { this.handleView(rowInfo, column) }
                         };
                     }}
                 />
