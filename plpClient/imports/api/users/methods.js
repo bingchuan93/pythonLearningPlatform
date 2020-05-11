@@ -5,12 +5,13 @@ if (Meteor.isServer) {
         if (attemptInfo.error) {
             return attemptInfo.error;
         }
-        else if (attemptInfo.user.role != 'users') {
+        else if (attemptInfo.user.role != 'user') {
             return false;
         }
         else if (attemptInfo.type == 'resume') {
             return true;
         }
+        console.log('allowed');
         return true;
     })
 

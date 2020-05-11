@@ -24,7 +24,7 @@ class Dashboard extends Component {
                             modalProps: {
                                 id: 123
                             },
-                            prevLocation: { pathname: '/students' }
+                            prevLocation: { pathname: '/' }
                         }
                     })}>Test modal</Button>
             </div >

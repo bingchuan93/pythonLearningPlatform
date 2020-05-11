@@ -21,7 +21,7 @@ const userProfile = new SimpleSchema({
         optional: false,
         defaultValue: ''
     },
-    tutorialGroup: {
+    tutorialGroupId: {
         type: Object,
         blackbox: true,
         label: 'Tutorial Group',

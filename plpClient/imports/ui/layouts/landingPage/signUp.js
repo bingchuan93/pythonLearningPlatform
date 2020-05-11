@@ -41,11 +41,11 @@ class SignUp extends Component {
     }
 
     handleSignUp = () => {
-        const { username, password, tutorialGroup } = this.state.form;
-        const profile = { tutorialGroup: tutorialGroupId };
+        const { username, password, tutorialGroupId } = this.state.form;
+        const profile = { tutorialGroupId: new Mongo.ObjectID(tutorialGroupId) };
         // const profile = {}
         let errorMsg = null;
-
+        console.log(profile);
         if (username && password) {
             this.setState({ isSigningUp: true });
             Accounts.createUser({ username, password, profile }, (error) => {
