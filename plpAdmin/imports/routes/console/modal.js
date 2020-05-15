@@ -3,6 +3,7 @@ import TutorialGroupCreate from '/imports/ui/layouts/console/modal/tutorialGroup
 import TutorialGroupRead from '/imports/ui/layouts/console/modal/tutorialGroups/read';
 import TutorialGroupUpdate from '/imports/ui/layouts/console/modal/tutorialGroups/update';
 import StudentRead from '/imports/ui/layouts/console/modal/students/read';
+import StudentImport from '/imports/ui/layouts/console/modal/students/import';
 import AssessmentCreate from '/imports/ui/layouts/console/modal/assessments/create';
 
 const modalRoutes = [
@@ -12,6 +13,7 @@ const modalRoutes = [
     { name: 'tutorial-groups-update', path: '/tutorial-groups/update/:id', exact: true, component: TutorialGroupUpdate },
     { name: 'students-view', path: '/students/view/:id', exact: true, component: StudentRead },
     { name: 'assessments-create', path: '/assessments/create', exact: true, component: AssessmentCreate },
+    { name: 'students-import', path: '/students/import', exact: true, component: StudentImport },
 ];
 
 export default modalRoutes;
