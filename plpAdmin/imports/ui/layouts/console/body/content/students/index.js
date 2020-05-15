@@ -38,30 +38,34 @@ class Students extends Component {
 		];
 
 		return (
-			<div className="students">
-				<h1>Students</h1>
-				<FetchableReactTable
-					dataEndPoint={'Students.list'}
-					columns={columns}
-					defaultFiltered={[{ id: 'isArchived', value: 'false' }]}
-					getTdProps={(state, rowInfo, column) => {
-						return {
-							onClick: (e) => {
-								this.handleView(rowInfo, column);
-							},
-						};
-					}}
-				/>
-				<Footer className="d-flex justify-content-end">
-					<Button
-						color="create"
-						size="md"
-						onClick={() => {
-							props.dispatch('/console/students/import');
-						}}>
-						Import
-					</Button>
-				</Footer>
+			<div className="content-wrapper">
+				<div className="students">
+					<div className="content-title">Students</div>
+					<div className="content-body">
+						<FetchableReactTable
+							dataEndPoint={'Students.list'}
+							columns={columns}
+							defaultFiltered={[{ id: 'isArchived', value: 'false' }]}
+							getTdProps={(state, rowInfo, column) => {
+								return {
+									onClick: (e) => {
+										this.handleView(rowInfo, column);
+									},
+								};
+							}}
+						/>
+					</div>
+					<Footer className="d-flex justify-content-end">
+						<Button
+							color="create"
+							size="md"
+							onClick={() => {
+								this.props.dispatch(push('/students/import'));
+							}}>
+							Import
+						</Button>
+					</Footer>
+				</div>
 			</div>
 		);
 	}

@@ -6,7 +6,7 @@ import contentRoutes from '/imports/routes/console/content';
 class Content extends Component {
     render() {
         return (
-            <div className="content flex-fill px-3 pt-3">
+            <div className="content flex-fill">
                 <Switch>
                     {contentRoutes.map((contentRoute, key) => {
                         if (contentRoute.redirect) {

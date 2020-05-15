@@ -6,30 +6,38 @@ import TestBase from '/imports/ui/layouts/console/modal/testBase';
 import { getSemOneDate } from '/imports/util';
 
 class Dashboard extends Component {
-    componentDidMount() {
-        console.log(getSemOneDate('one'));
-    }
+	componentDidMount() {
+		console.log(getSemOneDate('one'));
+	}
 
-    render() {
-        return (
-            <div className="dashboard">
-                <h1>Dashboard</h1>
-                <Loader />
-                <Button
-                    color="primary"
-                    onClick={() => this.props.dispatch({
-                        type: 'MODAL/OPEN',
-                        payload: {
-                            modal: TestBase,
-                            modalProps: {
-                                id: 123
-                            },
-                            prevLocation: { pathname: '/' }
-                        }
-                    })}>Test modal</Button>
-            </div >
-        );
-    }
+	render() {
+		return (
+			<div className="content-wrapper">
+				<div className="dashboard">
+					<div className="content-title">Dashboard</div>
+					<div className="content-body">
+						<Loader />
+						<Button
+							color="primary"
+							onClick={() =>
+								this.props.dispatch({
+									type: 'MODAL/OPEN',
+									payload: {
+										modal: TestBase,
+										modalProps: {
+											id: 123,
+										},
+										prevLocation: { pathname: '/' },
+									},
+								})
+							}>
+							Test modal
+						</Button>
+					</div>
+				</div>
+			</div>
+		);
+	}
 }
 
 export default connect()(Dashboard);

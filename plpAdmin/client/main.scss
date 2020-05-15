@@ -1,5 +1,6 @@
 $header-height: 50px;
 $body-height: calc(100vh - #{$header-height} - 1px);
+$side-menu-width: 230px;
 
 $font-color: #3c4b64;
 $light-font-color: #DDDDDD;
@@ -115,4 +116,22 @@ body * {
 .badge.badge-negative {
     background-color: #9e3b3b;
     color: #FFFFFF;
+}
+
+#console .content .content-wrapper {
+    margin-top: 2rem;
+
+    .content-title {
+        padding: 0px 20px;
+        margin-bottom: 10px;
+        font-size: 2rem;
+    }
+
+    .content-body {
+        padding: 0px 20px;
+    }
+
+    .content-footer {
+        width: calc(100% - #{$side-menu-width});
+    }
 }
