@@ -24,42 +24,41 @@ class StudentsImport extends Component {
         this.setState({ isImporting: true, errorMsg: '' });
         if (file && getFileExtension(file.name).toLowerCase() == 'xls') {
             var reader = new FileReader();
-            // reader.readAsText(file, 'UTF-8');
             reader.onload = (e) => {
                 var data = e.target.result;
                 var workbook = XLSX.read(data, {
                     type: 'binary'
                 });
+                const studentData = XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]], { range: 9 });
+                console.log(studentData);
 
-                workbook.SheetNames.forEach(function (sheetName) {
-                    // Here is your object
-                    var XL_row_object = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { range: 9 });
-                    console.log(XL_row_object);
-                    // var json_object = JSON.stringify(XL_row_object);
+                Meteor.call('Students.import', studentData, (error, result) => {
+                    this.setState({ isImporting: false });
+                    if (!error) {
+                        this.props.dispatch({ type: 'MODAL/RESET' });
+                        this.props.dispatch({ type: 'CONTENT/FETCHABLE_TABLE_FORCE_FETCH' });
 
-                })
-
-
-                // const data = csvToArray(e.target.result);
-                // data.splice(0, 1);
-                // _.remove(data, function (n) {
-                //     return _.compact(n).length == 0;
-                // });
-                // setProgressTotal(data.length);
-                // Meteor.call('Addresses.import', { data, updateToken: updateToken }, (error, result) => {
-                //     if (!error) {
-                //         props.dispatch({ type: 'MODAL/CLOSE' });
-                //         props.dispatch({ type: 'CONTENT/FETCHABLE_TABLE_FORCE_FETCH' });
-                //         alertAfterImportSuccess();
-                //     } else {
-                //         setIsImporting(false);
-                //         setErrorMsg(error.reason);
-                //     }
-                // });
+                        this.props.dispatch({
+                            type: 'ALERT/OPEN',
+                            payload: {
+                                alertProps: {
+                                    body: (
+                                        <>
+                                            <div style={{ textAlign: 'center' }}>Good job, students are imported successfully!</div>
+                                        </>
+                                    ),
+                                    closeOnBgClick: true,
+                                    showCloseButton: true,
+                                },
+                            },
+                        });
+                    } else {
+                        this.setState({ errorMsg: error.reason });
+                    }
+                });
             };
             reader.onerror = (e) => {
-                setIsImporting(false);
-                setErrorMsg('Error reading file');
+                this.setState({ isImporting: false, errorMsg: 'Error reading file' });
             };
             reader.readAsBinaryString(file);
         } else {
@@ -124,4 +123,4 @@ class StudentsImport extends Component {
     };
 }
 
-export default StudentsImport;
+export default connect()(StudentsImport);
