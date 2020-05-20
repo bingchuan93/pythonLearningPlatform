@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 
-import './checkbox.css';
-
 export default class CheckBox extends Component {
     render() {
         const { id, title, label, value, onChange, checked, disabled } = this.props;

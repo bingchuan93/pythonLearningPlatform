@@ -281,7 +281,7 @@ class AssessmentBase extends Component {
 												this.setState({
 													form: {
 														...form,
-														participatingTutorialGroups: e.value
+														participatingTutorialGroups: e
 													}
 												});
                                             }}
