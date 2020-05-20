@@ -5,10 +5,11 @@
     "start": "meteor run",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "web": "set METEOR_PACKAGE_DIRS=..\\plpPackage&&meteor --port 7000",
-    "web-mac": "export METEOR_PACKAGE_DIRS=../plpPackage&&meteor --port 7000"
+    "web-mac": "export METEOR_PACKAGE_DIRS=../plpPackage&&meteor --port 7000",
+    "web-test": "set METEOR_PACKAGE_DIRS=..\\plpPackage&&TOOL_NODE_FLAGS=\"--max-old-space-size=8192\"&&meteor --port 7000"
   },
   "dependencies": {
-    "@babel/runtime": "^7.7.4",
+    "@babel/runtime": "^7.9.6",
     "bootstrap": "^4.4.1",
     "connected-react-router": "^6.6.1",
     "history": "^4.10.1",

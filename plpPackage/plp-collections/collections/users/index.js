@@ -15,6 +15,12 @@ const userProfile = new SimpleSchema({
         optional: false,
         defaultValue: ''
     },
+    fullName: {
+        type: String,
+        label: 'Full Name',
+        optional: false,
+        defaultValue: ''
+    },
     gender: {
         type: String,
         label: 'Gender',
@@ -27,6 +33,18 @@ const userProfile = new SimpleSchema({
         label: 'Tutorial Group',
         optional: false,
         defaultValue: {}
+    },
+    nationality: {
+        type: String,
+        label: 'Nationality',
+        optional: false,
+        defaultValue: ''
+    },
+    studentType: {
+        type: String,
+        label: 'Nationality',
+        optional: false,
+        defaultValue: ''
     }
 });
 

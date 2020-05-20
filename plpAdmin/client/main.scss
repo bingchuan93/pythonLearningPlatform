@@ -135,3 +135,9 @@ body * {
         width: calc(100% - #{$side-menu-width});
     }
 }
+
+.form-control {
+    &:disabled {
+        background-color: unset;
+    }
+}

@@ -13,5 +13,8 @@ Meteor.methods({
             }
             throw new Meteor.Error('error', 'Fail to get all tutorial groups');
         }
+    },
+    'Get.ENV'() {
+        return process.env;
     }
 })

@@ -46,7 +46,7 @@ class SignIn extends Component {
         const { username, password } = this.state;
         return (
             <Page
-                title='Welcome to Python Learning Platform'
+                title='Welcom to Python Learning Platform'
                 headerContents={
                     <Button className="m-3" color="secondary" size="sm" onClick={() => this.props.dispatch(push('/sign-up'))}>Sign up!</Button>
                 }

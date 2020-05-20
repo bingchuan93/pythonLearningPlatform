@@ -18,7 +18,10 @@ class StudentBase extends Component {
             form: {
                 firstName: '',
                 lastName: '',
-                tutorialGroup: new Date().getFullYear(),
+                fullName: '',
+                nationality: '',
+                studentType: '',
+                tutorialGroup: '',
                 isArchived: false,
             }
         }
@@ -42,6 +45,9 @@ class StudentBase extends Component {
                         ...this.state.form,
                         firstName: result.profile.firstName ? result.profile.firstName : '',
                         lastName: result.profile.lastName ? result.profile.lastName : '',
+                        fullName: result.profile.fullName ? result.profile.fullName : '',
+                        nationality: result.profile.nationality ? result.profile.nationality : '',
+                        studentType: result.profile.studentType ? result.profile.studentType : '',
                         tutorialGroup: result.profile.tutorialGroup ? result.profile.tutorialGroup: '',
                         isArchived: result.isArchived
                     }
@@ -200,24 +206,119 @@ class StudentBase extends Component {
                             <FormGroup>
                                 <Row form>
                                     <Col md={4}>
-                                        <Label className="control-label mb-0 font-weight-bold">Semester</Label>
+                                        <Label className="control-label mb-0 font-weight-bold">Full Name</Label>
                                     </Col>
                                     <Col md={8}>
-                                        <SelectValidator
-                                            placeholder="Tutorial Group"
-                                            validators={['required']}
-                                            value={_.find(this.state.semesterOptions, { value: form.tutorialGroup })}
+                                        <Input
+                                            className="form-control"
+                                            type="text"
+                                            name="full-name"
+                                            value={form.fullName}
                                             onChange={(e) => {
                                                 this.setState({
                                                     form: {
                                                         ...form,
-                                                        tutorialGroup: e.value
+                                                        fullName: e.target.value
                                                     }
                                                 })
                                             }}
-                                            options={this.state.semesterOptions}
-                                            errorMessages={['Tutorial Group is required']}
-                                            isDisabled={this.props.mode == 'read'}
+                                            disabled={this.props.mode == 'read'}
+                                        />
+                                    </Col>
+                                </Row>
+                            </FormGroup>
+                            <FormGroup>
+                                <Row form>
+                                    <Col md={4}>
+                                        <Label className="control-label mb-0 font-weight-bold">Gender</Label>
+                                    </Col>
+                                    <Col md={8}>
+                                        <Input
+                                            className="form-control"
+                                            type="text"
+                                            name="gender"
+                                            value={form.gender}
+                                            onChange={(e) => {
+                                                this.setState({
+                                                    form: {
+                                                        ...form,
+                                                        gender: e.target.value
+                                                    }
+                                                })
+                                            }}
+                                            disabled={this.props.mode == 'read'}
+                                        />
+                                    </Col>
+                                </Row>
+                            </FormGroup>
+                            <FormGroup>
+                                <Row form>
+                                    <Col md={4}>
+                                        <Label className="control-label mb-0 font-weight-bold">Nationality</Label>
+                                    </Col>
+                                    <Col md={8}>
+                                        <Input
+                                            className="form-control"
+                                            type="text"
+                                            name="nationality"
+                                            value={form.nationality}
+                                            onChange={(e) => {
+                                                this.setState({
+                                                    form: {
+                                                        ...form,
+                                                        nationality: e.target.value
+                                                    }
+                                                })
+                                            }}
+                                            disabled={this.props.mode == 'read'}
+                                        />
+                                    </Col>
+                                </Row>
+                            </FormGroup>
+                            <FormGroup>
+                                <Row form>
+                                    <Col md={4}>
+                                        <Label className="control-label mb-0 font-weight-bold">Student Type</Label>
+                                    </Col>
+                                    <Col md={8}>
+                                        <Input
+                                            className="form-control"
+                                            type="text"
+                                            name="student-type"
+                                            value={form.studentType}
+                                            onChange={(e) => {
+                                                this.setState({
+                                                    form: {
+                                                        ...form,
+                                                        studentType: e.target.value
+                                                    }
+                                                })
+                                            }}
+                                            disabled={this.props.mode == 'read'}
+                                        />
+                                    </Col>
+                                </Row>
+                            </FormGroup>
+                            <FormGroup>
+                                <Row form>
+                                    <Col md={4}>
+                                        <Label className="control-label mb-0 font-weight-bold">Tutorial Group</Label>
+                                    </Col>
+                                    <Col md={8}>
+                                        <Input
+                                            className="form-control"
+                                            type="text"
+                                            name="tutorial-group"
+                                            value={form.tutorialGroup.name}
+                                            onChange={(e) => {
+                                                // this.setState({
+                                                //     form: {
+                                                //         ...form,
+                                                //         profile.name: e.target.value
+                                                //     }
+                                                // })
+                                            }}
+                                            disabled={this.props.mode == 'read' || true} //To allow for future to change tutorial groups
                                         />
                                     </Col>
                                 </Row>

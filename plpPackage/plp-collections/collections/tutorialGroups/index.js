@@ -52,7 +52,7 @@ tutorialGroups.schema = new SimpleSchema({
         label: 'Name'
     },
     academicYear: {
-        type: Number,
+        type: String,
         optional: false,
         label: 'Academic Year'
     },

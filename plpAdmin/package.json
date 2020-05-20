@@ -8,7 +8,7 @@
     "web-mac": "export METEOR_PACKAGE_DIRS=../plpPackage&&export MONGO_URL=mongodb://127.0.0.1:7001/meteor&&meteor run --port 8000"
   },
   "dependencies": {
-    "@babel/runtime": "^7.6.0",
+    "@babel/runtime": "^7.9.6",
     "@fortawesome/fontawesome-svg-core": "^1.2.26",
     "@fortawesome/free-solid-svg-icons": "^5.12.0",
     "@fortawesome/react-fontawesome": "^0.1.8",
