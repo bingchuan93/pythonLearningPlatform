@@ -24,7 +24,8 @@ class AssessmentBase extends Component {
 			isFetching: false,
             assessmentTypeOptions: [],
             tutorialGroupOptions: [],
-            isAllChecked: false,
+			isAllChecked: false,
+			prevSelectedParticipatingTutorialGroups: [],
 			form: {
 				type: '',
 				name: '',
@@ -295,8 +296,15 @@ class AssessmentBase extends Component {
 										<Checkbox
 											checked={this.state.isAllChecked}
                                             onChange={(e) => {
-                                                console.log(e);
-                                                this.setState({isAllChecked: !this.state.isAllChecked});
+												console.log(e);
+                                                this.setState({
+													isAllChecked: !this.state.isAllChecked,
+													prevSelectedParticipatingTutorialGroups: !this.state.isAllChecked ? this.state.form.participatingTutorialGroups : [],
+													form: {
+														...this.state.form,
+														participatingTutorialGroups: !this.state.isAllChecked ? [] : this.state.prevSelectedParticipatingTutorialGroups
+													}
+												});
                                             }}
 										/>
                                         <div>All</div>
