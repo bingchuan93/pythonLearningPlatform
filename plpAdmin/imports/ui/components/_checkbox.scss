@@ -44,7 +44,7 @@
 }
 
 .checkbox-input>input:checked~span::after {
-    /* color: #fff; */
+    color: #fff;
     border-color: $main-color;
     background-color: $main-color;
     background-repeat: no-repeat;

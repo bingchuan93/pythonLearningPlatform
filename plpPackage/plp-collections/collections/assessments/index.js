@@ -62,14 +62,15 @@ assessments.schema = new SimpleSchema({
         label: 'Description',
         defaultValue: '',
     },
-    participatingTutorialGroups: {
+    participatingTutorialGroupIds: {
         type: Array,
         optional: false,
         label: 'Participating Tutorial Groups',
         defaultValue: [],
     },
-    'participatingTutorialGroups.$': {
-        type: String,
+    'participatingTutorialGroupIds.$': {
+        type: Object,
+        blackbox: true
     },
     questionIds: {
         type: Array,
