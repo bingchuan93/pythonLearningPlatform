@@ -149,7 +149,10 @@ class AssessmentBase extends Component {
 
 	render() {
         const { form } = this.state;
-        console.log(this.state);
+		console.log(this.state.form.participatingTutorialGroups);
+		console.log(_.find(this.state.tutorialGroupOptions, function(tutorialGroupOption) {
+			return form.participatingTutorialGroups.includes(tutorialGroupOption.value);
+		}));
 		return (
 			<BaseModal
 				headerText={this.props.title}
@@ -276,9 +279,10 @@ class AssessmentBase extends Component {
 										<SelectValidator
 											placeholder="Tutorial Groups"
 											validators={['required']}
-											value={_.find(this.state.tutorialGroupOptions, { value: form.type })}
+											value={_.find(this.state.tutorialGroupOptions, function(tutorialGroupOption) {
+												return form.participatingTutorialGroups.includes(tutorialGroupOption.value);
+											})}
 											onChange={e => {
-                                                console.log(e);
 												this.setState({
 													form: {
 														...form,
@@ -289,14 +293,13 @@ class AssessmentBase extends Component {
                                             isMulti={true}
 											options={this.state.tutorialGroupOptions}
 											errorMessages={['Tutorial Groups is required']}
-											isDisabled={this.props.mode == 'read' || this.state.isAllChecked}
+											// isDisabled={this.props.mode == 'read' || this.state.isAllChecked}
 										/>
                                     </Col>
 									<Col md={2} className="d-flex justify-content-around">
 										<Checkbox
 											checked={this.state.isAllChecked}
                                             onChange={(e) => {
-												console.log(e);
                                                 this.setState({
 													isAllChecked: !this.state.isAllChecked,
 													prevSelectedParticipatingTutorialGroups: !this.state.isAllChecked ? this.state.form.participatingTutorialGroups : [],
