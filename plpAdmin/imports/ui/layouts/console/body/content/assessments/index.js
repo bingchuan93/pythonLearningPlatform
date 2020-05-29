@@ -178,7 +178,7 @@ class Assessments extends Component {
 							defaultFiltered={[{ id: 'isArchived', value: 'false' }]}
 							getTdProps={(state, rowInfo, column) => {
 								return {
-									// onClick: (e) => { this.handleView(rowInfo, column) }
+									onClick: (e) => { this.handleView(rowInfo, column) }
 								};
 							}}
 						/>

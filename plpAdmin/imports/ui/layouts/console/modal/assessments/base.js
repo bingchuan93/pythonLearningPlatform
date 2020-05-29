@@ -24,13 +24,11 @@ class AssessmentBase extends Component {
 			isFetching: false,
             assessmentTypeOptions: [],
             tutorialGroupOptions: [],
-			isAllChecked: false,
-			prevSelectedParticipatingTutorialGroups: [],
 			form: {
 				type: '',
 				name: '',
 				description: '',
-				participatingTutorialGroups: [],
+				participatingTutorialGroupIds: [],
 				questionIds: [],
 				duration: 0,
 				startDate: null,
@@ -50,7 +48,7 @@ class AssessmentBase extends Component {
 
 	getAssessment = id => {
 		this.setState({ isFetching: true });
-		Meteor.call('Assessment.getById', new Mongo.ObjectID(id), (error, result) => {
+		Meteor.call('Assessments.getById', new Mongo.ObjectID(id), (error, result) => {
 			this.setState({ isFetching: false });
 			console.log(result);
 			if (!error) {
@@ -60,7 +58,7 @@ class AssessmentBase extends Component {
 						type: result.type,
 						name: result.name,
 						description: result.description,
-						participatingTutorialGroups: result.participatingTutorialGroups,
+						participatingTutorialGroupIds: result.participatingTutorialGroupIds,
 						questionIds: result.questionIds,
 						duration: result.duration,
 						startDate: result.startDate,
@@ -149,14 +147,10 @@ class AssessmentBase extends Component {
 
 	render() {
         const { form } = this.state;
-		console.log(this.state.form.participatingTutorialGroups);
-		console.log(_.find(this.state.tutorialGroupOptions, function(tutorialGroupOption) {
-			return form.participatingTutorialGroups.includes(tutorialGroupOption.value);
-		}));
 		return (
 			<BaseModal
 				headerText={this.props.title}
-				className={this.props.mode == 'view' ? 'read' : ''}
+				className={this.props.mode == 'view' ? 'view' : ''}
 				body={
 					<div className="assessment-modal">
 						<ValidatorForm
@@ -190,7 +184,7 @@ class AssessmentBase extends Component {
 											}}
 											options={this.state.assessmentTypeOptions}
 											errorMessages={['Type is required']}
-											isDisabled={this.props.mode == 'read'}
+											isDisabled={this.props.mode == 'view'}
 										/>
 									</Col>
 								</Row>
@@ -214,7 +208,7 @@ class AssessmentBase extends Component {
 													}
 												});
 											}}
-											disabled={this.props.mode == 'read'}
+											disabled={this.props.mode == 'view'}
 										/>
 									</Col>
 								</Row>
@@ -238,7 +232,7 @@ class AssessmentBase extends Component {
 													}
 												});
 											}}
-											readOnly={this.props.mode == 'read'}
+											readOnly={this.props.mode == 'view'}
 										/>
 									</Col>
 								</Row>
@@ -263,7 +257,7 @@ class AssessmentBase extends Component {
 													}
 												});
 											}}
-											readOnly={this.props.mode == 'read'}
+											readOnly={this.props.mode == 'view'}
 										/>
 									</Col>
 								</Row>
@@ -275,43 +269,29 @@ class AssessmentBase extends Component {
 											Participating Tutorial Groups
 										</Label>
 									</Col>
-									<Col md={6}>
+									<Col md={8}>
 										<SelectValidator
 											placeholder="Tutorial Groups"
 											validators={['required']}
-											value={_.find(this.state.tutorialGroupOptions, function(tutorialGroupOption) {
-												return form.participatingTutorialGroups.includes(tutorialGroupOption.value);
+											value={_.filter(this.state.tutorialGroupOptions, function(tutorialGroupOption) {
+												return form.participatingTutorialGroupIds.includes(tutorialGroupOption.value);
 											})}
 											onChange={e => {
 												this.setState({
 													form: {
 														...form,
-														participatingTutorialGroups: e
+														participatingTutorialGroupIds: e.map((option, key) => {
+															return option.value;
+														})
 													}
 												});
                                             }}
                                             isMulti={true}
 											options={this.state.tutorialGroupOptions}
 											errorMessages={['Tutorial Groups is required']}
-											// isDisabled={this.props.mode == 'read' || this.state.isAllChecked}
+											isDisabled={this.props.mode == 'view'}
 										/>
                                     </Col>
-									<Col md={2} className="d-flex justify-content-around">
-										<Checkbox
-											checked={this.state.isAllChecked}
-                                            onChange={(e) => {
-                                                this.setState({
-													isAllChecked: !this.state.isAllChecked,
-													prevSelectedParticipatingTutorialGroups: !this.state.isAllChecked ? this.state.form.participatingTutorialGroups : [],
-													form: {
-														...this.state.form,
-														participatingTutorialGroups: !this.state.isAllChecked ? [] : this.state.prevSelectedParticipatingTutorialGroups
-													}
-												});
-                                            }}
-										/>
-                                        <div>All</div>
-									</Col>
 								</Row>
 							</FormGroup>
 							<FormGroup>
@@ -342,7 +322,7 @@ class AssessmentBase extends Component {
 													});
 												}
 											}}
-											readOnly={this.props.mode == 'read'}
+											readOnly={this.props.mode == 'view'}
 										/>
 									</Col>
 								</Row>
@@ -370,7 +350,7 @@ class AssessmentBase extends Component {
 													});
 												}
 											}}
-											readOnly={this.props.mode == 'read'}
+											readOnly={this.props.mode == 'view'}
 										/>
 									</Col>
 								</Row>
@@ -382,7 +362,7 @@ class AssessmentBase extends Component {
 									</Col>
 									<Col md={8}>
 										<Switch
-											checked={!form.isArchived}
+											checked={form.isArchived}
 											uncheckedIcon={false}
 											checkedIcon={false}
 											onColor={'#3b9e57'}
@@ -391,11 +371,11 @@ class AssessmentBase extends Component {
 												this.setState({
 													form: {
 														...form,
-														isArchived: !value
+														isArchived: value
 													}
 												});
 											}}
-											disabled={this.props.mode == 'read'}
+											disabled={this.props.mode == 'view'}
 											className="react-switch"
 										/>
 									</Col>
@@ -407,7 +387,7 @@ class AssessmentBase extends Component {
 				footerClasses="justify-content-end"
 				footer={
 					<React.Fragment>
-						{this.props.mode == 'read' && !this.state.isFetching && (
+						{this.props.mode == 'view' && !this.state.isFetching && (
 							<React.Fragment>
 								{form.isArchived ? (
 									<Button

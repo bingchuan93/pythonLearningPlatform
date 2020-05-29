@@ -28,7 +28,7 @@ Meteor.methods({
 			if (e.reason) {
 				throw new Meteor.Error(e.error, e.reason);
 			}
-			throw new Meteor.Error('error', 'Fail to get assessment');
+			throw new Meteor.Error('error', 'Fail to get assessment by id');
 		}
 	},
 	'Assessments.archive'(_id) {
@@ -53,6 +53,16 @@ Meteor.methods({
 				throw new Meteor.Error(e.error, e.reason);
 			}
 			throw new Meteor.Error('error', 'Fail to restore assessment');
+		}
+	},
+	'Assessments.create'(formValues) {
+		try {
+			return Assessments.insert(formValues);
+		} catch (e) {
+			if (e.reason) {
+				throw new Meteor.Error(e.error, e.reason);
+			}
+			throw new Meteor.Error('error', 'Fail to create assessment');
 		}
 	}
 });

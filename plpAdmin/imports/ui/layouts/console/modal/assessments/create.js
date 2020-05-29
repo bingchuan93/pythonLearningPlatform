@@ -9,25 +9,22 @@ class AssessmentCreate extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isSubmitting: false
-        }
+            isSubmitting: false,
+        };
     }
 
-    handleCreate = (form, image) => {
+    handleCreate = (formValues, image) => {
         this.setState({ isSubmitting: true });
-        Meteor.call('Assessments.create', form, (error, result) => {
+        Meteor.call('Assessments.create', formValues, (error, result) => {
             this.setState({ isSubmitting: false });
-            this.props.dispatch(push('/assessment'));
+            this.props.dispatch(push('/assessment/view/' + result));
             this.props.dispatch({ type: 'MODAL/RESET' });
             if (!error && !result.error) {
                 this.props.dispatch({
-                    type: 'ALERT/OPEN', payload: {
+                    type: 'ALERT/OPEN',
+                    payload: {
                         alertProps: {
-                            body: (
-                                <div style={{ textAlign: "center" }}>
-                                    Tutorial Groups successfully created
-                                </div>
-                            ),
+                            body: <div style={{ textAlign: 'center' }}>Tutorial Groups successfully created</div>,
                             closeOnBgClick: true,
                             showConfirmButton: true,
                             confirmButtonText: 'Done',
@@ -35,45 +32,44 @@ class AssessmentCreate extends Component {
                                 e.preventDefault();
                                 closeAlert();
                             },
-                            showCloseButton: false
-                        }
-                    }
+                            showCloseButton: false,
+                        },
+                    },
                 });
                 this.props.dispatch({ type: 'CONTENT/FETCHABLE_TABLE_FORCE_FETCH' });
             } else if (error || result.error) {
                 this.props.dispatch({
-                    type: 'ALERT/OPEN', payload: {
+                    type: 'ALERT/OPEN',
+                    payload: {
                         alertProps: {
                             body: (
                                 <React.Fragment>
-                                    <div className="alert-icon mb-2">
-                                        {/* <ErrorIcon /> */}
-                                    </div>
-                                    <div style={{ textAlign: "center" }}>
+                                    <div className="alert-icon mb-2">{/* <ErrorIcon /> */}</div>
+                                    <div style={{ textAlign: 'center' }}>
                                         {error ? (
                                             error.reason
                                         ) : (
-                                                <React.Fragment>
-                                                    {result.data.map((data, key) => {
-                                                        return (
-                                                            <div key={key}>
-                                                                {data.name}: {data.error}
-                                                            </div>
-                                                        );
-                                                    })}
-                                                </React.Fragment>
-                                            )}
+                                            <React.Fragment>
+                                                {result.data.map((data, key) => {
+                                                    return (
+                                                        <div key={key}>
+                                                            {data.name}: {data.error}
+                                                        </div>
+                                                    );
+                                                })}
+                                            </React.Fragment>
+                                        )}
                                     </div>
                                 </React.Fragment>
                             ),
                             closeOnBgClick: true,
                             showCloseButton: true,
-                        }
-                    }
+                        },
+                    },
                 });
             }
         });
-    }
+    };
 
     render() {
         return (
@@ -82,12 +78,18 @@ class AssessmentCreate extends Component {
                 mode="create"
                 formSubmit={this.handleCreate}
                 footer={
-                    <LoadingButton color="create" size="sm" type="submit" form="assessment-form" isLoading={this.state.isSubmitting}>
+                    <LoadingButton
+                        color="create"
+                        size="sm"
+                        type="submit"
+                        form="assessment-form"
+                        isLoading={this.state.isSubmitting}
+                    >
                         Create
                     </LoadingButton>
                 }
             />
-        )
+        );
     }
 }
 
