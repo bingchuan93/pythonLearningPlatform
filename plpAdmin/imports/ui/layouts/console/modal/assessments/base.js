@@ -13,6 +13,7 @@ import moment from 'moment';
 import Switch from 'react-switch';
 import Loader from '/imports/ui/components/icons/loader';
 import Checkbox from '/imports/ui/components/checkbox';
+import TutorialGroupPicker from '/imports/ui/layouts/console/modal/common/tutorialGroupPicker';
 import { getAssessmentTypeOptions, getTutorialGroupOptions } from '/imports/util';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -22,8 +23,8 @@ class AssessmentBase extends Component {
 		super(props);
 		this.state = {
 			isFetching: false,
-            assessmentTypeOptions: [],
-            tutorialGroupOptions: [],
+			assessmentTypeOptions: [],
+			tutorialGroupOptions: [],
 			form: {
 				type: '',
 				name: '',
@@ -31,6 +32,7 @@ class AssessmentBase extends Component {
 				participatingTutorialGroupIds: [],
 				questionIds: [],
 				duration: 0,
+				noOfAttempts: 0,
 				startDate: null,
 				endDate: null,
 				isArchived: false
@@ -42,15 +44,14 @@ class AssessmentBase extends Component {
 		if (this.props.id) {
 			this.getAssessment(this.props.id);
 		}
-        this.setState({ assessmentTypeOptions: getAssessmentTypeOptions() });
-        getTutorialGroupOptions((options) => this.setState({ tutorialGroupOptions: options }));
+		this.setState({ assessmentTypeOptions: getAssessmentTypeOptions() });
+		getTutorialGroupOptions((options) => this.setState({ tutorialGroupOptions: options }));
 	}
 
 	getAssessment = id => {
 		this.setState({ isFetching: true });
 		Meteor.call('Assessments.getById', new Mongo.ObjectID(id), (error, result) => {
 			this.setState({ isFetching: false });
-			console.log(result);
 			if (!error) {
 				this.setState({
 					form: {
@@ -61,6 +62,7 @@ class AssessmentBase extends Component {
 						participatingTutorialGroupIds: result.participatingTutorialGroupIds,
 						questionIds: result.questionIds,
 						duration: result.duration,
+						noOfAttempts: result.noOfAttempts,
 						startDate: result.startDate,
 						endDate: result.endDate,
 						isArchived: result.isArchived
@@ -146,7 +148,7 @@ class AssessmentBase extends Component {
 	};
 
 	render() {
-        const { form } = this.state;
+		const { form } = this.state;
 		return (
 			<BaseModal
 				headerText={this.props.title}
@@ -265,6 +267,31 @@ class AssessmentBase extends Component {
 							<FormGroup>
 								<Row form>
 									<Col md={4}>
+										<Label className="control-label mb-0 font-weight-bold">No of Attempts</Label>
+									</Col>
+									<Col md={8}>
+										<NumberFormat
+											thousandSeparator={false}
+											decimalScale={0}
+											fixedDecimalScale={true}
+											className="form-control"
+											value={form.noOfAttempts}
+											onValueChange={result => {
+												this.setState({
+													form: {
+														...form,
+														noOfAttempts: result.floatValue
+													}
+												});
+											}}
+											readOnly={this.props.mode == 'view'}
+										/>
+									</Col>
+								</Row>
+							</FormGroup>
+							{/* <FormGroup>
+								<Row form>
+									<Col md={4}>
 										<Label className="control-label mb-0 font-weight-bold">
 											Participating Tutorial Groups
 										</Label>
@@ -293,6 +320,30 @@ class AssessmentBase extends Component {
 										/>
                                     </Col>
 								</Row>
+							</FormGroup> */}
+							<FormGroup>
+								<Row form>
+									<Col md={4}>
+										<Label className="control-label mb-0 font-weight-bold">
+											Participating Tutorial Groups
+										</Label>
+									</Col>
+									<Col md={8}>
+										<Button
+											className="w-100"
+											color="create"
+											onClick={() => {
+												this.props.dispatch({
+													type: 'MODAL/OPEN', payload: {
+														modal: TutorialGroupPicker,
+														modalProps: {},
+														// prevLocation: { ...this.props.router.location },
+													}
+												});
+											}}
+										>Select Tutorial Groups</Button>
+									</Col>
+								</Row>
 							</FormGroup>
 							<FormGroup>
 								<Row form>
@@ -316,8 +367,8 @@ class AssessmentBase extends Component {
 																value <= form.endDate
 																	? form.endDate
 																	: moment(value)
-																			.add(30, 'minute')
-																			.toDate()
+																		.add(30, 'minute')
+																		.toDate()
 														}
 													});
 												}
@@ -399,15 +450,15 @@ class AssessmentBase extends Component {
 										Restore
 									</Button>
 								) : (
-									<Button
-										color="secondary"
-										size="sm"
-										onClick={() => {
-											this.handleArchive(new Mongo.ObjectID(this.props.id));
-										}}>
-										Archive
-									</Button>
-								)}
+										<Button
+											color="secondary"
+											size="sm"
+											onClick={() => {
+												this.handleArchive(new Mongo.ObjectID(this.props.id));
+											}}>
+											Archive
+										</Button>
+									)}
 							</React.Fragment>
 						)}
 						{this.props.footer}
@@ -418,4 +469,8 @@ class AssessmentBase extends Component {
 	}
 }
 
-export default connect()(AssessmentBase);
+export default connect(
+	({ router }) => ({
+		router
+	})
+)(AssessmentBase);

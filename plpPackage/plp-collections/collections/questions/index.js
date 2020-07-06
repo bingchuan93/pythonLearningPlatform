@@ -1,8 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { Mongo } from 'meteor/mongo';
+import { StringDecoder } from 'string_decoder';
 
-class Assessments extends Mongo.Collection {
+class Questions extends Mongo.Collection {
     insert(doc, callback) {
         try {
             doc.createdAt = Date.now();
@@ -41,75 +42,42 @@ class Assessments extends Mongo.Collection {
     }
 }
 
-const assessments = new Assessments('assessments', {
+const questions = new Questions('questions', {
     idGeneration: 'MONGO'
 });
 
-assessments.schema = new SimpleSchema({
+questions.schema = new SimpleSchema({
     type: {
         type: String,
         optional: false,
         label: 'Type'
     },
-    name: {
+    content: {
         type: String,
         optional: false,
-        label: 'Name'
+        label: 'Content'
     },
-    description: {
-        type: String,
-        optional: false,
-        label: 'Description',
-        defaultValue: '',
-    },
-    participatingTutorialGroupIds: {
+    answers: {
         type: Array,
         optional: false,
-        label: 'Participating Tutorial Groups',
-        defaultValue: [],
+        label: 'Answers',
+        minCount: 1
     },
-    'participatingTutorialGroupIds.$': {
-        type: Object,
-        blackbox: true
+    'answers.$': {
+        type: String
     },
-    questionIds: {
-        type: Array,
-        optional: false,
-        label: 'Question IDs',
-        defaultValue: [],
-    },
-    'questionIds.$': {
-        type: Object,
-        blackbox: true
-    },
-    duration: {
-        type: Number,
-        optional: true,
-        label: 'Duration',
-        defaultValue: 0
-    },
-    noOfAttempts: {
+    marks: {
         type: Number,
         optional: false,
-        label: 'Number of Attempts',
-        defaultValue: 0
-    },
-    startDate: {
-        type: Date,
-        optional: true,
-        label: 'Start Date'
-    },
-    endDate: {
-        type: Date,
-        optional: true,
-        label: 'End Date'
+        label: 'Marks',
+        defaultValue: 1,
     },
     isArchived: {
         type: Boolean,
         optional: false,
         label: 'Is Archived',
-        defaultValue: false, 
-    }, 
+        defaultValue: false,
+    },
     createdAt: {
         type: Date,
         defaultValue: new Date(),
@@ -124,10 +92,10 @@ assessments.schema = new SimpleSchema({
     }
 });
 
-assessments.attachSchema(assessments.schema);
+questions.attachSchema(questions.schema);
 
 if (Meteor.isServer) {
-    assessments.rawCollection().createIndex({ name: 1 }, { unique: true });
+    // questions.rawCollection().createIndex({ name: 1 }, { unique: true });
 }
 
-export default assessments;
+export default questions;

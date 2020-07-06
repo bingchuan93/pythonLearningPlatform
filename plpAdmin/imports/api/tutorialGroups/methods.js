@@ -5,7 +5,14 @@ const { TutorialGroups } = collections;
 Meteor.methods({
     'TutorialGroups.list'(params) {
         try {
-            const { pageSize, page, filters, fields, sort } = params;
+            const { pageSize, page, filters, fields, sort, extraParams } = params;
+            const { isArchived, relatedTutorialGroupIds } = extraParams;
+            if (isArchived != undefined) {
+                filters.isArchived = isArchived;
+            }
+            if (relatedTutorialGroupIds) {
+                filters._id = { $in: relatedTutorialGroupIds };
+            }
             const tutorialGroups = TutorialGroups.find(filters, { fields: fields, sort: sort, skip: page * pageSize, limit: pageSize }).fetch();
             const count = TutorialGroups.find(filters).count();
             return { data: tutorialGroups, count: count };

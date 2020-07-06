@@ -19,7 +19,7 @@ class Modal extends Component {
                     }
                 }
                 this.props.dispatch({
-                    type: 'MODAL/OPEN', payload: {
+                    type: 'MODAL/ROOT', payload: {
                         modal: modalMatchedRoute.component,
                         modalProps: { ...modalMatchedRoute.props, ...modalMatchedRoute.matched.params },
                         prevLocation: { ...prevLocation },

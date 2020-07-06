@@ -71,6 +71,7 @@ class TutorialGroupCreate extends Component {
                         }
                     }
                 });
+                this.props.dispatch({ type: 'CONTENT/FETCHABLE_TABLE_FORCE_FETCH' });
             }
         });
     }

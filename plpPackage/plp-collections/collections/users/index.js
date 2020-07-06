@@ -42,9 +42,19 @@ const userProfile = new SimpleSchema({
     },
     studentType: {
         type: String,
-        label: 'Nationality',
+        label: 'Student Type',
         optional: false,
         defaultValue: ''
+    },
+    relatedTutorialGroupIds: {
+        type: Array,
+        label: 'Related Tutorial Groups',
+        optional: true,
+        defaultValue: []
+    },
+    'relatedTutorialGroupIds.$': {
+        type: Object,
+        blackbox: true
     }
 });
 

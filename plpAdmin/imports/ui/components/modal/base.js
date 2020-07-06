@@ -2,27 +2,28 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 
+const ChildModal = (props) => {
+	if (props.childModals.length - 1 > props.index) {
+		const childModalIndex = props.index + 1;
+		const ChildModal = props.childModals[childModalIndex];
+		if (ChildModal) {
+			return (
+                <ChildModal.modal {...ChildModal.modalProps} index={childModalIndex} />
+			);
+		}
+	}
+	return <></>;
+};
+
 class BaseModal extends Component {
     closeModal = () => {
-        if (this.props.onClose) {
-            this.props.onClose();
-        }
-        else {
-            const { modalState } = this.props;
-            if ( modalState.prevLocation ) {
-                this.props.dispatch(push(modalState.prevLocation));
-                // if (prevLocation.title) {
-                //     document.title = prevLocation.title;
-                // }
-            }
-            this.props.dispatch({ type: 'MODAL/RESET' });
-        }
-    }
+        this.props.dispatch({ type: 'MODAL/CLOSE' });
+    };
 
     render() {
         return (
             <div className={"base-modal position-fixed w-100 h-100 webkit-overflow-scrolling " + (this.props.className ? this.props.className : "")} onClick={this.props.onClick}>
-                <div className={"modal-dialog position-relative d-flex m-auto min-vh-100 align-items-center" + (" modal-"+this.props.size)}>
+                <div className={"modal-dialog position-relative d-flex m-auto min-vh-100 align-items-center" + (" modal-" + this.props.size)}>
                     <div className={"modal-content d-flex flex-column w-100"}>
                         {this.props.header ? (
                             <React.Fragment>
@@ -49,6 +50,7 @@ class BaseModal extends Component {
                         this.closeModal();
                     }
                 }}></div>
+                <ChildModal childModals={this.props.modalState.childModals} index={this.props.index} />
             </div>
         );
     }
@@ -62,7 +64,8 @@ BaseModal.defaultProps = {
     footer: null,
     footerClasses: 'justify-content-between',
     size: 'xl',
-    onClose: null
+    onClose: null,
+    index: -1,
 }
 
 export default connect(

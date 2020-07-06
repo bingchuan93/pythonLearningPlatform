@@ -178,6 +178,7 @@ FetchableReactTable.defaultProps = {
     onDataFetched: () => { },
     selectedRowIds: [],
     shouldRetainSelectedIds: false,
+    dataParams: {}
 }
 
 export default connect(

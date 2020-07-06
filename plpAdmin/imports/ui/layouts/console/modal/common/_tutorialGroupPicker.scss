@@ -1,0 +1,11 @@
+.tutorial-group-picker .ReactTable .disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+}
+
+.tutorial-group-picker .ReactTable .selected-icon {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
