@@ -1,169 +1,162 @@
-.ReactTable {
-    border-color: $border-light-color;
-    border-left: 0px;
-    border-right: 0px;
-    border-bottom: 0px;
+.rt-wrapper {
+	margin-bottom: 20px;
+	.rt-pagination {
+		justify-content: center;
+		align-items: center;
+		.page-number {
+			text-align: center;
+			width: 60px;
+			&::-webkit-inner-spin-button,
+			&::-webkit-outer-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
+		}
+		.btn-previous,
+		.btn-next {
+			width: 90px;
+			background-color: #fff;
+			border: 1px solid var(--border-light-color);
+			color: #333;
+			&[disabled] {
+				cursor: not-allowed;
+			}
+			&:not([disabled]):hover {
+				background: var(--link-hover-bg-color);
+			}
+		}
+	}
+	input,
+	select {
+		border: 1px solid var(--border-light-color) !important;
+	}
+	.mobile & .hide-in-mobile {
+		display: none;
+	}
 }
 
-.ReactTable .rt-thead.-header {
-    box-shadow: none;
-    border-bottom: 1px solid $border-light-color;
+#console.mobile {
+	.react-table {
+		&.with-filters {
+			border: 0;
+		}
+	}
 }
 
-.ReactTable .rt-thead .rt-th {
-    position: static;
-}
-
-.ReactTable .rt-thead .rt-th,
-.ReactTable .rt-thead .rt-td {
-    font-weight: 600;
-    border-right: 0px;
-}
-
-.ReactTable .rt-thead .rt-th,
-.ReactTable .rt-thead>.rt-td {
-    text-align: center;
-    padding: 5px;
-}
-
-.ReactTable .rt-thead .rt-th:first-child {
-    text-align: left;
-    padding-left: 10px;
-}
-
-.ReactTable .rt-thead .rt-th:last-child {
-    text-align: right;
-    padding-right: 10px;
-}
-
-.ReactTable .rt-thead.-filters .rt-th {
-    border-right: 0px;
-}
-
-.ReactTable .rt-thead.-filters .rt-th:last-child {
-    border-right: 0px;
-}
-
-.ReactTable .rt-tbody .rt-td {
-    padding: 7px 5px;
-    text-align: center;
-    border-right: 0px;
-    white-space: normal !important;
-}
-
-.ReactTable .rt-tbody .rt-td:first-child {
-    padding-left: 10px;
-    text-align: left;
-}
-
-.ReactTable .rt-tbody .rt-td:last-child {
-    padding-right: 10px;
-    text-align: right;
-    border-right: 0px;
-}
-
-.ReactTable .rt-tbody .rt-td:last-child:hover {
-    cursor: initial;
-}
-
-.ReactTable .rt-thead.-filters {
-    border-bottom: 1px solid $border-light-color;
-}
-
-.ReactTable .rt-thead.-filters input,
-.ReactTable .rt-thead.-filters select {
-    height: 30px;
-    border: 1px solid $border-light-color;
-}
-
-.ReactTable .rt-thead .rt-th.-sort-asc,
-.ReactTable .rt-thead .rt-td.-sort-asc {
-    box-shadow: inset 0 3px 0 0 $main-light-color !important;
-}
-
-.ReactTable .rt-thead .rt-th.-sort-desc,
-.ReactTable .rt-thead .rt-td.-sort-desc {
-    box-shadow: inset 0 -3px 0 0 $main-light-color !important;
-}
-
-.ReactTable.-striped .rt-tr.-odd {
-    background: #fbfbfb;
-}
-
-.ReactTable .-pagination {
-    box-shadow: none;
-    justify-content: center;
-}
-
-.ReactTable .-pagination .-next,
-.ReactTable .-pagination .-previous {
-    flex: none;
-}
-
-.ReactTable.-highlight .rt-tbody .rt-tr:not(.-padRow):hover {
-    cursor: pointer;
-    background: $link-hover-bg-color;
-}
-
-.ReactTable .rt-tbody .rt-td.rt-checkbox:hover {
-    cursor: initial;
-}
-
-.ReactTable .-pagination .-btn {
-    margin: 3px 0;
-    height: auto;
-    width: 100px;
-}
-
-.ReactTable .-pagination .-center {
-    flex: none;
-}
-
-.ReactTable .-pagination {
-    box-shadow: none;
-    border-top: 1px solid $border-light-color;
-}
-
-.ReactTable .-pagination .-btn[disabled] {
-    cursor: not-allowed;
-}
-
-.ReactTable .-pagination input,
-.ReactTable .-pagination select {
-    border: 1px solid $border-light-color !important;
-    color: #565656
-}
-
-.-pagination>.-next>button,
-.-pagination>.-previous>button {
-    background-color: #fff !important;
-    border: 1px solid $border-light-color !important;
-    color: #333 !important
-}
-
-.ReactTable .-pagination .-btn:not([disabled]):hover {
-    background: $link-hover-bg-color !important
-}
-
-.mobile .ReactTable .-pagination .-pageInfo {
-    display: none;
-}
-
-.ReactTable .-loading {
-    display: none;
-    background: #fff;
-    transition: none;
-}
-
-.ReactTable .-loading.-active {
-    background: rgba(255, 255, 255, 0.7);
-    display: block;
-}
-
-.ReactTable .-loading.-active>div {
-    transform: none
-}
-
-.ReactTable .-loading>div {
-    top: 80px;
+.react-table {
+	overflow: auto;
+	position: relative;
+	border-top: 1px solid var(--border-light-color);
+	margin-bottom: 1rem;
+	&.with-filters {
+		min-height: 350px;
+	}
+	.loading-screen {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		background-color: #fff;
+		padding: 100px;
+		opacity: 0.8;
+		display: flex;
+		justify-content: center;
+		z-index: 1;
+	}
+	.table {
+		border-color: var(--border-light-color);
+		margin-bottom: 0;
+		thead {
+			tr {
+				&.rt-header {
+					th {
+						padding: 5px;
+						font-size: 0.85rem;
+						border-top: 0px;
+						border-bottom: 1px solid var(--border-light-color);
+						text-align: center;
+						&:first-child {
+							text-align: left;
+							padding-left: 10px;
+						}
+						&:last-child {
+							text-align: right;
+							padding-right: 10px;
+						}
+						&.sort-asc {
+							box-shadow: inset 0 3px 0 0 var(--theme-lighter-color);
+						}
+						&.sort-desc {
+							box-shadow: inset 0 -3px 0 0 var(--theme-lighter-color);
+						}
+						&::selection {
+							color: none;
+							background: none;
+						}
+					}
+				}
+				&.rt-filter {
+					th {
+						padding: 5px;
+						font-size: 0.85rem;
+						border-bottom: 1px solid var(--border-light-color);
+						&:first-child {
+							text-align: left;
+							padding-left: 10px;
+						}
+						&:last-child {
+							text-align: right;
+							padding-right: 10px;
+						}
+					}
+				}
+			}
+		}
+		tbody {
+			tr {
+				&:nth-of-type(odd) {
+					background-color: #fbfbfb;
+				}
+				&:hover {
+					cursor: pointer;
+					background: var(--link-hover-bg-color);
+				}
+				&.disabled {
+					cursor: not-allowed;
+					opacity: 0.3;
+				}
+				td {
+					font-size: 0.85rem;
+					padding: 7px 5px;
+					border-top: 0px;
+					border-bottom: 1px solid var(--border-light-color);
+					text-align: center;
+					&::selection,
+					& *:not(input)::selection {
+						color: none;
+						background: none;
+					}
+					&:first-child {
+						text-align: left;
+						padding-left: 10px;
+					}
+					&:last-child {
+						text-align: right;
+						padding-right: 10px;
+					}
+					&.not-clickable:hover {
+						cursor: initial;
+					}
+					& .rt-no-data {
+						background-color: #fff;
+						display: flex;
+						justify-content: center;
+						padding: 50px 0px;
+						&:hover {
+							cursor: initial;
+						}
+					}
+				}
+			}
+		}
+	}
 }

@@ -4,7 +4,6 @@ import { push } from 'connected-react-router';
 import moment from 'moment';
 import { Button, Badge } from 'reactstrap';
 import FetchableReactTable from '/imports/ui/components/fetchableReactTable';
-import ValidatorForm from 'react-form-validator-core/lib/ValidatorForm';
 import constants from '/imports/constants';
 
 class TutorialGroups extends Component {
@@ -123,7 +122,7 @@ class TutorialGroups extends Component {
 				accessor: 'createdAt',
 				Header: 'Created At',
 				accessor: (data) => <React.Fragment>{moment(data.createdAt).format('YYYY-MM-DD h:mma')}</React.Fragment>,
-				filterable: false,
+				disableFilters: true,
 			},
 			{
 				id: 'actions',
@@ -160,8 +159,8 @@ class TutorialGroups extends Component {
 						)}
 					</React.Fragment>
 				),
-				filterable: false,
-				sortable: false,
+				disableFilters: true,
+				disableSortBy: true,
 				width: 120,
 			},
 		];
@@ -180,6 +179,7 @@ class TutorialGroups extends Component {
 					<div className="content-body">
 						<FetchableReactTable
 							dataEndPoint={'TutorialGroups.list'}
+							dataParams={{}}
 							columns={columns}
 							defaultFiltered={[{ id: 'isArchived', value: 'false' }]}
 							getTdProps={(state, rowInfo, column) => {

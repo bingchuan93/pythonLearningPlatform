@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { matchPath } from 'react-router';
 import _ from 'lodash';
 import moment from 'moment';
@@ -219,4 +220,24 @@ export const getStudentArrFromXLSXData = (rawXLSXStudentData) => {
 		students.push(studentObj);
     });
     return students;
+};
+
+export const usePrevious = (value) => {
+	const ref = useRef();
+	useEffect(() => {
+		ref.current = value;
+	});
+	return ref.current;
+};
+export const useIsMounted = () => {
+	const ref = useRef(false);
+
+	useEffect(() => {
+		ref.current = true;
+		return () => {
+			ref.current = false;
+		};
+	}, []);
+
+	return () => ref.current;
 };

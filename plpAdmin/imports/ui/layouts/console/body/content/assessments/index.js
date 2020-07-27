@@ -117,7 +117,7 @@ class Assessments extends Component {
 				accessor: 'createdAt',
 				Header: 'Created At',
 				accessor: (data) => <React.Fragment>{moment(data.createdAt).format('YYYY-MM-DD h:mma')}</React.Fragment>,
-				filterable: false,
+				disableFilters: true
 			},
 			{
 				id: 'actions',
@@ -154,8 +154,8 @@ class Assessments extends Component {
 						)}
 					</React.Fragment>
 				),
-				filterable: false,
-				sortable: false,
+				disableFilters: true,
+				disableSortBy: true,
 				width: 120,
 			},
 		];

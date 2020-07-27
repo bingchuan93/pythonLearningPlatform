@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import BaseModal from '/imports/ui/components/modal/base';
-import { FormGroup, Row, Col, Label, Button, Input } from 'reactstrap';
+import { FormGroup, Row, Col, Label, Button, Input, Table } from 'reactstrap';
 import { ValidatorForm } from 'react-form-validator-core';
 import TextValidator from '/imports/ui/components/validators/text';
 import TextAreaValidator from '/imports/ui/components/validators/textarea';
@@ -29,7 +29,7 @@ class AssessmentBase extends Component {
 				type: '',
 				name: '',
 				description: '',
-				participatingTutorialGroupIds: [],
+				participatingTutorialGroups: [],
 				questionIds: [],
 				duration: 0,
 				noOfAttempts: 0,
@@ -59,7 +59,7 @@ class AssessmentBase extends Component {
 						type: result.type,
 						name: result.name,
 						description: result.description,
-						participatingTutorialGroupIds: result.participatingTutorialGroupIds,
+						participatingTutorialGroups: result.participatingTutorialGroups,
 						questionIds: result.questionIds,
 						duration: result.duration,
 						noOfAttempts: result.noOfAttempts,
@@ -147,8 +147,18 @@ class AssessmentBase extends Component {
 		});
 	};
 
+	saveSelectedTutorialGroups = (selectedTutorialGroups) => {
+		this.setState({
+			form: {
+				...this.state.form,
+				participatingTutorialGroups: selectedTutorialGroups
+			}
+		});
+	}
+
 	render() {
 		const { form } = this.state;
+		console.log(form);
 		return (
 			<BaseModal
 				headerText={this.props.title}
@@ -329,6 +339,28 @@ class AssessmentBase extends Component {
 										</Label>
 									</Col>
 									<Col md={8}>
+										{form.participatingTutorialGroups.length > 0 && (
+											<Table borderless>
+												<thead>
+													<tr>
+														<th>Name</th>
+														<th>Academic Year</th>
+														<th>Semester</th>
+													</tr>
+												</thead>
+												<tbody>
+													{form.participatingTutorialGroups.map((participatingTutorialGroup, key) => {
+														return (
+															<tr key={key}>
+																<td>{participatingTutorialGroup.name}</td>
+																<td>{participatingTutorialGroup.academicYear}</td>
+																<td>{participatingTutorialGroup.semester}</td>
+															</tr>
+														);
+													})}
+												</tbody>
+											</Table>
+										)}
 										<Button
 											className="w-100"
 											color="create"
@@ -336,7 +368,10 @@ class AssessmentBase extends Component {
 												this.props.dispatch({
 													type: 'MODAL/OPEN', payload: {
 														modal: TutorialGroupPicker,
-														modalProps: {},
+														modalProps: {
+															saveSelectedTutorialGroups: this.saveSelectedTutorialGroups,
+															selectedTutorialGroups: form.participatingTutorialGroups
+														},
 														// prevLocation: { ...this.props.router.location },
 													}
 												});
@@ -433,7 +468,7 @@ class AssessmentBase extends Component {
 								</Row>
 							</FormGroup>
 						</ValidatorForm>
-					</div>
+					</ div>
 				}
 				footerClasses="justify-content-end"
 				footer={

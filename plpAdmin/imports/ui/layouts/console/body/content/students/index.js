@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
-import { Button } from 'reactstrap';
+import { Button, Badge, Input } from 'reactstrap';
 import moment from 'moment';
 import FetchableReactTable from '/imports/ui/components/fetchableReactTable';
 import Footer from '../footer';
@@ -22,18 +22,23 @@ class Students extends Component {
 			},
 			{
 				id: 'isArchived',
-				accessor: 'isArchived',
 				Header: 'Is Archived',
-				accessor: (data) => data.isArchived,
 				searchAlgorithm: 'boolean',
-				filterable: false,
+				accessor: (data) => <Badge color={data.isArchived ? 'secondary' : 'success'}>{data.isArchived ? 'Archived' : 'Active'}</Badge>,
+				Filter: ({ column: { filterValue, setFilter } }) => (
+					<Input type="select" bsSize="sm" onChange={event => setFilter(event.target.value || undefined)} value={filterValue ? filterValue : ''}>
+						<option value="boolean-all">Show All</option>
+						<option value="false">Active</option>
+						<option value="true">Archived</option>
+					</Input>
+				)
 			},
 			{
 				id: 'createdAt',
 				accessor: 'createdAt',
 				Header: 'Created At',
 				accessor: (data) => <React.Fragment>{moment(data.createdAt).format('YYYY-MM-DD h:mma')}</React.Fragment>,
-				filterable: false,
+				disableFilters: true
 			},
 		];
 

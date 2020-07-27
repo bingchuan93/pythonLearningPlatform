@@ -37,8 +37,6 @@ class TutorialGroupPicker extends Component {
     }
 
     render() {
-        console.log(this.state.extraTableParams);
-        console.log(this.props.userState.user);
         const columns = [
             {
                 id: 'name',
@@ -105,7 +103,6 @@ class TutorialGroupPicker extends Component {
                             color="secondary"
                             size="md"
                             onClick={() => {
-                                console.log('test');
                                 this.props.dispatch({ type: 'MODAL/CLOSE' });
                             }}
                         >

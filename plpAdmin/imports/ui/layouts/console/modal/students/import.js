@@ -83,7 +83,6 @@ class StudentsImport extends Component {
 			reader.readAsBinaryString(file);
 		} else {
 			this.setState({ isProcessing: false });
-			console.log('test');
 			this.displayError('Please select an excel file');
 		}
 	};

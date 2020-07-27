@@ -1,6 +1,6 @@
 import { collections } from 'meteor/bingchuan:plp-collections';
 
-const { Assessments } = collections;
+const { Assessments, TutorialGroups } = collections;
 
 Meteor.methods({
 	'Assessments.list'(params) {
@@ -23,7 +23,11 @@ Meteor.methods({
 	},
 	'Assessments.getById'(_id) {
 		try {
-			return Assessments.findOne(_id);
+			const assessments = Assessments.findOne(_id);
+			if (assessments) {
+				const relatedTutorialGroups = TutorialGroups.find({ _id: { $in: assessments.participatingTutorialGroupIds } });
+				return { ...assessments, participatingTutorialGroups: relatedTutorialGroups };
+			}
 		} catch (e) {
 			if (e.reason) {
 				throw new Meteor.Error(e.error, e.reason);
