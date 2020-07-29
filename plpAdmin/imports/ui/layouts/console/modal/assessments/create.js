@@ -13,7 +13,7 @@ class AssessmentCreate extends Component {
         };
     }
 
-    handleCreate = (formValues, image) => {
+    handleCreate = (formValues) => {
         this.setState({ isSubmitting: true });
         Meteor.call('Assessments.create', formValues, (error, result) => {
             this.setState({ isSubmitting: false });

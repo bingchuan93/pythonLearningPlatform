@@ -186,6 +186,13 @@ export const getTutorialGroupOptions = (callback) => {
 	});
 };
 
+export const getQuestionTypeOptions = () => {
+	return constants.questionTypes.map((questionType) => ({
+		label: questionType.label,
+		value: questionType.value
+	}));
+}
+
 export const getFileExtension = (filename) => {
 	return /[.]/.exec(filename) ? /[^.]+$/.exec(filename)[0] : undefined;
 };

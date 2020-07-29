@@ -120,6 +120,10 @@ body * {
     color: #FFFFFF;
 }
 
+.border-light-grey {
+    border-color: $border-light-color;
+}
+
 #console .content .content-wrapper {
     margin-top: 2rem;
 

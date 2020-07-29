@@ -14,9 +14,7 @@ class TutorialGroupPicker extends Component {
         this.state = {
             selectedTutorialGroups: this.props.selectedTutorialGroups ? this.props.selectedTutorialGroups : [],
             showRelatedTutorialGroups: false,
-            extraTableParams: {
-                isArchived: false
-            }
+            extraTableParams: this.props.filterParams
         };
     }
 
@@ -31,7 +29,7 @@ class TutorialGroupPicker extends Component {
                 });
             } else {
                 const { isArchived } = this.state.extraTableParams;
-                this.setState({ extraTableParams: { isArchived } });
+                this.setState({ extraTableParams: this.props.filterParams });
             }
         }
     }
@@ -59,7 +57,6 @@ class TutorialGroupPicker extends Component {
                 searchAlgorithm: 'boolean'
             }
         ];
-
         return (
             <BaseModal
                 index={this.props.index}
@@ -128,6 +125,7 @@ class TutorialGroupPicker extends Component {
 
 TutorialGroupPicker.defaultProps = {
     isMulti: true,
+    filterParams: {}
 };
 
 export default connect(

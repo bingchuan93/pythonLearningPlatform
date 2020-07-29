@@ -30,7 +30,7 @@ class AssessmentBase extends Component {
 				name: '',
 				description: '',
 				participatingTutorialGroups: [],
-				questionIds: [],
+				questions: [],
 				duration: 0,
 				noOfAttempts: 0,
 				startDate: null,
@@ -60,7 +60,7 @@ class AssessmentBase extends Component {
 						name: result.name,
 						description: result.description,
 						participatingTutorialGroups: result.participatingTutorialGroups,
-						questionIds: result.questionIds,
+						questions: result.questions,
 						duration: result.duration,
 						noOfAttempts: result.noOfAttempts,
 						startDate: result.startDate,
@@ -158,15 +158,16 @@ class AssessmentBase extends Component {
 
 	render() {
 		const { form } = this.state;
-		console.log(form);
 		return (
 			<BaseModal
 				headerText={this.props.title}
 				className={this.props.mode == 'view' ? 'view' : ''}
 				body={
-					<div className="assessment-modal">
+					<div className="assessment-modal d-flex justify-content-between">
 						<ValidatorForm
 							id="assessment-form"
+							className="mr-3"
+							style={{ flex: '1 0 0' }}
 							instantValidate={false}
 							onSubmit={() => {
 								this.props.formSubmit(form);
@@ -299,38 +300,6 @@ class AssessmentBase extends Component {
 									</Col>
 								</Row>
 							</FormGroup>
-							{/* <FormGroup>
-								<Row form>
-									<Col md={4}>
-										<Label className="control-label mb-0 font-weight-bold">
-											Participating Tutorial Groups
-										</Label>
-									</Col>
-									<Col md={8}>
-										<SelectValidator
-											placeholder="Tutorial Groups"
-											validators={['required']}
-											value={_.filter(this.state.tutorialGroupOptions, function(tutorialGroupOption) {
-												return form.participatingTutorialGroupIds.includes(tutorialGroupOption.value);
-											})}
-											onChange={e => {
-												this.setState({
-													form: {
-														...form,
-														participatingTutorialGroupIds: e.map((option, key) => {
-															return option.value;
-														})
-													}
-												});
-                                            }}
-                                            isMulti={true}
-											options={this.state.tutorialGroupOptions}
-											errorMessages={['Tutorial Groups is required']}
-											isDisabled={this.props.mode == 'view'}
-										/>
-                                    </Col>
-								</Row>
-							</FormGroup> */}
 							<FormGroup>
 								<Row form>
 									<Col md={4}>
@@ -370,7 +339,10 @@ class AssessmentBase extends Component {
 														modal: TutorialGroupPicker,
 														modalProps: {
 															saveSelectedTutorialGroups: this.saveSelectedTutorialGroups,
-															selectedTutorialGroups: form.participatingTutorialGroups
+															selectedTutorialGroups: form.participatingTutorialGroups,
+															filterParams: {
+																isArchived: false
+															}
 														},
 														// prevLocation: { ...this.props.router.location },
 													}
@@ -468,6 +440,9 @@ class AssessmentBase extends Component {
 								</Row>
 							</FormGroup>
 						</ValidatorForm>
+						<div className="pl-3 border-left border-light-grey" style={{ flex: '1 0 0' }}>
+							<Button color="create" block>Add Question</Button>
+						</div>
 					</ div>
 				}
 				footerClasses="justify-content-end"

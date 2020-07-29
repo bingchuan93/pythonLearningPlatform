@@ -4,7 +4,6 @@ import { push } from 'connected-react-router';
 import moment from 'moment';
 import { Button, Badge } from 'reactstrap';
 import FetchableReactTable from '/imports/ui/components/fetchableReactTable';
-import constants from '/imports/constants';
 
 class Assessments extends Component {
 	handleView = (rowInfo, column) => {
@@ -176,10 +175,8 @@ class Assessments extends Component {
 							dataEndPoint={'Assessments.list'}
 							columns={columns}
 							defaultFiltered={[{ id: 'isArchived', value: 'false' }]}
-							getTdProps={(state, rowInfo, column) => {
-								return {
-									onClick: (e) => { this.handleView(rowInfo, column) }
-								};
+							onRowClick={(rowInfo, column) => {
+								this.handleView(rowInfo, column);
 							}}
 						/>
 					</div>

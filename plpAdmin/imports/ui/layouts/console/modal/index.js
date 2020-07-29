@@ -10,28 +10,18 @@ import _ from 'lodash';
 class Modal extends Component {
     toggleModalBasedOnRoute(prevLocation = { pathname: '/' }) {
         let modalMatchedRoute = getMatchedRoute(this.props.router.location.pathname, modalRoutes);
-        let contentMatchedRoute = getMatchedRoute(this.props.router.location.pathname, contentRoute);
+        console.log(modalMatchedRoute);
         if (modalMatchedRoute) {
-            if (!modalMatchedRoute.permissions || modalMatchedRoute.permissions) {
-                if (contentMatchedRoute) {
-                    prevLocation = {
-                        pathname: contentMatchedRoute.path
-                    }
+            if (this.props.router.action == 'REPLACE' && this.props.router.location.state && this.props.router.location.state.from) {
+                prevLocation = this.props.router.location.state.from;
+            }
+            this.props.dispatch({
+                type: 'MODAL/ROOT', payload: {
+                    modal: modalMatchedRoute.component,
+                    modalProps: { ...modalMatchedRoute.props, ...modalMatchedRoute.matched.params },
+                    prevLocation: { ...prevLocation, title: prevLocation && prevLocation.title ? prevLocation.title : document.title },
                 }
-                this.props.dispatch({
-                    type: 'MODAL/ROOT', payload: {
-                        modal: modalMatchedRoute.component,
-                        modalProps: { ...modalMatchedRoute.props, ...modalMatchedRoute.matched.params },
-                        prevLocation: { ...prevLocation },
-                    }
-                });
-            }
-            else {
-                this.props.dispatch({
-                    type: 'MODAL/CLOSE',
-                    payload: { doNotPushToPrevLocation: true }
-                });
-            }
+            });
         }
         else {
             this.props.dispatch({

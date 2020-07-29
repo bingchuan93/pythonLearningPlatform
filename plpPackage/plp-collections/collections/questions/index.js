@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import SimpleSchema from 'simpl-schema';
 import { Mongo } from 'meteor/mongo';
-import { StringDecoder } from 'string_decoder';
 
 class Questions extends Mongo.Collection {
     insert(doc, callback) {
@@ -59,17 +58,30 @@ questions.schema = new SimpleSchema({
     },
     answers: {
         type: Array,
-        optional: false,
+        optional: true,
         label: 'Answers',
+        defaultValue: [],
         minCount: 1
     },
     'answers.$': {
+        type: Object
+    },
+    'answers.$.content': {
         type: String
     },
-    marks: {
+    'answers.$.isCorrect': {
+        type: Boolean
+    },
+    marksPerCorrectAnswer: {
         type: Number,
         optional: false,
-        label: 'Marks',
+        label: 'Marks Per Correct Answer',
+        defaultValue: 1,
+    },
+    fullMarks: {
+        type: Number,
+        optional: false,
+        label: 'Full Marks',
         defaultValue: 1,
     },
     isArchived: {

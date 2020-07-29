@@ -23,10 +23,10 @@ Meteor.methods({
 	},
 	'Assessments.getById'(_id) {
 		try {
-			const assessments = Assessments.findOne(_id);
-			if (assessments) {
-				const relatedTutorialGroups = TutorialGroups.find({ _id: { $in: assessments.participatingTutorialGroupIds } });
-				return { ...assessments, participatingTutorialGroups: relatedTutorialGroups };
+			const assessment = Assessments.findOne(_id);
+			if (assessment) {
+				const relatedTutorialGroups = TutorialGroups.find({ _id: { $in: assessment.participatingTutorialGroupIds } }).fetch();
+				return { ...assessment, participatingTutorialGroups: relatedTutorialGroups };
 			}
 		} catch (e) {
 			if (e.reason) {
@@ -61,6 +61,7 @@ Meteor.methods({
 	},
 	'Assessments.create'(formValues) {
 		try {
+			formValues.participatingTutorialGroupIds = formValues.participatingTutorialGroups.map((participatingTutorialGroup) => participatingTutorialGroup._id);
 			return Assessments.insert(formValues);
 		} catch (e) {
 			if (e.reason) {
