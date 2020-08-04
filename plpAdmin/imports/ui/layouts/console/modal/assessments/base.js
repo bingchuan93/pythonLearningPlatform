@@ -14,7 +14,9 @@ import Switch from 'react-switch';
 import Loader from '/imports/ui/components/icons/loader';
 import Checkbox from '/imports/ui/components/checkbox';
 import TutorialGroupPicker from '/imports/ui/layouts/console/modal/common/tutorialGroupPicker';
+import QuestionCreate from '/imports/ui/layouts/console/modal/questions/create';
 import { getAssessmentTypeOptions, getTutorialGroupOptions } from '/imports/util';
+import randomstring from 'randomstring';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -26,6 +28,7 @@ class AssessmentBase extends Component {
 			assessmentTypeOptions: [],
 			tutorialGroupOptions: [],
 			form: {
+				questionsSyncToken: '',
 				type: '',
 				name: '',
 				description: '',
@@ -43,6 +46,13 @@ class AssessmentBase extends Component {
 	componentDidMount() {
 		if (this.props.id) {
 			this.getAssessment(this.props.id);
+		} else {
+			this.setState({  
+				form: {
+					...this.state.form,
+					questionsSyncToken: randomstring.generate()
+				}
+			})
 		}
 		this.setState({ assessmentTypeOptions: getAssessmentTypeOptions() });
 		getTutorialGroupOptions((options) => this.setState({ tutorialGroupOptions: options }));
@@ -441,7 +451,36 @@ class AssessmentBase extends Component {
 							</FormGroup>
 						</ValidatorForm>
 						<div className="pl-3 border-left border-light-grey" style={{ flex: '1 0 0' }}>
-							<Button color="create" block>Add Question</Button>
+							<div className="d-flex">
+								<Button color="create" className="mr-3" onClick={() => {
+									this.props.dispatch({
+										type: 'MODAL/OPEN', payload: {
+											modal: QuestionCreate,
+											modalProps: {
+												afterCloseModal: () => {
+													console.log('custom close');
+												},
+												questionsSyncToken: this.state.form.questionsSyncToken,
+											},
+											// prevLocation: { ...this.props.router.location },
+										}
+									})
+								}} block>Add New Question</Button>
+								<Button color="create" className="mt-0" onClick={() => {
+									this.props.dispatch({
+										type: 'MODAL/OPEN', payload: {
+											modal: QuestionCreate,
+											modalProps: {
+												afterCloseModal: () => {
+													console.log('custom close');
+												},
+												questionsSyncToken: this.state.form.questionsSyncToken,
+											},
+											// prevLocation: { ...this.props.router.location },
+										}
+									})
+								}} block>Copy from existing Question</Button>
+							</div>
 						</div>
 					</ div>
 				}

@@ -11,7 +11,6 @@ if (Meteor.isServer) {
         else if (attemptInfo.type == 'resume') {
             return true;
         }
-        console.log('allowed');
         return true;
     })
 

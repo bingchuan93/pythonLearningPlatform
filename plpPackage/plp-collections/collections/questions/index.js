@@ -66,6 +66,9 @@ questions.schema = new SimpleSchema({
     'answers.$': {
         type: Object
     },
+    'answers.$.id': {
+        type: String
+    },
     'answers.$.content': {
         type: String
     },

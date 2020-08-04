@@ -38,7 +38,6 @@ class StudentBase extends Component {
         this.setState({ isFetching: true });
         Meteor.call('Students.getById', id, (error, result) => {
             this.setState({ isFetching: false });
-            console.log(result);
             if (!error) {
                 this.setState({
                     form: {

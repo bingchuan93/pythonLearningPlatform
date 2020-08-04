@@ -10,7 +10,6 @@ import _ from 'lodash';
 class Modal extends Component {
     toggleModalBasedOnRoute(prevLocation = { pathname: '/' }) {
         let modalMatchedRoute = getMatchedRoute(this.props.router.location.pathname, modalRoutes);
-        console.log(modalMatchedRoute);
         if (modalMatchedRoute) {
             if (this.props.router.action == 'REPLACE' && this.props.router.location.state && this.props.router.location.state.from) {
                 prevLocation = this.props.router.location.state.from;

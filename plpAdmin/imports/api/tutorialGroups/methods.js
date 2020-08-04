@@ -18,7 +18,6 @@ Meteor.methods({
             return { data: tutorialGroups, count: count };
         }
         catch (e) {
-            console.log(e);
             if (e.reason) {
                 throw new Meteor.Error(e.error, e.reason);
             }

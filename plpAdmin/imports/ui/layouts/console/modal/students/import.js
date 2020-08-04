@@ -94,8 +94,6 @@ class StudentsImport extends Component {
 			this.setState({ isImporting: true, errorMsg: '' });
 			Meteor.call('Students.import', this.state.form, (error, result) => {
 				this.setState({ isImporting: false });
-				console.log(result);
-				console.log(error);
 				if (!error) {
 					this.props.dispatch({ type: 'MODAL/RESET' });
 					this.props.dispatch({ type: 'CONTENT/FETCHABLE_TABLE_FORCE_FETCH' });
@@ -123,7 +121,6 @@ class StudentsImport extends Component {
 
 	render() {
 		const { form } = this.state;
-		console.log(this.state);
 		return (
 			<BaseModal
 				headerText="Import Students"

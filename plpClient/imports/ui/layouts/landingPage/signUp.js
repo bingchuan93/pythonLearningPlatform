@@ -45,12 +45,10 @@ class SignUp extends Component {
         const profile = { tutorialGroupId: new Mongo.ObjectID(tutorialGroupId) };
         // const profile = {}
         let errorMsg = null;
-        console.log(profile);
         if (username && password) {
             this.setState({ isSigningUp: true });
             Accounts.createUser({ username, password, profile }, (error) => {
                 this.setState({ isSigningUp: false });
-                console.log(error);
                 if (!error) {
                     this.props.dispatch({ type: 'USER/SET', payload: { user: Meteor.user() } });
                     this.props.dispatch(push('/')); // bc: Redirect immediately or requeste for sign in again?

@@ -187,9 +187,9 @@ export const getTutorialGroupOptions = (callback) => {
 };
 
 export const getQuestionTypeOptions = () => {
-	return constants.questionTypes.map((questionType) => ({
-		label: questionType.label,
-		value: questionType.value
+	return Object.keys(constants.questionTypes).map((questionTypeKey) => ({
+		label: constants.questionTypes[questionTypeKey].label,
+		value: constants.questionTypes[questionTypeKey].value
 	}));
 }
 

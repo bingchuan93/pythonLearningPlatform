@@ -95,8 +95,6 @@ Meteor.methods({
 						},
 					});
 				} catch (e) {
-					console.log('Create user error');
-					console.log(e);
 					failedImports.push({
 						...student,
 						reason: error,
@@ -109,7 +107,6 @@ Meteor.methods({
 				return { success: true };
 			}
 		} catch (e) {
-			console.log(e);
 			if (e.reason) {
 				throw new Meteor.Error(e.error, e.reason);
 			}

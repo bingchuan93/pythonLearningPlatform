@@ -30,7 +30,6 @@ class SignIn extends Component {
             this.setState({ isSigningIn: true });
             Meteor.loginWithPassword({ username }, password, (error) => {
                 this.setState({ isSigningIn: false });
-                console.log(error);
                 if (!error) {
                     this.props.dispatch({ type: 'USER/SET', payload: { user: Meteor.user() }});
                     this.props.dispatch(push('/'));

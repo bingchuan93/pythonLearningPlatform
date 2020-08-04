@@ -6,10 +6,6 @@ import TestBase from '/imports/ui/layouts/console/modal/testBase';
 import { getSemOneDate } from '/imports/util';
 
 class Dashboard extends Component {
-	componentDidMount() {
-		console.log(getSemOneDate('one'));
-	}
-
 	render() {
 		return (
 			<div className="content-wrapper">

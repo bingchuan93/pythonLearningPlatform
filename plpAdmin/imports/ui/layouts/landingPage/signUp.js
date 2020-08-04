@@ -27,7 +27,6 @@ class SignUp extends Component {
             this.setState({ isSigningUp: true });
             Accounts.createUser({ username, password, profile }, (error) => {
                 this.setState({ isSigningUp: false });
-                console.log(error);
                 if (!error) {
                     this.props.dispatch({ type: 'USER/SET', payload: { user: Meteor.user() }});
                     this.props.dispatch(push('/')); // bc: Redirect immediately or requeste for sign in again?
