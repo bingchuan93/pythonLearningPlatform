@@ -25,6 +25,7 @@ class AssessmentBase extends Component {
 		super(props);
 		this.state = {
 			isFetching: false,
+			isFetchingQuestions: false,
 			assessmentTypeOptions: [],
 			tutorialGroupOptions: [],
 			form: {
@@ -47,7 +48,7 @@ class AssessmentBase extends Component {
 		if (this.props.id) {
 			this.getAssessment(this.props.id);
 		} else {
-			this.setState({  
+			this.setState({
 				form: {
 					...this.state.form,
 					questionsSyncToken: randomstring.generate()
@@ -56,6 +57,12 @@ class AssessmentBase extends Component {
 		}
 		this.setState({ assessmentTypeOptions: getAssessmentTypeOptions() });
 		getTutorialGroupOptions((options) => this.setState({ tutorialGroupOptions: options }));
+	}
+
+	componentDidUpdate(prevState, prevProps) {
+		if (prevProps.assessmentState.questionIds.length != this.props.assessmentState.questionIds.length) {
+			this.getQuestions();
+		}
 	}
 
 	getAssessment = id => {
@@ -81,6 +88,21 @@ class AssessmentBase extends Component {
 			}
 		});
 	};
+
+	getQuestions = () => {
+		this.setState({ isFetchingQuestions: true });
+		Meteor.call('Questions.getByIds', this.props.assessmentState.questionIds, (error, result) => {
+			this.setState({ isFetchingQuestions: false });
+			if (!error) {
+				this.setState({
+					form: {
+						...this.state.form,
+						questions: result
+					}
+				})
+			}
+		})
+	}
 
 	handleArchive = _id => {
 		this.props.dispatch({
@@ -481,6 +503,21 @@ class AssessmentBase extends Component {
 									})
 								}} block>Copy from existing Question</Button>
 							</div>
+							{this.state.isFetchingQuestions ? (
+								<div className="text-center">
+									<Loader />
+								</div>
+							) : (
+								<>
+									{form.questions.map((question) => {
+										return (
+											<div>
+												{question.content}
+											</div>
+										)
+									})}
+								</>
+							)}
 						</div>
 					</ div>
 				}
@@ -519,7 +556,8 @@ class AssessmentBase extends Component {
 }
 
 export default connect(
-	({ router }) => ({
-		router
+	({ router, assessmentState }) => ({
+		router,
+		assessmentState
 	})
 )(AssessmentBase);

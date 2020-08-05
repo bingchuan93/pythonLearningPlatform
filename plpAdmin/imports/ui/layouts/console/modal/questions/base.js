@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import _, { cloneDeep } from 'lodash';
+import _, { cloneDeep, clone } from 'lodash';
 import BaseModal from '/imports/ui/components/modal/base';
 import { FormGroup, Row, Col, Label, Button, Input, Table } from 'reactstrap';
 import { ValidatorForm } from 'react-form-validator-core';
@@ -11,6 +11,7 @@ import Switch from 'react-switch';
 import { getQuestionTypeOptions } from '/imports/util';
 import LoadingButton from '/imports/ui/components/loadingButton';
 import constants from '/imports/constants';
+import randomstring from 'randomstring';
 
 class QuestionBase extends Component {
     constructor(props) {
@@ -30,6 +31,7 @@ class QuestionBase extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props);
         if (this.props.id) {
             this.getQuestion(this.props.id);
         }
@@ -95,6 +97,7 @@ class QuestionBase extends Component {
 
     render() {
         const { form } = this.state;
+        console.log(this.state.form.answers);
         return (
             <BaseModal
                 index={this.props.index}
@@ -126,9 +129,38 @@ class QuestionBase extends Component {
                                             validators={['required']}
                                             value={_.find(this.state.questionTypeOptions, { value: form.type })}
                                             onChange={e => {
+                                                let clonedAnswers = _.cloneDeep(this.state.form.answers);
+                                                const questionType = _.find(constants.questionTypes, { value: e.value });
+                                                console.log(questionType);
+                                                if (questionType && questionType.maxAnswer) {
+                                                    if (clonedAnswers.length == 0) {
+                                                        for (let i = 0; i < questionType.maxAnswer; i++) {
+                                                            clonedAnswers.push({
+                                                                id: randomstring.generate(),
+                                                                content: questionType.value == 'true-or-false' ? (i == 0 ? 'True' : 'False') : '',
+                                                                isCorrect: false
+                                                            });
+                                                        }
+                                                    } else if (clonedAnswers.length > questionType.maxAnswer) {
+                                                        clonedAnswers = clonedAnswers.slice(0, questionType.maxAnswer);
+                                                    }
+                                                }
+                                                if (questionType && questionType.value != constants.questionTypes.multipleChoiceMultiAnswer.value) {
+                                                    let firstCorrectAnswerId = '';
+                                                    clonedAnswers.forEach((clonedAnswer) => {
+                                                        if (clonedAnswer.isCorrect) {
+                                                            if (firstCorrectAnswerId == '') {
+                                                                firstCorrectAnswerId = clonedAnswer.id;
+                                                            } else {
+                                                                clonedAnswer.isCorrect = false;
+                                                            }
+                                                        }
+                                                    });
+                                                }
                                                 this.setState({
                                                     form: {
                                                         ...form,
+                                                        answers: clonedAnswers,
                                                         type: e.value
                                                     }
                                                 });
@@ -220,7 +252,7 @@ class QuestionBase extends Component {
                                                                 <TextValidator
                                                                     className="form-control"
                                                                     type="text"
-                                                                    name={"answer-"+answer.id}
+                                                                    name={"answer-" + answer.id}
                                                                     value={answer.content}
                                                                     validators={['required']}
                                                                     onChange={(e) => {
@@ -247,8 +279,13 @@ class QuestionBase extends Component {
                                                                     offColor={'#9e3b3b'}
                                                                     onChange={value => {
                                                                         const clonedAnswers = _.cloneDeep(this.state.form.answers);
-                                                                        const relatedAnswer = _.find(clonedAnswers, { id: answer.id });
-                                                                        relatedAnswer.isCorrect = value
+                                                                        clonedAnswers.forEach((clonedAnswer) => {
+                                                                            if (clonedAnswer.id == answer.id) {
+                                                                                clonedAnswer.isCorrect = value;
+                                                                            } else {
+                                                                                clonedAnswer.isCorrect = this.state.form.type != constants.questionTypes.multipleChoiceMultiAnswer.value ? false : clonedAnswer.isCorrect;
+                                                                            }
+                                                                        });
                                                                         this.setState({
                                                                             form: {
                                                                                 ...this.state.form,
@@ -279,10 +316,10 @@ class QuestionBase extends Component {
                                         </Table>
                                     )}
                                     {this.shouldRenderAddButton() && (
-                                        <Button color="create" onClick={() => {
+                                        <Button color="create" size="sm" onClick={() => {
                                             const clonedForm = _.cloneDeep(this.state.form);
                                             clonedForm.answers.push({
-                                                id: clonedForm.answers.length,
+                                                id: randomstring.generate(),
                                                 content: '',
                                                 isCorrect: false
                                             });

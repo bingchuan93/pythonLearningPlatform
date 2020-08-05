@@ -45,20 +45,8 @@ class AssessmentCreate extends Component {
                             body: (
                                 <React.Fragment>
                                     <div className="alert-icon mb-2">{/* <ErrorIcon /> */}</div>
-                                    <div style={{ textAlign: 'center' }}>
-                                        {error ? (
-                                            error.reason
-                                        ) : (
-                                            <React.Fragment>
-                                                {result.data.map((data, key) => {
-                                                    return (
-                                                        <div key={key}>
-                                                            {data.name}: {data.error}
-                                                        </div>
-                                                    );
-                                                })}
-                                            </React.Fragment>
-                                        )}
+                                    <div style={{ textAlign: "center" }}>
+                                        {error.reason}
                                     </div>
                                 </React.Fragment>
                             ),

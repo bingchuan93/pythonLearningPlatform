@@ -4,3 +4,5 @@ import '/imports/api/users/methods';
 import '/imports/api/tutorialGroups/methods';
 
 import '/imports/api/assessments/methods';
+
+import '/imports/api/questions/methods';

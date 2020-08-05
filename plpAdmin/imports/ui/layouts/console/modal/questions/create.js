@@ -15,28 +15,11 @@ class QuestionCreate extends Component {
 
     handleCreate = (formValues) => {
         this.setState({ isSubmitting: true });
-        Meteor.call('Assessments.create', formValues, (error, result) => {
+        Meteor.call('Questions.create', formValues, this.props.questionsSyncToken, (error, result) => {
             this.setState({ isSubmitting: false });
-            this.props.dispatch(push('/assessment/view/' + result));
-            this.props.dispatch({ type: 'MODAL/RESET' });
+            this.props.dispatch({ type: 'MODAL/CLOSE' });
             if (!error && !result.error) {
-                this.props.dispatch({
-                    type: 'ALERT/OPEN',
-                    payload: {
-                        alertProps: {
-                            body: <div style={{ textAlign: 'center' }}>Tutorial Groups successfully created</div>,
-                            closeOnBgClick: true,
-                            showConfirmButton: true,
-                            confirmButtonText: 'Done',
-                            confirmButtonCallback: (e, closeAlert) => {
-                                e.preventDefault();
-                                closeAlert();
-                            },
-                            showCloseButton: false,
-                        },
-                    },
-                });
-                this.props.dispatch({ type: 'CONTENT/FETCHABLE_TABLE_FORCE_FETCH' });
+                this.props.dispatch({ type: 'ASSESSMENT/ADD_QUESTION', payload: { questionId: result } });
             } else if (error || result.error) {
                 this.props.dispatch({
                     type: 'ALERT/OPEN',
@@ -45,20 +28,8 @@ class QuestionCreate extends Component {
                             body: (
                                 <React.Fragment>
                                     <div className="alert-icon mb-2">{/* <ErrorIcon /> */}</div>
-                                    <div style={{ textAlign: 'center' }}>
-                                        {error ? (
-                                            error.reason
-                                        ) : (
-                                                <React.Fragment>
-                                                    {result.data.map((data, key) => {
-                                                        return (
-                                                            <div key={key}>
-                                                                {data.name}: {data.error}
-                                                            </div>
-                                                        );
-                                                    })}
-                                                </React.Fragment>
-                                            )}
+                                    <div style={{ textAlign: "center" }}>
+                                        {error.reason}
                                     </div>
                                 </React.Fragment>
                             ),
@@ -72,7 +43,6 @@ class QuestionCreate extends Component {
     };
 
     render() {
-        console.log(this.props);
         return (
             <QuestionBase
                 index={this.props.index}
