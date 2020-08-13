@@ -15,11 +15,11 @@ class QuestionCreate extends Component {
 
     handleCreate = (formValues) => {
         this.setState({ isSubmitting: true });
-        Meteor.call('Questions.create', formValues, this.props.questionsSyncToken, (error, result) => {
+        Meteor.call('Questions.create', formValues, (error, result) => {
             this.setState({ isSubmitting: false });
-            this.props.dispatch({ type: 'MODAL/CLOSE' });
             if (!error && !result.error) {
-                this.props.dispatch({ type: 'ASSESSMENT/ADD_QUESTION', payload: { questionId: result } });
+                this.props.saveQuestion(result);
+                this.props.dispatch({ type: 'MODAL/CLOSE' });
             } else if (error || result.error) {
                 this.props.dispatch({
                     type: 'ALERT/OPEN',
@@ -45,6 +45,7 @@ class QuestionCreate extends Component {
     render() {
         return (
             <QuestionBase
+                afterCloseModal={this.props.afterCloseModal}
                 index={this.props.index}
                 title="Create Question"
                 mode="create"

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import BaseModal from '/imports/ui/components/modal/base';
-import { FormGroup, Row, Col, Label, Button, Input, Table } from 'reactstrap';
+import { FormGroup, Row, Col, Label, Button, Input, Table, Card, CardBody, CardHeader } from 'reactstrap';
 import { ValidatorForm } from 'react-form-validator-core';
 import TextValidator from '/imports/ui/components/validators/text';
 import TextAreaValidator from '/imports/ui/components/validators/textarea';
@@ -13,10 +13,10 @@ import moment from 'moment';
 import Switch from 'react-switch';
 import Loader from '/imports/ui/components/icons/loader';
 import Checkbox from '/imports/ui/components/checkbox';
+import FontAwesomeIcon from '/imports/ui/components/fontAwesomeIcon';
 import TutorialGroupPicker from '/imports/ui/layouts/console/modal/common/tutorialGroupPicker';
 import QuestionCreate from '/imports/ui/layouts/console/modal/questions/create';
 import { getAssessmentTypeOptions, getTutorialGroupOptions } from '/imports/util';
-import randomstring from 'randomstring';
 
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -29,12 +29,12 @@ class AssessmentBase extends Component {
 			assessmentTypeOptions: [],
 			tutorialGroupOptions: [],
 			form: {
-				questionsSyncToken: '',
 				type: '',
 				name: '',
 				description: '',
 				participatingTutorialGroups: [],
 				questions: [],
+				questionIds: [],
 				duration: 0,
 				noOfAttempts: 0,
 				startDate: null,
@@ -47,22 +47,19 @@ class AssessmentBase extends Component {
 	componentDidMount() {
 		if (this.props.id) {
 			this.getAssessment(this.props.id);
-		} else {
-			this.setState({
-				form: {
-					...this.state.form,
-					questionsSyncToken: randomstring.generate()
-				}
-			})
 		}
 		this.setState({ assessmentTypeOptions: getAssessmentTypeOptions() });
 		getTutorialGroupOptions((options) => this.setState({ tutorialGroupOptions: options }));
 	}
 
-	componentDidUpdate(prevState, prevProps) {
-		if (prevProps.assessmentState.questionIds.length != this.props.assessmentState.questionIds.length) {
+	componentDidUpdate(prevProps, prevState) {
+		if (prevState.form.questionIds.length != this.state.form.questionIds.length) {
 			this.getQuestions();
 		}
+	}
+
+	componentWillUnmount() {
+		console.log('unmounting assessment base');
 	}
 
 	getAssessment = id => {
@@ -77,8 +74,8 @@ class AssessmentBase extends Component {
 						name: result.name,
 						description: result.description,
 						participatingTutorialGroups: result.participatingTutorialGroups,
-						questions: result.questions,
 						duration: result.duration,
+						questionIds: result.questionIds,
 						noOfAttempts: result.noOfAttempts,
 						startDate: result.startDate,
 						endDate: result.endDate,
@@ -91,7 +88,7 @@ class AssessmentBase extends Component {
 
 	getQuestions = () => {
 		this.setState({ isFetchingQuestions: true });
-		Meteor.call('Questions.getByIds', this.props.assessmentState.questionIds, (error, result) => {
+		Meteor.call('Questions.getByIds', this.state.form.questionIds, (error, result) => {
 			this.setState({ isFetchingQuestions: false });
 			if (!error) {
 				this.setState({
@@ -188,8 +185,17 @@ class AssessmentBase extends Component {
 		});
 	}
 
+	saveQuestion = (questionId) => {
+		const clonedForm = _.cloneDeep(this.state.form);
+		clonedForm.questionIds.push(questionId);
+		this.setState({
+			form: clonedForm
+		})
+	}
+
 	render() {
 		const { form } = this.state;
+		console.log(form);
 		return (
 			<BaseModal
 				headerText={this.props.title}
@@ -482,7 +488,7 @@ class AssessmentBase extends Component {
 												afterCloseModal: () => {
 													console.log('custom close');
 												},
-												questionsSyncToken: this.state.form.questionsSyncToken,
+												saveQuestion: this.saveQuestion
 											},
 											// prevLocation: { ...this.props.router.location },
 										}
@@ -496,7 +502,7 @@ class AssessmentBase extends Component {
 												afterCloseModal: () => {
 													console.log('custom close');
 												},
-												questionsSyncToken: this.state.form.questionsSyncToken,
+												saveQuestion: this.saveQuestion
 											},
 											// prevLocation: { ...this.props.router.location },
 										}
@@ -509,11 +515,35 @@ class AssessmentBase extends Component {
 								</div>
 							) : (
 								<>
-									{form.questions.map((question) => {
+									{form.questions.map((question, questionKey) => {
 										return (
-											<div>
-												{question.content}
-											</div>
+											<Card key={questionKey}>
+												<CardHeader>{question.content}</CardHeader>
+												<CardBody>
+													{question.type == 'open-ended' ? (
+														<div>
+															{question.answers[0].content}
+														</div>
+													) : (
+														<>
+															{question.answers.map((answer, answerKey) => {
+																return (
+																	<div className="mb-2" key={answerKey}>
+																		<div style={{ width: 40 }}>
+																			{answer.isCorrect && (
+																				<FontAwesomeIcon className="text-success" name="check" />
+																			)}
+																		</div>
+																		<div className="ml-2">
+																			{answer.content}
+																		</div>
+																	</div>
+																);
+															})}
+														</>
+													)}
+												</CardBody>
+											</Card>
 										)
 									})}
 								</>
@@ -556,8 +586,7 @@ class AssessmentBase extends Component {
 }
 
 export default connect(
-	({ router, assessmentState }) => ({
-		router,
-		assessmentState
+	({ router }) => ({
+		router
 	})
 )(AssessmentBase);

@@ -7,7 +7,6 @@ import appState from './appState';
 import contentState from './contentState';
 import modalState from './modalState';
 import alertState from './alertState';
-import assessmentState from './assessmentState';
 
 const persistConfig = {
     key: 'root',
@@ -22,5 +21,4 @@ export default (history) => persistCombineReducers(persistConfig, {
     contentState,
     modalState,
     alertState,
-    assessmentState,
 });
