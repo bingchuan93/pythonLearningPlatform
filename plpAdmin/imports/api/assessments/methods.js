@@ -1,6 +1,6 @@
 import { collections } from 'meteor/bingchuan:plp-collections';
 
-const { Assessments, TutorialGroups } = collections;
+const { Assessments, TutorialGroups, Questions } = collections;
 
 Meteor.methods({
 	'Assessments.list'(params) {
@@ -26,7 +26,8 @@ Meteor.methods({
 			const assessment = Assessments.findOne(_id);
 			if (assessment) {
 				const relatedTutorialGroups = TutorialGroups.find({ _id: { $in: assessment.participatingTutorialGroupIds } }).fetch();
-				return { ...assessment, participatingTutorialGroups: relatedTutorialGroups };
+				const relatedQuestions = Questions.find({  _id: { $in: assessment.questionIds } }).fetch();
+				return { ...assessment, participatingTutorialGroups: relatedTutorialGroups, questions: relatedQuestions };
 			}
 		} catch (e) {
 			if (e.reason) {
@@ -62,12 +63,25 @@ Meteor.methods({
 	'Assessments.create'(formValues) {
 		try {
 			formValues.participatingTutorialGroupIds = formValues.participatingTutorialGroups.map((participatingTutorialGroup) => participatingTutorialGroup._id);
+			formValues.questionIds = formValues.questions.map((question) => question._id);
 			return Assessments.insert(formValues);
 		} catch (e) {
 			if (e.reason) {
 				throw new Meteor.Error(e.error, e.reason);
 			}
 			throw new Meteor.Error('error', 'Fail to create assessment');
+		}
+	},
+	'Assessments.update'(id, formValues) {
+		try {
+			formValues.participatingTutorialGroupIds = formValues.participatingTutorialGroups.map((participatingTutorialGroup) => participatingTutorialGroup._id);
+			formValues.questionIds = formValues.questions.map((question) => question._id);
+			return Assessments.update(new Mongo.ObjectID(id), { $set: { ...formValues } });
+		} catch (e) {
+			if (e.reason) {
+				throw new Meteor.Error(e.error, e.reason);
+			}
+			throw new Meteor.Error('error', 'Fail to update assessment');
 		}
 	}
 });

@@ -1,4 +1,4 @@
-import { collections } from 'meteor/bingchuan:plp-collections';
+import { matchPath } from 'react-router-dom';
 
 export const getTutorialGroupOptions = (callback) => {
     Meteor.call('TutorialGroups.getAll', (error, result) => {
@@ -14,3 +14,24 @@ export const getTutorialGroupOptions = (callback) => {
         }
     })
 }
+
+export const getTotalMarks = (questions) => {
+    return questions.reduce((accumulator, currentValue) => {
+        currentValue.answers.forEach((answer) => {
+            if (answer.isCorrect) {
+                accumulator += currentValue.marksPerCorrectAnswer;
+            }
+        })
+        return accumulator;
+    }, 0 );
+}
+
+export const getMatchedRoute = (route, matchingRoutes) => {
+	for (var key in matchingRoutes) {
+		const matched = matchPath(route, matchingRoutes[key]);
+		if (matched) {
+			return { ...matchingRoutes[key], matched };
+		}
+	}
+	return false;
+};

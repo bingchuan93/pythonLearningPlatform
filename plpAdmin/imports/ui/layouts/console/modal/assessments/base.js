@@ -15,6 +15,7 @@ import Loader from '/imports/ui/components/icons/loader';
 import Checkbox from '/imports/ui/components/checkbox';
 import FontAwesomeIcon from '/imports/ui/components/fontAwesomeIcon';
 import TutorialGroupPicker from '/imports/ui/layouts/console/modal/common/tutorialGroupPicker';
+import QuestionPicker from '/imports/ui/layouts/console/modal/common/questionPicker';
 import QuestionCreate from '/imports/ui/layouts/console/modal/questions/create';
 import { getAssessmentTypeOptions, getTutorialGroupOptions } from '/imports/util';
 
@@ -52,16 +53,6 @@ class AssessmentBase extends Component {
 		getTutorialGroupOptions((options) => this.setState({ tutorialGroupOptions: options }));
 	}
 
-	componentDidUpdate(prevProps, prevState) {
-		if (prevState.form.questionIds.length != this.state.form.questionIds.length) {
-			this.getQuestions();
-		}
-	}
-
-	componentWillUnmount() {
-		console.log('unmounting assessment base');
-	}
-
 	getAssessment = id => {
 		this.setState({ isFetching: true });
 		Meteor.call('Assessments.getById', new Mongo.ObjectID(id), (error, result) => {
@@ -76,6 +67,7 @@ class AssessmentBase extends Component {
 						participatingTutorialGroups: result.participatingTutorialGroups,
 						duration: result.duration,
 						questionIds: result.questionIds,
+						questions: result.questions,
 						noOfAttempts: result.noOfAttempts,
 						startDate: result.startDate,
 						endDate: result.endDate,
@@ -85,21 +77,6 @@ class AssessmentBase extends Component {
 			}
 		});
 	};
-
-	getQuestions = () => {
-		this.setState({ isFetchingQuestions: true });
-		Meteor.call('Questions.getByIds', this.state.form.questionIds, (error, result) => {
-			this.setState({ isFetchingQuestions: false });
-			if (!error) {
-				this.setState({
-					form: {
-						...this.state.form,
-						questions: result
-					}
-				})
-			}
-		})
-	}
 
 	handleArchive = _id => {
 		this.props.dispatch({
@@ -185,9 +162,19 @@ class AssessmentBase extends Component {
 		});
 	}
 
-	saveQuestion = (questionId) => {
+	saveQuestion = (question) => {
+		console.log(question);
 		const clonedForm = _.cloneDeep(this.state.form);
-		clonedForm.questionIds.push(questionId);
+		clonedForm.questionIds.push(question._id.valueOf());
+		clonedForm.questions.push(question);
+		this.setState({
+			form: clonedForm
+		})
+	}
+
+	saveSelectedQuestions = (questions) => {
+		const clonedForm = _.cloneDeep(this.state.form);
+		clonedForm.questions = questions;
 		this.setState({
 			form: clonedForm
 		})
@@ -195,11 +182,12 @@ class AssessmentBase extends Component {
 
 	render() {
 		const { form } = this.state;
-		console.log(form);
+
 		return (
 			<BaseModal
 				headerText={this.props.title}
 				className={this.props.mode == 'view' ? 'view' : ''}
+				isScrollable={true}
 				body={
 					<div className="assessment-modal d-flex justify-content-between">
 						<ValidatorForm
@@ -368,25 +356,27 @@ class AssessmentBase extends Component {
 												</tbody>
 											</Table>
 										)}
-										<Button
-											className="w-100"
-											color="create"
-											onClick={() => {
-												this.props.dispatch({
-													type: 'MODAL/OPEN', payload: {
-														modal: TutorialGroupPicker,
-														modalProps: {
-															saveSelectedTutorialGroups: this.saveSelectedTutorialGroups,
-															selectedTutorialGroups: form.participatingTutorialGroups,
-															filterParams: {
-																isArchived: false
-															}
-														},
-														// prevLocation: { ...this.props.router.location },
-													}
-												});
-											}}
-										>Select Tutorial Groups</Button>
+										{this.props.mode != 'view' && (
+											<Button
+												className="w-100"
+												color="create"
+												onClick={() => {
+													this.props.dispatch({
+														type: 'MODAL/OPEN', payload: {
+															modal: TutorialGroupPicker,
+															modalProps: {
+																saveSelectedTutorialGroups: this.saveSelectedTutorialGroups,
+																selectedTutorialGroups: form.participatingTutorialGroups,
+																filterParams: {
+																	isArchived: false
+																}
+															},
+															// prevLocation: { ...this.props.router.location },
+														}
+													});
+												}}
+											>Select Tutorial Groups</Button>
+										)}
 									</Col>
 								</Row>
 							</FormGroup>
@@ -479,75 +469,75 @@ class AssessmentBase extends Component {
 							</FormGroup>
 						</ValidatorForm>
 						<div className="pl-3 border-left border-light-grey" style={{ flex: '1 0 0' }}>
-							<div className="d-flex">
-								<Button color="create" className="mr-3" onClick={() => {
-									this.props.dispatch({
-										type: 'MODAL/OPEN', payload: {
-											modal: QuestionCreate,
-											modalProps: {
-												afterCloseModal: () => {
-													console.log('custom close');
+							{this.props.mode != 'view' && (
+								<div className="d-flex mb-3">
+									<Button color="create" className="mr-3" onClick={() => {
+										this.props.dispatch({
+											type: 'MODAL/OPEN', payload: {
+												modal: QuestionCreate,
+												modalProps: {
+													saveQuestion: this.saveQuestion
 												},
-												saveQuestion: this.saveQuestion
-											},
-											// prevLocation: { ...this.props.router.location },
-										}
-									})
-								}} block>Add New Question</Button>
-								<Button color="create" className="mt-0" onClick={() => {
-									this.props.dispatch({
-										type: 'MODAL/OPEN', payload: {
-											modal: QuestionCreate,
-											modalProps: {
-												afterCloseModal: () => {
-													console.log('custom close');
+												// prevLocation: { ...this.props.router.location },
+											}
+										})
+									}} block>Add New Question</Button>
+									<Button color="create" className="mt-0" onClick={() => {
+										this.props.dispatch({
+											type: 'MODAL/OPEN', payload: {
+												modal: QuestionPicker,
+												modalProps: {
+													saveSelectedQuestions: this.saveSelectedQuestions,
+													selectedQuestions: form.questions,
+													filterParams: {
+														isArchived: false
+													}
 												},
-												saveQuestion: this.saveQuestion
-											},
-											// prevLocation: { ...this.props.router.location },
-										}
-									})
-								}} block>Copy from existing Question</Button>
-							</div>
+												// prevLocation: { ...this.props.router.location },
+											}
+										});
+									}} block>Copy from existing Question</Button>
+								</div>
+							)}
 							{this.state.isFetchingQuestions ? (
 								<div className="text-center">
 									<Loader />
 								</div>
 							) : (
-								<>
-									{form.questions.map((question, questionKey) => {
-										return (
-											<Card key={questionKey}>
-												<CardHeader>{question.content}</CardHeader>
-												<CardBody>
-													{question.type == 'open-ended' ? (
-														<div>
-															{question.answers[0].content}
-														</div>
-													) : (
-														<>
-															{question.answers.map((answer, answerKey) => {
-																return (
-																	<div className="mb-2" key={answerKey}>
-																		<div style={{ width: 40 }}>
-																			{answer.isCorrect && (
-																				<FontAwesomeIcon className="text-success" name="check" />
-																			)}
-																		</div>
-																		<div className="ml-2">
-																			{answer.content}
-																		</div>
-																	</div>
-																);
-															})}
-														</>
-													)}
-												</CardBody>
-											</Card>
-										)
-									})}
-								</>
-							)}
+									<>
+										{form.questions.map((question, questionKey) => {
+											return (
+												<Card key={questionKey} className="mb-3">
+													<CardHeader>{question.content}</CardHeader>
+													<CardBody>
+														{question.type == 'open-ended' ? (
+															<div>
+																{question.answers[0].content}
+															</div>
+														) : (
+																<>
+																	{question.answers.map((answer, answerKey) => {
+																		return (
+																			<div className="d-flex justify-content-start mb-2" key={answerKey}>
+																				<div style={{ width: 18 }}>
+																					{answer.isCorrect && (
+																						<FontAwesomeIcon className="text-success" name="check" />
+																					)}
+																				</div>
+																				<div className="ml-2">
+																					{answer.content}
+																				</div>
+																			</div>
+																		);
+																	})}
+																</>
+															)}
+													</CardBody>
+												</Card>
+											)
+										})}
+									</>
+								)}
 						</div>
 					</ div>
 				}

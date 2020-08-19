@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import moment from 'moment';
-import { Button, Badge } from 'reactstrap';
+import { Button, Badge, Input } from 'reactstrap';
 import FetchableReactTable from '/imports/ui/components/fetchableReactTable';
+import constants from '/imports/constants';
 
 class Assessments extends Component {
 	handleView = (rowInfo, column) => {
@@ -95,19 +96,28 @@ class Assessments extends Component {
 			{
 				id: 'type',
 				Header: 'Type',
-				accessor: (data) => data.type,
+				searchAlgorithm: 'string',
+				accessor: (data) => constants.assessmentTypes[data.type],
+				Filter: ({ column: { filterValue, setFilter } }) => (
+					<Input type="select" bsSize="sm" onChange={event => setFilter(event.target.value || undefined)} value={filterValue ? filterValue : ''}>
+						<option value="">Show All</option>
+						{Object.entries(constants.assessmentTypes).map(([key, value]) => {
+							return <option key={key} value={key}>{value}</option>
+						})}
+					</Input>
+				),
 			},
 			{
 				id: 'isArchived',
 				accessor: 'isArchived',
 				Header: 'Is Archived',
 				accessor: (data) => <Badge color={data.isArchived ? 'positive' : 'negative'}>{data.isArchived ? 'TRUE' : 'FALSE'}</Badge>,
-				Filter: ({ filter, onChange }) => (
-					<select onChange={(event) => onChange(event.target.value)} style={{ width: '100%' }} value={filter ? filter.value : 'false'}>
+				Filter: ({ column: { filterValue, setFilter } }) => (
+					<Input type="select" bsSize="sm" onChange={event => setFilter(event.target.value || undefined)} value={filterValue ? filterValue : ''}>
 						<option value="boolean-all">Show All</option>
 						<option value="false">Active</option>
 						<option value="true">Archived</option>
-					</select>
+					</Input>
 				),
 				searchAlgorithm: 'boolean',
 			},

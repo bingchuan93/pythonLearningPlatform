@@ -27,7 +27,7 @@ class BaseModal extends Component {
     render() {
         return (
             <div className={"base-modal position-fixed w-100 h-100 webkit-overflow-scrolling " + (this.props.className ? this.props.className : "")} onClick={this.props.onClick}>
-                <div className={"modal-dialog position-relative d-flex m-auto min-vh-100 align-items-center" + (" modal-" + this.props.size)}>
+                <div className={"modal-dialog position-relative d-flex m-auto min-vh-100 align-items-center" + (" modal-" + this.props.size) + (this.props.isScrollable ? " modal-dialog-scrollable" : "")}>
                     <div className={"modal-content d-flex flex-column w-100"}>
                         {this.props.header ? (
                             <React.Fragment>
@@ -70,6 +70,7 @@ BaseModal.defaultProps = {
     size: 'xl',
     onClose: null,
     index: -1,
+    isScrollable: false,
 }
 
 export default connect(

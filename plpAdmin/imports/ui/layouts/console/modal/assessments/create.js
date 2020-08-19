@@ -24,7 +24,7 @@ class AssessmentCreate extends Component {
                     type: 'ALERT/OPEN',
                     payload: {
                         alertProps: {
-                            body: <div style={{ textAlign: 'center' }}>Tutorial Groups successfully created</div>,
+                            body: <div style={{ textAlign: 'center' }}>Assessment successfully created</div>,
                             closeOnBgClick: true,
                             showConfirmButton: true,
                             confirmButtonText: 'Done',

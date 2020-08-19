@@ -3,6 +3,7 @@
 
 $header-height: 60px;
 $side-menu-width: 300px;
+$main-color: #3c4b64;
 
 $mood-2l: #ffd2ba;
 $mood: #ff7d37;
@@ -14,6 +15,8 @@ $font-color: #221E22;
 @import "../imports/ui/layouts/mainApp/body/body";
 @import "../imports/ui/layouts/mainApp/body/dashboard/dashboard";
 @import "../imports/ui/layouts/mainApp/body/lessons/lessons";
+
+@import "../imports/ui/components/alert";
 
 body * {
     font-family: 'Comfortaa', cursive;
