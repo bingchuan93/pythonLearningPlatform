@@ -81,4 +81,8 @@ class AssessmentCreate extends Component {
     }
 }
 
-export default connect()(AssessmentCreate);
+export default connect(
+    ({ assessmentState }) => ({
+        assessmentState
+    })
+)(AssessmentCreate);

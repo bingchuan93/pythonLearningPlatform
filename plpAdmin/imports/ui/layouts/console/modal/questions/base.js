@@ -97,7 +97,7 @@ class QuestionBase extends Component {
 
     render() {
         const { form } = this.state;
-        console.log(this.state.form.answers);
+        
         return (
             <BaseModal
                 index={this.props.index}

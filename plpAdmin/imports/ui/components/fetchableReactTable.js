@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { useTable, useFilters, useSortBy, usePagination } from 'react-table';
 import { Table, Button, Input, Row, Col } from 'reactstrap';
 import Loader from '/imports/ui/components/icons/loader';
-import FontAwesomeIcon from '/imports/ui/components/fontAwesome';
+import FontAwesomeIcon from '/imports/ui/components/fontAwesomeIcon';
 import Checkbox from '/imports/ui/components/checkbox';
 import { usePrevious, useIsMounted, composeSubscriptionFiltersFieldsSort } from '/imports/util';
 import _ from 'lodash';
