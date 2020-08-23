@@ -19,6 +19,7 @@ class Body extends Component {
                                 <Route
                                     path={contentRoute.path}
                                     component={contentRoute.component}
+                                    exact={contentRoute.exact}
                                     key={key}
                                 />
                             );

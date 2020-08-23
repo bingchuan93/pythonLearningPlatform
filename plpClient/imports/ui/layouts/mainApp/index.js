@@ -18,11 +18,11 @@ class MainApp extends Component {
     render() {
         return (
             <div id="app">
-                {!this.props.appState.assessmentMode && (
+                {!this.props.assessmentState.endTime && (
                     <Header />
                 )}
                 <Body />
-                {!this.props.appState.assessmentMode && (
+                {!this.props.assessmentState.endTime && (
                     <SideMenu />
                 )}
                 {this.props.alertState.alertProps &&
@@ -34,10 +34,11 @@ class MainApp extends Component {
 }
 
 export default connect(
-    ({ authState, appState, router, alertState }) => ({
+    ({ authState, appState, router, alertState, assessmentState }) => ({
         authState,
         appState,
         router,
-        alertState
+        alertState,
+        assessmentState
     })
 )(MainApp);

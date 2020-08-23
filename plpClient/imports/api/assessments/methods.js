@@ -17,19 +17,45 @@ Meteor.methods({
                 const relatedQuestions = Questions.find({ _id: { $in: assessment.questionIds } }).fetch();
                 assessment.fullMarks = getTotalMarks(relatedQuestions);
             })
-            const ongoingAssessments = _.remove(assessments, (assessment) => {
-                return moment(assessment.startDate).isSame(new Date(), 'day') || assessments.startDate < new Date();
-            })
+            const ongoingQuizzes = _.remove(assessments, (assessment) => {
+                return moment(assessment.startDate).isSame(new Date(), 'day') || (assessment.startDate < new Date());
+            });
             return {
-                ongoingAssessments,
-                upcomingAssessments: assessments
+                ongoingQuizzes,
+                upcomingQuizzes: assessments
             };
         } catch (e) {
-            console.log(e);
             if (e.reason) {
                 throw new Meteor.Error(e.error, e.reason);
             }
             throw new Meteor.Error('error', 'Fail to get related assessments');
         }
     },
+    'Assessment.getQuizById' (id) {
+        try {
+            const quiz = Assessments.findOne({  _id: new Mongo.ObjectID(id), type: 'quiz' });
+            if (quiz) {
+                const relatedQuestions = Questions.find({ _id: { $in: quiz.questionIds } }).fetch();
+                if (relatedQuestions.length == quiz.questionIds.length) {
+                    relatedQuestions.forEach((question) => {
+                        question.answers.forEach((answer) => {
+                            delete answer.isCorrect;
+                        });
+                    });
+                    quiz.questions = relatedQuestions;
+                    return quiz;
+                } else {
+                    throw new Meteor.Error('error', 'Invalid Quiz');
+                }
+            } else {
+                throw new Meteor.Error('error', 'Invalid Quiz');
+            }
+        } catch (e) {
+            console.log(e);
+            if (e.reason) {
+                throw new Meteor.Error(e.error, e.reason);
+            }
+            throw new Meteor.Error('error', 'Fail to get quiz by id');
+        }
+    }
 })

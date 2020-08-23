@@ -15,7 +15,7 @@ class SideMenu extends Component {
                     <div className="menu-items d-flex flex-column justify-content-center">
                         {contentRoutes.map((contentRoute, key) => {
                             if (contentRoute.showInSideMenu) {
-                                return <div key={key} className="menu-item text-center p-3 clickable" onClick={() => this.props.dispatch(push(contentRoutes.path))}>{contentRoute.title}</div>
+                                return <div key={key} className="menu-item text-center p-3 clickable" onClick={() => this.props.dispatch(push(contentRoute.path))}>{contentRoute.title}</div>
                             }
                         })}
                     </div>

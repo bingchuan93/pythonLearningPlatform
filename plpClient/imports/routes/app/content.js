@@ -1,6 +1,7 @@
 import Dashboard from '/imports/ui/layouts/mainApp/body/dashboard';
 import Lessons from '/imports/ui/layouts/mainApp/body/lessons';
 import Quizzes from '/imports/ui/layouts/mainApp/body/quizzes';
+import StartQuiz from '/imports/ui/layouts/mainApp/body/quizzes/start';
 
 const contentRoutes = [{
     path: '/',
@@ -13,23 +14,26 @@ const contentRoutes = [{
     name: 'dashboard',
     title: 'Dashboard',
     component: Dashboard,
+    exact: true,
     showInSideMenu: true
 }, {
     path: '/lessons',
     name: 'lessons',
     title: 'Lessons',
     component: Lessons,
+    exact: true,
     showInSideMenu: true
 }, {
     path: '/quizzes',
     name: 'quizzes',
     title: 'Quizzes',
     component: Quizzes,
+    exact: true,
     showInSideMenu: true
 }, {
     path: '/quizzes/:id',
+    component: StartQuiz,
     exact: true,
-    component: Quizzes,
     showInSideMenu: false
 }];
 
