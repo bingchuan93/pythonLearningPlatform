@@ -1,5 +1,9 @@
+import _ from 'lodash';
+
 const initialState = {
-    user: null
+    user: null,
+    assessmentEndTime: null,
+    assessmentSubmission: null,
 };
 
 const userState = (state = initialState, action) => {
@@ -10,6 +14,15 @@ const userState = (state = initialState, action) => {
         case 'USER/RESET':
             Meteor.logout();
             return { ...initialState };
+        case 'ASSESSMENT_MODE/START':
+            const endTime = new Date((new Date()).getTime() + (payload.duration * 60000));
+            return { ...state, endTime: endTime, assessmentSubmission: { quizId: payload.quizId, submittedAnswers: {} } };
+        case 'ASSESSMENT_MODE/EXIT':
+            return { ...state, endTime: null, assessmentSubmission: null };
+        case 'ASSESSMENT/ANSWER':
+            const clonedAnswers = _.cloneDeep(state.assessmentSubmission.submittedAnswers);
+            clonedAnswers[payload.questionId] = payload.answers;
+            return { ...state, assessmentSubmission: { ...state.assessmentSubmission, submittedAnswers: clonedAnswers}}
     }
     return state;
 }

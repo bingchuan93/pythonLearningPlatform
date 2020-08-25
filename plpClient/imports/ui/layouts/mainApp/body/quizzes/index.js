@@ -123,6 +123,4 @@ class Quizzes extends Component {
     }
 }
 
-export default connect(
-    ({assessmentState}) => ({assessmentState})
-)(Quizzes);
+export default connect()(Quizzes);

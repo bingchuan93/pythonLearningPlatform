@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { push } from 'connected-react-router';
 import { connect } from 'react-redux';
-import { Button } from 'reactstrap';
-import moment from 'moment';
+import { Button, Badge } from 'reactstrap';
+import QuestionViewer from '/imports/ui/components/questionViewer';
+import LoadingButton from '/imports/ui/components/loadingButton';
+import ActivityIndicator from '/imports/ui/components/icons/activityIndicator';
 
 class StartQuiz extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            progress: 0,
+            isQuizFetching: true,
             quiz: null,
             seconds: 0
         }
@@ -18,23 +20,24 @@ class StartQuiz extends Component {
     componentDidMount() {
         if (this.props.match.params.id) {
             this.getQuiz(this.props.match.params.id);
+        } else {
+            this.setState({ isQuizFetching: false });
+        }
+        if (this.props.userState.endTime) {
+            this.startTimer();
         }
     }
 
     getQuiz = (id) => {
+        this.setState({ isQuizFetching: true });
         Meteor.call('Assessment.getQuizById', id, (error, result) => {
             if (!error) {
-                this.setState({ quiz: result, seconds: result.duration * 60 });
+                this.setState({ quiz: result, isQuizFetching: false });
             } else {
+                this.setState({ isQuizFetching: false });
                 this.props.dispatch(push('/'));
             }
         });
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (!prevProps.assessmentState.endTime && this.props.assessmentState.endTime) {
-            // this.startTimer();
-        }
     }
 
     componentWillUnmount() {
@@ -43,44 +46,57 @@ class StartQuiz extends Component {
 
     startTimer = () => {
         this.timer = setInterval(() => {
+            const timeLeft = (new Date(this.props.userState.endTime).getTime() - new Date().getTime()) / 1000;
+            if (timeLeft < 0) {
+                this.endQuiz();
+            }
             this.setState({
-                seconds: this.state.seconds - 1
+                seconds: timeLeft
             });
         }, 1000);
     }
 
-    //show timer function
-    //auto exit when timer up function
+    endQuiz = () => {
+        clearInterval(this.timer);
+        this.setState({ seconds: 0 });
+        this.props.dispatch({ type: "ASSESSMENT_MODE/EXIT" });
+        alert('exam ended');
+    }
+
     render() {
         const { quiz } = this.state;
-        // console.log(quiz);
-        console.log(this.props.assessmentState.endTime);
+        
         return (
             <>
-                {this.props.assessmentState.endTime ? (
+                {this.props.userState.endTime ? (
                     <div>
-                        <div>
-                            Quiz Started
+                        <div className="d-flex justify-content-end align-items-center">
+                            <Badge className="font-md" color="danger" style={{ minWidth: 100 }}>{Math.floor(this.state.seconds / 3600).toString().padStart(2, "0")}:{Math.floor((this.state.seconds % 3600) / 60).toString().padStart(2, "0")}:{Math.floor(this.state.seconds % 60).toString().padStart(2, "0")}</Badge>
+                            <Button className="ml-3" size="sm" onClick={this.endQuiz}>End Quiz</Button>
                         </div>
-                        <div>
-                            {(this.state.seconds/60).toFixed(0)}:{this.state.seconds%60} Fix minutes bug
-                        </div>
+                        {this.state.isQuizFetching ? (
+                            <div className="text-center">
+                                <ActivityIndicator />
+                            </div>
+                        ) : (
+                                <QuestionViewer assessment={quiz} />
+                            )}
                     </div>
-                    //questions viewer component. pass in questions. and return any selected answer's and question's id. Question viewer will contain components for displaying different types of questions.
                 ) : (
                         <div className="pt-3">
                             <div>
                                 By click the button below, you have agreed to the school's term and condition in undertaking an assessment.
                                 Any cheating will be dealt with seriously.
                             </div>
-                            <Button
+                            <LoadingButton
                                 className="mt-3"
                                 color="success"
+                                isLoading={this.state.isQuizFetching}
                                 onClick={() => {
-                                    this.props.dispatch({ type: "ASSESSMENT_MODE/START", payload: { duration: quiz.duration } });
+                                    this.props.dispatch({ type: "ASSESSMENT_MODE/START", payload: { duration: quiz.duration, quizId: quiz._id.valueOf() } });
                                     this.startTimer();
                                 }}
-                            >Start Quiz</Button>
+                            >Start Quiz</LoadingButton>
                         </div>
                     )
                 }
@@ -90,7 +106,7 @@ class StartQuiz extends Component {
 }
 
 export default connect(
-    ({ assessmentState }) => ({
-        assessmentState
+    ({ userState }) => ({
+        userState
     })
 )(StartQuiz);
