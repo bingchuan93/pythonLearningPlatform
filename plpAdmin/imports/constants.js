@@ -25,11 +25,6 @@ const constants = {
             value: 'true-or-false',
             maxAnswer: 2
         },
-        openEnded: {
-            label: 'Open Ended',
-            value: 'open-ended',
-            maxAnswer: 1
-        },
         coding: {
             label: 'Coding',
             value: 'coding',

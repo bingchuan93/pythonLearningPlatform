@@ -510,28 +510,20 @@ class AssessmentBase extends Component {
 												<Card key={questionKey} className="mb-3">
 													<CardHeader>{question.content}</CardHeader>
 													<CardBody>
-														{question.type == 'open-ended' ? (
-															<div>
-																{question.answers[0].content}
-															</div>
-														) : (
-																<>
-																	{question.answers.map((answer, answerKey) => {
-																		return (
-																			<div className="d-flex justify-content-start mb-2" key={answerKey}>
-																				<div style={{ width: 18 }}>
-																					{answer.isCorrect && (
-																						<FontAwesomeIcon className="text-success" name="check" />
-																					)}
-																				</div>
-																				<div className="ml-2">
-																					{answer.content}
-																				</div>
-																			</div>
-																		);
-																	})}
-																</>
-															)}
+														{question.answers.map((answer, answerKey) => {
+															return (
+																<div className="d-flex justify-content-start mb-2" key={answerKey}>
+																	<div style={{ width: 18 }}>
+																		{answer.isCorrect && (
+																			<FontAwesomeIcon className="text-success" name="check" />
+																		)}
+																	</div>
+																	<div className="ml-2">
+																		{answer.content}
+																	</div>
+																</div>
+															);
+														})}
 													</CardBody>
 												</Card>
 											)

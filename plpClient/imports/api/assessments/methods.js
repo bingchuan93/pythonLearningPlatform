@@ -3,7 +3,7 @@ import moment from 'moment';
 import { collections } from 'meteor/bingchuan:plp-collections';
 import { getTotalMarks } from '/imports/util';
 
-const { Assessments, Questions } = collections;
+const { Assessments, Questions, Submissions } = collections;
 
 Meteor.methods({
     'Assessments.getRelatedQuizzes'() {
@@ -15,7 +15,9 @@ Meteor.methods({
             const assessments = Assessments.find({ type: 'quiz', endDate: { $gt: new Date() }, participatingTutorialGroupIds: user.profile.tutorialGroupId }).fetch();
             assessments.forEach((assessment) => {
                 const relatedQuestions = Questions.find({ _id: { $in: assessment.questionIds } }).fetch();
+                const relatedSubmissions = Submissions.find({ assessmentId: assessment._id, 'student._id': user._id }).fetch();
                 assessment.fullMarks = getTotalMarks(relatedQuestions);
+                assessment.prevAttempts = relatedSubmissions;
             })
             const ongoingQuizzes = _.remove(assessments, (assessment) => {
                 return moment(assessment.startDate).isSame(new Date(), 'day') || (assessment.startDate < new Date());
@@ -31,10 +33,16 @@ Meteor.methods({
             throw new Meteor.Error('error', 'Fail to get related assessments');
         }
     },
-    'Assessment.getQuizById' (id) {
+    'Assessment.getStartableQuizById' (id) {
         try {
             const quiz = Assessments.findOne({  _id: new Mongo.ObjectID(id), type: 'quiz' });
             if (quiz) {
+                if (quiz.attempts > 0) {
+                    const prevSubmissions = Submissions.find({ assessmentId: quiz._id, 'student._id': Meteor.userId() }).fetch();
+                    if (prevSubmissions.length >= quiz.attempts) {
+                        throw new Meteor.Error('error', 'Max attempts reached');
+                    }
+                }
                 const relatedQuestions = Questions.find({ _id: { $in: quiz.questionIds } }).fetch();
                 if (relatedQuestions.length == quiz.questionIds.length) {
                     relatedQuestions.forEach((question) => {
@@ -57,5 +65,5 @@ Meteor.methods({
             }
             throw new Meteor.Error('error', 'Fail to get quiz by id');
         }
-    }
+    },
 })

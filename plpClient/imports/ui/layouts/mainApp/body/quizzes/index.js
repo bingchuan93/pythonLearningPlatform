@@ -87,6 +87,10 @@ class Quizzes extends Component {
                                                                     <div>{moment(ongoingQuiz.startDate).format('D MMM YYYY HH:mmA')}</div>
                                                                     <div className="mt-3 text-muted font-sm">Full marks</div>
                                                                     <div>{ongoingQuiz.fullMarks}</div>
+                                                                    <div className="mt-3 text-muted font-sm">Number of Attempts</div>
+                                                                    <div>{ongoingQuiz.attempts > 0 ? ongoingQuiz.attempts : 'No Limit'}</div>
+                                                                    <div className="mt-3 text-muted font-sm">Attempts Taken</div>
+                                                                    <div>{ongoingQuiz.prevAttempts.length}</div>
                                                                 </div>
                                                                 <Button
                                                                     color="success"

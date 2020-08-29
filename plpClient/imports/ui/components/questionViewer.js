@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Input, FormGroup, Label, Button } from 'reactstrap';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 
 class QuestionViewer extends Component {
     constructor(props) {
@@ -18,14 +19,14 @@ class QuestionViewer extends Component {
                 {submittedAnswers && (
                     <>
                         <div className="mb-2">{question.content}</div>
-                        {(question.type != 'open-ended' && question.type != 'coding') ? (
+                        {question.type != 'coding' ? (
                             <div>
                                 {question.answers.map((answer, key) => {
                                     return (
                                         <div key={key} className="d-flex justify-content-start align-items-center">
                                             <input
                                                 className="mr-2"
-                                                checked={submittedAnswers[question._id.valueOf()] && submittedAnswers[question._id.valueOf()].includes(answer.id)}
+                                                checked={submittedAnswers[question._id.valueOf()] ? submittedAnswers[question._id.valueOf()].includes(answer.id) : false}
                                                 type={question.type == 'multiple-choice-multi-answer' ? "checkbox" : "radio"}
                                                 name={this.state.currentQuestion}
                                                 onChange={() => this.selectAnswer(question, answer)}
@@ -48,29 +49,33 @@ class QuestionViewer extends Component {
         switch (question.type) {
             case 'multiple-choice-single-answer':
             case 'true-or-false':
-                this.props.dispatch({ type: "ASSESSMENT/ANSWER", payload: {
-                    questionId: question._id.valueOf(),
-                    answers: [selectedAnswer.id]
-                }});
+                this.props.dispatch({
+                    type: "ASSESSMENT/ANSWER", payload: {
+                        questionId: question._id.valueOf(),
+                        answers: [selectedAnswer.id]
+                    }
+                });
                 break;
             case 'multiple-choice-multi-answer':
                 let clonedAnswers = this.props.userState.assessmentSubmission.submittedAnswers[question._id.valueOf()];
                 if (clonedAnswers) {
                     if (clonedAnswers.includes(selectedAnswer.id)) {
-                        _.remove(clonedAnswers, selectedAnswer.id);
+                        _.remove(clonedAnswers, (o) => o == selectedAnswer.id);
                     } else {
                         clonedAnswers.push(selectedAnswer.id);
                     }
                 } else {
                     clonedAnswers = [selectedAnswer.id];
                 }
-                this.props.dispatch({ type: "ASSESSMENT/ANSWER", payload: {
-                    questionId: question._id.valueOf(),
-                    answers: clonedAnswers
-                }});
+                this.props.dispatch({
+                    type: "ASSESSMENT/ANSWER", payload: {
+                        questionId: question._id.valueOf(),
+                        answers: clonedAnswers
+                    }
+                });
                 break;
-            case 'open-ended':
             case 'coding':
+                break;
         }
     }
 
@@ -85,14 +90,26 @@ class QuestionViewer extends Component {
                     <Button
                         color="default"
                         disabled={this.state.currentQuestion <= 1}
-                        onClick={() => this.setState({ currentQuestion: this.state.currentQuestion - 1 })}
+                        onClick={() => {
+                            if (this.props.quizEnded) {
+                                this.props.endQuiz();
+                            } else {
+                                this.setState({ currentQuestion: this.state.currentQuestion - 1 })
+                            }
+                        }}
                     >
                         Previous
                         </Button>
                     <Button
                         color="default"
                         disabled={this.state.currentQuestion >= this.props.assessment.questions.length}
-                        onClick={() => this.setState({ currentQuestion: this.state.currentQuestion + 1 })}
+                        onClick={() => {
+                            if (this.props.quizEnded) {
+                                this.props.endQuiz();
+                            } else {
+                                this.setState({ currentQuestion: this.state.currentQuestion + 1 });
+                            }
+                        }}
                     >
                         Next
                     </Button>
