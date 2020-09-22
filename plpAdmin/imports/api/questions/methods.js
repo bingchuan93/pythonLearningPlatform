@@ -34,17 +34,29 @@ Meteor.methods({
     },
     'Questions.create'(formValues) {
         try {
-            const newQuestionId = Questions.insert({
-                ...formValues,
-                fullMarks: formValues.answers.reduce((accumulator, current) => {
+            let fullMarks = 0;
+            if (formValues.type != 'coding') {
+                fullMarks = formValues.answers.reduce((accumulator, current) => {
                     if (current.isCorrect) {
                         accumulator += formValues.marksPerCorrectAnswer;
                     }
-                }, 0),
+                }, 0);
+            } else {
+                fullMarks = formValues.testCases.length * formValues.marksPerCorrectTestCase;
+                formValues.answers = [{
+                    id: 1,
+                    content: 'no-answer',
+                    isCorrect: false
+                }];
+            }
+            const newQuestionId = Questions.insert({
+                ...formValues,
+                fullMarks: fullMarks
             });
 
             return Questions.findOne(newQuestionId);
         } catch (e) {
+            console.log(e);
             if (e.reason) {
                 throw new Meteor.Error(e.error, e.reason);
             }

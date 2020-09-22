@@ -510,20 +510,47 @@ class AssessmentBase extends Component {
 												<Card key={questionKey} className="mb-3">
 													<CardHeader>{question.content}</CardHeader>
 													<CardBody>
-														{question.answers.map((answer, answerKey) => {
-															return (
-																<div className="d-flex justify-content-start mb-2" key={answerKey}>
-																	<div style={{ width: 18 }}>
-																		{answer.isCorrect && (
-																			<FontAwesomeIcon className="text-success" name="check" />
-																		)}
+														{question.type != 'coding' ? (
+															<>
+																{question.answers.map((answer, answerKey) => {
+																	return (
+																		<div className="d-flex justify-content-start mb-2" key={answerKey}>
+																			<div style={{ width: 18 }}>
+																				{answer.isCorrect && (
+																					<FontAwesomeIcon className="text-success" name="check" />
+																				)}
+																			</div>
+																			<div className="ml-2">
+																				{answer.content}
+																			</div>
+																		</div>
+																	);
+																})}
+															</>
+														) : (
+																<>
+																	<div className="d-flex justify-content-between mb-2">
+																		<div>
+																			Test Case
+																		</div>
+																		<div className="ml-2">
+																			Answer
+																		</div>
 																	</div>
-																	<div className="ml-2">
-																		{answer.content}
-																	</div>
-																</div>
-															);
-														})}
+																	{question.testCases.map((testCase, testCaseKey) => {
+																		return (
+																			<div className="d-flex justify-content-between mb-2" key={testCaseKey}>
+																				<div>
+																					{testCase.content}
+																				</div>
+																				<div className="ml-2">
+																					{testCase.answer}
+																				</div>
+																			</div>
+																		);
+																	})}
+																</>
+															)}
 													</CardBody>
 												</Card>
 											)

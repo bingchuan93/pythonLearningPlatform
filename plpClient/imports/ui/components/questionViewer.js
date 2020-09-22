@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Input, FormGroup, Label, Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import AceEditor from "react-ace";
+import "ace-builds/src-noconflict/mode-python";
+import "ace-builds/src-noconflict/theme-github";
 
 class QuestionViewer extends Component {
     constructor(props) {
@@ -37,7 +40,24 @@ class QuestionViewer extends Component {
                                 })}
                             </div>
                         ) : (
-                                <div>Open End / Coding</div>
+                                <div>
+                                    <AceEditor
+                                        mode="python"
+                                        theme="github"
+                                        onChange={(e) => {
+                                            this.selectAnswer(question, e);
+                                        }}
+                                        fontSize={14}
+                                        showGutter={true}
+                                        highlightActiveLine={true}
+                                        editorProps={{ $blockScrolling: true }}
+                                        value={submittedAnswers[question._id.valueOf()] ? submittedAnswers[question._id.valueOf()] : ''}
+                                        setOptions={{
+                                            showLineNumbers: true,
+                                            tabSize: 2,
+                                        }}
+                                        />
+                                </div>
                             )}
                     </>
                 )}
@@ -75,6 +95,12 @@ class QuestionViewer extends Component {
                 });
                 break;
             case 'coding':
+                this.props.dispatch({
+                    type: "ASSESSMENT/ANSWER", payload: {
+                        questionId: question._id.valueOf(),
+                        answers: selectedAnswer
+                    }
+                });
                 break;
         }
     }

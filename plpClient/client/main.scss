@@ -7,9 +7,9 @@ $main-color: #3c4b64;
 
 $mood-2l: #ffd2ba;
 $mood: #ff7d37;
-$font-color: #221E22;
+$font-color: #221e22;
 
-@import url('https://fonts.googleapis.com/css?family=Comfortaa&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Comfortaa&display=swap");
 @import "../imports/ui/layouts/mainApp/header/header";
 @import "../imports/ui/layouts//mainApp//sideMenu/sideMenu";
 @import "../imports/ui/layouts/mainApp/body/body";
@@ -19,7 +19,7 @@ $font-color: #221E22;
 @import "../imports/ui/components/alert";
 
 body * {
-    font-family: 'Comfortaa', cursive;
+    font-family: "Comfortaa", cursive;
     border-radius: 0px !important;
     color: $font-color;
 
@@ -60,3 +60,5 @@ body * {
 .clickable {
     cursor: pointer;
 }
+
+#ace-editor *{ font-family : monospace !important;font-size: 16px !important;direction:ltr !important;text-align:left !important;}

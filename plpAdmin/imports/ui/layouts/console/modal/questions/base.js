@@ -25,7 +25,8 @@ class QuestionBase extends Component {
                 content: '',
                 answers: [],
                 marksPerCorrectAnswer: 1,
-                // isArchived: false,
+                marksPerCorrectTestCase: 1,
+                testCases: []
             }
         }
     }
@@ -49,7 +50,8 @@ class QuestionBase extends Component {
                         content: result.content,
                         answers: result.answers,
                         marksPerCorrectAnswer: result.marksPerCorrectAnswer,
-                        // isArchived: result.isArchived
+                        marksPerCorrectTestCase: result.marksPerCorrectTestCase,
+                        testCases: result.testCases
                     }
                 });
             }
@@ -97,7 +99,7 @@ class QuestionBase extends Component {
 
     render() {
         const { form } = this.state;
-        
+
         return (
             <BaseModal
                 index={this.props.index}
@@ -198,32 +200,61 @@ class QuestionBase extends Component {
                                     </Col>
                                 </Row>
                             </FormGroup>
-                            <FormGroup>
-                                <Row form>
-                                    <Col md={4}>
-                                        <Label className="control-label mb-0 font-weight-bold">Marks Per Correct Answer</Label>
-                                    </Col>
-                                    <Col md={8}>
-                                        <TextValidator
-                                            className="form-control"
-                                            type="number"
-                                            name="marks-per-correct-answer"
-                                            value={form.marksPerCorrectAnswer}
-                                            validators={['required', 'isPositive']}
-                                            onChange={(e) => {
-                                                this.setState({
-                                                    form: {
-                                                        ...form,
-                                                        marksPerCorrectAnswer: e.target.value
-                                                    }
-                                                })
-                                            }}
-                                            errorMessages={['Name is required', 'Marks must be positive']}
-                                            readOnly={this.props.mode == 'read'}
-                                        />
-                                    </Col>
-                                </Row>
-                            </FormGroup>
+                            {form.type != 'coding' ? (
+                                <FormGroup>
+                                    <Row form>
+                                        <Col md={4}>
+                                            <Label className="control-label mb-0 font-weight-bold">Marks Per Correct Answer</Label>
+                                        </Col>
+                                        <Col md={8}>
+                                            <TextValidator
+                                                className="form-control"
+                                                type="number"
+                                                name="marks-per-correct-answer"
+                                                value={form.marksPerCorrectAnswer}
+                                                validators={form.type != 'coding' ? ['required', 'isPositive'] : []}
+                                                onChange={(e) => {
+                                                    this.setState({
+                                                        form: {
+                                                            ...form,
+                                                            marksPerCorrectAnswer: e.target.value
+                                                        }
+                                                    })
+                                                }}
+                                                errorMessages={form.type != 'coding' ? ['Marks Per Correct Answer is required', 'Marks must be positive'] : []}
+                                                readOnly={this.props.mode == 'read'}
+                                            />
+                                        </Col>
+                                    </Row>
+                                </FormGroup>
+                            ) : (
+                                    <FormGroup>
+                                        <Row form>
+                                            <Col md={4}>
+                                                <Label className="control-label mb-0 font-weight-bold">Marks Per Correct Test Case</Label>
+                                            </Col>
+                                            <Col md={8}>
+                                                <TextValidator
+                                                    className="form-control"
+                                                    type="number"
+                                                    name="marks-per-correct-answer"
+                                                    value={form.marksPerCorrectTestCase}
+                                                    validators={form.type == 'coding' ? ['required', 'isPositive'] : []}
+                                                    onChange={(e) => {
+                                                        this.setState({
+                                                            form: {
+                                                                ...form,
+                                                                marksPerCorrectTestCase: e.target.value
+                                                            }
+                                                        })
+                                                    }}
+                                                    errorMessages={form.type == 'coding' ? ['Marks Per Correct Test Case is required', 'Marks must be positive'] : []}
+                                                    readOnly={this.props.mode == 'read'}
+                                                />
+                                            </Col>
+                                        </Row>
+                                    </FormGroup>
+                                )}
                             <FormGroup>
                                 <Row form>
                                     <Col md={4}>
@@ -233,101 +264,196 @@ class QuestionBase extends Component {
                             </FormGroup>
                             <FormGroup>
                                 <Row form>
-                                    {this.state.form.answers.length > 0 && (
-                                        <Table>
-                                            <thead>
-                                                <tr>
-                                                    <th style={{ maxWidth: 25 }}>No.</th>
-                                                    <th>Answer</th>
-                                                    <th style={{ maxWidth: 50 }}>Correct Answer</th>
-                                                    <th style={{ maxWidth: 25 }}>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {this.state.form.answers.map((answer, key) => {
-                                                    return (
-                                                        <tr key={key}>
-                                                            <th style={{ maxWidth: 25 }}>{key + 1}</th>
-                                                            <td>
-                                                                <TextValidator
-                                                                    className="form-control"
-                                                                    type="text"
-                                                                    name={"answer-" + answer.id}
-                                                                    value={answer.content}
-                                                                    validators={['required']}
-                                                                    onChange={(e) => {
-                                                                        const clonedAnswers = _.cloneDeep(this.state.form.answers);
-                                                                        const relatedAnswer = _.find(clonedAnswers, { id: answer.id });
-                                                                        relatedAnswer.content = e.target.value
-                                                                        this.setState({
-                                                                            form: {
-                                                                                ...form,
-                                                                                answers: clonedAnswers
-                                                                            }
-                                                                        })
-                                                                    }}
-                                                                    errorMessages={['Answer content is required']}
-                                                                    readOnly={this.props.mode == 'read'}
-                                                                />
-                                                            </td>
-                                                            <td style={{ maxWidth: 50 }}>
-                                                                <Switch
-                                                                    checked={answer.isCorrect}
-                                                                    uncheckedIcon={false}
-                                                                    checkedIcon={false}
-                                                                    onColor={'#3b9e57'}
-                                                                    offColor={'#9e3b3b'}
-                                                                    onChange={value => {
-                                                                        const clonedAnswers = _.cloneDeep(this.state.form.answers);
-                                                                        clonedAnswers.forEach((clonedAnswer) => {
-                                                                            if (clonedAnswer.id == answer.id) {
-                                                                                clonedAnswer.isCorrect = value;
-                                                                            } else {
-                                                                                clonedAnswer.isCorrect = this.state.form.type != constants.questionTypes.multipleChoiceMultiAnswer.value ? false : clonedAnswer.isCorrect;
-                                                                            }
-                                                                        });
-                                                                        this.setState({
-                                                                            form: {
-                                                                                ...this.state.form,
-                                                                                answers: clonedAnswers
-                                                                            }
-                                                                        });
-                                                                    }}
-                                                                    disabled={this.props.mode == 'view'}
-                                                                    className="react-switch"
-                                                                />
-                                                            </td>
-                                                            <td style={{ maxWidth: 25 }}>
-                                                                <Button color="danger" onClick={() => {
-                                                                    const clonedAnswers = _.cloneDeep(this.state.form.answers);
-                                                                    _.remove(clonedAnswers, { id: answer.id });
-                                                                    this.setState({
-                                                                        form: {
-                                                                            ...this.state.form,
-                                                                            answers: clonedAnswers
-                                                                        }
-                                                                    });
-                                                                }}>×</Button>
-                                                            </td>
+                                    {form.type != 'coding' ? (
+                                        <>
+                                            {this.state.form.answers.length > 0 && (
+                                                <Table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th style={{ maxWidth: 25 }}>No.</th>
+                                                            <th>Answer</th>
+                                                            <th style={{ maxWidth: 50 }}>Correct Answer</th>
+                                                            <th style={{ maxWidth: 25 }}>Action</th>
                                                         </tr>
-                                                    )
-                                                })}
-                                            </tbody>
-                                        </Table>
-                                    )}
-                                    {this.shouldRenderAddButton() && (
-                                        <Button color="create" size="sm" onClick={() => {
-                                            const clonedForm = _.cloneDeep(this.state.form);
-                                            clonedForm.answers.push({
-                                                id: randomstring.generate(),
-                                                content: '',
-                                                isCorrect: false
-                                            });
-                                            this.setState({
-                                                form: clonedForm
-                                            });
-                                        }}>Add Answers</Button>
-                                    )}
+                                                    </thead>
+                                                    <tbody>
+                                                        {this.state.form.answers.map((answer, key) => {
+                                                            return (
+                                                                <tr key={key}>
+                                                                    <th style={{ maxWidth: 25 }}>{key + 1}</th>
+                                                                    <td>
+                                                                        <TextValidator
+                                                                            className="form-control"
+                                                                            type="text"
+                                                                            name={"answer-" + answer.id}
+                                                                            value={answer.content}
+                                                                            validators={['required']}
+                                                                            onChange={(e) => {
+                                                                                const clonedAnswers = _.cloneDeep(this.state.form.answers);
+                                                                                const relatedAnswer = _.find(clonedAnswers, { id: answer.id });
+                                                                                relatedAnswer.content = e.target.value
+                                                                                this.setState({
+                                                                                    form: {
+                                                                                        ...form,
+                                                                                        answers: clonedAnswers
+                                                                                    }
+                                                                                })
+                                                                            }}
+                                                                            errorMessages={['Answer content is required']}
+                                                                            readOnly={this.props.mode == 'read'}
+                                                                        />
+                                                                    </td>
+                                                                    <td style={{ maxWidth: 50 }}>
+                                                                        <Switch
+                                                                            checked={answer.isCorrect}
+                                                                            uncheckedIcon={false}
+                                                                            checkedIcon={false}
+                                                                            onColor={'#3b9e57'}
+                                                                            offColor={'#9e3b3b'}
+                                                                            onChange={value => {
+                                                                                const clonedAnswers = _.cloneDeep(this.state.form.answers);
+                                                                                clonedAnswers.forEach((clonedAnswer) => {
+                                                                                    if (clonedAnswer.id == answer.id) {
+                                                                                        clonedAnswer.isCorrect = value;
+                                                                                    } else {
+                                                                                        clonedAnswer.isCorrect = this.state.form.type != constants.questionTypes.multipleChoiceMultiAnswer.value ? false : clonedAnswer.isCorrect;
+                                                                                    }
+                                                                                });
+                                                                                this.setState({
+                                                                                    form: {
+                                                                                        ...this.state.form,
+                                                                                        answers: clonedAnswers
+                                                                                    }
+                                                                                });
+                                                                            }}
+                                                                            disabled={this.props.mode == 'view'}
+                                                                            className="react-switch"
+                                                                        />
+                                                                    </td>
+                                                                    <td style={{ maxWidth: 25 }}>
+                                                                        <Button color="danger" onClick={() => {
+                                                                            const clonedAnswers = _.cloneDeep(this.state.form.answers);
+                                                                            _.remove(clonedAnswers, { id: answer.id });
+                                                                            this.setState({
+                                                                                form: {
+                                                                                    ...this.state.form,
+                                                                                    answers: clonedAnswers
+                                                                                }
+                                                                            });
+                                                                        }}>×</Button>
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        })}
+                                                    </tbody>
+                                                </Table>
+                                            )}
+                                            {this.shouldRenderAddButton() && (
+                                                <Button color="create" size="sm" onClick={() => {
+                                                    const clonedForm = _.cloneDeep(this.state.form);
+                                                    clonedForm.answers.push({
+                                                        id: randomstring.generate(),
+                                                        content: '',
+                                                        isCorrect: false
+                                                    });
+                                                    this.setState({
+                                                        form: clonedForm
+                                                    });
+                                                }}>Add Answers</Button>
+                                            )}
+                                        </>
+                                    ) : (
+                                            <>
+                                                {this.state.form.testCases.length > 0 && (
+                                                    <Table>
+                                                        <thead>
+                                                            <tr>
+                                                                <th style={{ maxWidth: 25 }}>No.</th>
+                                                                <th>Test Case</th>
+                                                                <th>Answer</th>
+                                                                <th style={{ maxWidth: 25 }}>Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {this.state.form.testCases.map((testCase, key) => {
+                                                                return (
+                                                                    <tr key={key}>
+                                                                        <th style={{ maxWidth: 25 }}>{key + 1}</th>
+                                                                        <td>
+                                                                            <TextValidator
+                                                                                className="form-control"
+                                                                                type="text"
+                                                                                name={"test-case-" + testCase.id}
+                                                                                value={testCase.content}
+                                                                                validators={['required']}
+                                                                                onChange={(e) => {
+                                                                                    const clonedTestCases = _.cloneDeep(this.state.form.testCases);
+                                                                                    const relatedTestCase = _.find(clonedTestCases, { id: testCase.id });
+                                                                                    relatedTestCase.content = e.target.value
+                                                                                    this.setState({
+                                                                                        form: {
+                                                                                            ...form,
+                                                                                            testCases: clonedTestCases
+                                                                                        }
+                                                                                    })
+                                                                                }}
+                                                                                errorMessages={['Test Case content is required']}
+                                                                                readOnly={this.props.mode == 'read'}
+                                                                            />
+                                                                        </td>
+                                                                        <td>
+                                                                            <TextValidator
+                                                                                className="form-control"
+                                                                                type="text"
+                                                                                name={"test-case-" + testCase.id}
+                                                                                value={testCase.answer}
+                                                                                validators={['required']}
+                                                                                onChange={(e) => {
+                                                                                    const clonedTestCases = _.cloneDeep(this.state.form.testCases);
+                                                                                    const relatedTestCase = _.find(clonedTestCases, { id: testCase.id });
+                                                                                    relatedTestCase.answer = e.target.value
+                                                                                    this.setState({
+                                                                                        form: {
+                                                                                            ...form,
+                                                                                            testCases: clonedTestCases
+                                                                                        }
+                                                                                    })
+                                                                                }}
+                                                                                errorMessages={['Answer content is required']}
+                                                                                readOnly={this.props.mode == 'read'}
+                                                                            />
+                                                                        </td>
+                                                                        <td style={{ maxWidth: 25 }}>
+                                                                            <Button color="danger" onClick={() => {
+                                                                                const clonedTestCases = _.cloneDeep(this.state.form.testCases);
+                                                                                _.remove(clonedTestCases, { id: testCase.id });
+                                                                                this.setState({
+                                                                                    form: {
+                                                                                        ...this.state.form,
+                                                                                        testCases: clonedTestCases
+                                                                                    }
+                                                                                });
+                                                                            }}>×</Button>
+                                                                        </td>
+                                                                    </tr>
+                                                                )
+                                                            })}
+                                                        </tbody>
+                                                    </Table>
+                                                )}
+                                                <Button color="create" size="sm" onClick={() => {
+                                                    const clonedForm = _.cloneDeep(this.state.form);
+                                                    clonedForm.testCases.push({
+                                                        id: randomstring.generate(),
+                                                        content: '',
+                                                        answer: ''
+                                                    });
+                                                    this.setState({
+                                                        form: clonedForm
+                                                    });
+                                                }}>Add Test Case</Button>
+                                            </>
+                                        )}
                                 </Row>
                             </FormGroup>
                         </ValidatorForm>

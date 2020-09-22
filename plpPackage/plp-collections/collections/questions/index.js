@@ -75,6 +75,21 @@ questions.schema = new SimpleSchema({
     'answers.$.isCorrect': {
         type: Boolean
     },
+    testCases: {
+        type: Array,
+        optional: true,
+        defaultValue: []
+    },
+    'testCases.$': {
+        type: Object,
+        blackbox: true
+    },
+    marksPerCorrectTestCase: {
+        type: Number,
+        optional: false,
+        label: 'Marks Per Correct Test Case',
+        defaultValue: 0,
+    },
     marksPerCorrectAnswer: {
         type: Number,
         optional: false,

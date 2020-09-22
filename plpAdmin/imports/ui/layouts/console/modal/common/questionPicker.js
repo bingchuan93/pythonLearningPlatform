@@ -41,7 +41,7 @@ class QuestionPicker extends Component {
             {
                 id: 'answers',
                 Header: 'No of Answers',
-                accessor: (data) => data.answers.length,
+                accessor: (data) => data.type != 'coding' ? data.answers.length : data.testCases.length,
             },
             {
                 id: 'isArchived',

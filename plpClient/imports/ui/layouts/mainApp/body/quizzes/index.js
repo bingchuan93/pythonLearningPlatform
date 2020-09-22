@@ -84,7 +84,7 @@ class Quizzes extends Component {
                                                                     <div className="mt-3 text-muted font-sm">Start Date</div>
                                                                     <div>{moment(ongoingQuiz.startDate).format('D MMM YYYY HH:mmA')}</div>
                                                                     <div className="mt-2 text-muted font-sm">End Date</div>
-                                                                    <div>{moment(ongoingQuiz.startDate).format('D MMM YYYY HH:mmA')}</div>
+                                                                    <div>{moment(ongoingQuiz.endDate).format('D MMM YYYY HH:mmA')}</div>
                                                                     <div className="mt-3 text-muted font-sm">Full marks</div>
                                                                     <div>{ongoingQuiz.fullMarks}</div>
                                                                     <div className="mt-3 text-muted font-sm">Number of Attempts</div>
