@@ -39,4 +39,19 @@ print(z)
 	exec(code)
 	return jsonify(books)
 
+@app.route('/testCode', methods=['POST'])
+def test_code():
+    print('TEST')
+    if request.method == 'POST':
+        posted_data = request.get_json()
+        x = 5
+        code = 'print(posted_data["num"] + x)'
+        exec(code)
+        # print(type(posted_data['num']))
+        # print(type(posted_data['str']))
+        return "SUCCESS"
+        # params = posted_data['params']
+        # print(params)
+    return "FAIL"
+
 app.run(port=7000)

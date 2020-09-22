@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'reactstrap';
+import { Row, Col, Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import { push } from 'connected-react-router';
 import SVGIcon from '/imports/ui/components/icons/svgIcon';
 
 class Dashboard extends Component {
+    testButton = () => {
+        Meteor.call('Misc.testFlask', '12345', (error, result) => {
+            console.log(error);
+            console.log(result);
+        });
+    }
     render() {
         return (
             <div className="dashboard">
@@ -35,6 +41,10 @@ class Dashboard extends Component {
                             <div className="d-flex flex-column justify-content-center ml-3 font-xl">Resume Lesson</div>
                         </div>
                     </Col>
+                </Row>
+                <Row className="pt-3">
+                    Practice corner
+                    <Button onClick={this.testButton}>Run</Button>
                 </Row>
             </div>
         );

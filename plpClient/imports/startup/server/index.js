@@ -7,3 +7,5 @@ import '/imports/api/tutorialGroups/methods';
 import '/imports/api/assessments/methods';
 
 import '/imports/api/submissions/methods';
+
+import '/imports/api/methods';
