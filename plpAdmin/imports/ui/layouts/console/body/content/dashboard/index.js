@@ -18,9 +18,9 @@ class Dashboard extends Component {
                                     <Card>
                                         <CardBody className="d-flex justify-content-between align-items-center">
                                             <FontAwesomeIcon name='user-graduate' size="2x"/>
-											<div className="d-flex flex-column justify-content-around">
-												<h3>Students</h3>
-												<div>{this.props.studentCount}</div>
+											<div className="d-flex flex-column justify-content-around align-items-end">
+												<div className="font-lg">Students</div>
+												<div className="font-lg" style={{ fontWeight: 'bold' }}>{this.props.studentCount}</div>
 											</div>
                                         </CardBody>
                                     </Card>
@@ -31,9 +31,9 @@ class Dashboard extends Component {
                                     <Card>
                                         <CardBody className="d-flex justify-content-between align-items-center">
                                             <FontAwesomeIcon name='chalkboard' size="2x"/>
-											<div className="d-flex flex-column justify-content-around">
-												<h3>Tutorial Groups</h3>
-												<div>{this.props.tutorialGroupCount}</div>
+											<div className="d-flex flex-column justify-content-around align-items-end">
+												<div className="font-lg">Tutorial Groups</div>
+												<div className="font-lg" style={{ fontWeight: 'bold' }}>{this.props.tutorialGroupCount}</div>
 											</div>
                                         </CardBody>
                                     </Card>
@@ -44,9 +44,9 @@ class Dashboard extends Component {
                                     <Card>
                                         <CardBody className="d-flex justify-content-between align-items-center">
                                             <FontAwesomeIcon name='file-alt' size="2x"/>
-											<div className="d-flex flex-column justify-content-around">
-												<h3>Assessments</h3>
-												<div>{this.props.assessmentCount}</div>
+											<div className="d-flex flex-column justify-content-around align-items-end">
+												<div className="font-lg">Assessments</div>
+												<div className="font-lg" style={{ fontWeight: 'bold' }}>{this.props.assessmentCount}</div>
 											</div>
                                         </CardBody>
                                     </Card>
@@ -67,10 +67,10 @@ const DashboardWithTracker = withTracker(() => {
 	const assessmentCountSubscriptionHandler = Meteor.subscribe('assessments.count');
 
 	return {
-		studentCount: studentCountSubscriptionHandler?.handle.ready() ? Counter.get('student-count') : '-',
-		tutorialGroupCount: tutorialGroupCountSubscriptionHandler?.handle.ready() ? Counter.get('tutorial-group-count') : '-',
-		questionCount: questionCountSubscriptionHandler?.handle.ready() ? Counter.get('question-count') : '-',
-		assessmentCount: assessmentCountSubscriptionHandler?.handle.ready() ? Counter.get('assessment-count') : '-',
+		studentCount: studentCountSubscriptionHandler?.ready() ? Counter.get('student-count') : '-',
+		tutorialGroupCount: tutorialGroupCountSubscriptionHandler?.ready() ? Counter.get('tutorial-group-count') : '-',
+		questionCount: questionCountSubscriptionHandler?.ready() ? Counter.get('question-count') : '-',
+		assessmentCount: assessmentCountSubscriptionHandler?.ready() ? Counter.get('assessment-count') : '-',
 	}
 })(Dashboard);
 

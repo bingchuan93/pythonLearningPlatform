@@ -23,8 +23,8 @@ class StartQuiz extends Component {
         } else {
             this.setState({ isQuizFetching: false });
         }
-        if (this.props.userState.endTime) {
-            if (new Date(this.props.userState.endTime).getTime() > new Date().getTime()) {
+        if (this.props.userState.assessmentEndTime) {
+            if (new Date(this.props.userState.assessmentEndTime).getTime() > new Date().getTime()) {
                 this.startTimer();
             } else {
                 this.enterEndQuizMode();
@@ -74,7 +74,7 @@ class StartQuiz extends Component {
 
     startTimer = () => {
         this.timer = setInterval(() => {
-            const timeLeft = (new Date(this.props.userState.endTime).getTime() - new Date().getTime()) / 1000;
+            const timeLeft = (new Date(this.props.userState.assessmentEndTime).getTime() - new Date().getTime()) / 1000;
             if (timeLeft < 0) {
                 this.enterEndQuizMode();
             } else {
@@ -111,7 +111,7 @@ class StartQuiz extends Component {
                         <h3>
                             {quiz.content}
                         </h3>
-                        {this.props.userState.endTime ? (
+                        {this.props.userState.assessmentEndTime ? (
                             <div>
                                 <div className="d-flex justify-content-end align-items-center">
                                     <Badge className="font-md py-2" color="danger" style={{ minWidth: 100 }}>{Math.floor(this.state.seconds / 3600).toString().padStart(2, "0")}:{Math.floor((this.state.seconds % 3600) / 60).toString().padStart(2, "0")}:{Math.floor(this.state.seconds % 60).toString().padStart(2, "0")}</Badge>

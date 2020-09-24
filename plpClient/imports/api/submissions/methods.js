@@ -47,20 +47,28 @@ Meteor.methods({
                                 });
                                 result = JSON.parse(result.content);
                                 if (result.success) {
-                                    result.testCaseResults.forEach((testCaseResult) => {
-                                        console.log(testCaseResult);
+                                    result.testCaseResults.forEach((testCaseResult, key) => {
                                         if (testCaseResult.runSuccess) {
                                             let isCorrect = true;
                                             const parsedAnswer = JSON.parse(testCaseResult.answer);
+                                            console.log(`Test case ${key + 1}`);
+                                            console.log('Expected Result:');
+                                            console.log(parsedAnswer);
+                                            console.log('Student Answer:');
+                                            console.log(testCaseResult.result);
                                             parsedAnswer.some((elm, idx) => {
                                                 if (elm !== testCaseResult.result[idx]) {
                                                     isCorrect = false;
                                                     return true;
                                                 }
                                             })
+                                            console.log(isCorrect ? 'Answer is correct' : 'Answer is wrong');
+                                            console.log(`Marks awarded: ${relatedQuestion.marksPerCorrectTestCase}`);
                                             if (isCorrect) {
                                                 marks += relatedQuestion.marksPerCorrectTestCase;
                                             }
+                                        } else {
+                                            console.log('Student Program failed');
                                         }
                                     });
                                 }

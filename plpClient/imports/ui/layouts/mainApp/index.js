@@ -3,14 +3,27 @@ import Header from '/imports/ui/layouts/mainApp/header';
 import Body from '/imports/ui/layouts/mainApp/body';
 import SideMenu from '/imports/ui/layouts/mainApp/sideMenu';
 import Alert from '/imports/ui/components/alert';
+import { replace } from 'connected-react-router';
 import { connect } from 'react-redux';
 
 class MainApp extends Component {
+    componentDidMount() {
+        this.checkForOngoingQuizAndReroute();
+    }
+    
     componentDidUpdate(prevProps, prevState) {
         if (prevProps.router.location.pathname != this.props.router.location.pathname) {
-            if (this.props.appState.assessmentMode) {
-                console.log('to code push to quiz route');
-                // bcwee: push back to prev loc
+            this.checkForOngoingQuizAndReroute();
+        }
+    }
+
+    checkForOngoingQuizAndReroute = () => {
+        console.log('test');
+        console.log(this.props.router.location.pathname);
+        console.log(this.props.userState);
+        if (this.props.userState.assessmentEndTime) {
+            if (this.props.router.location.pathname != `/quizzes/${this.props.userState.assessmentSubmission.quizId}`) {
+                this.props.dispatch(replace(`/quizzes/${this.props.userState.assessmentSubmission.quizId}`));
             }
         }
     }
@@ -18,11 +31,11 @@ class MainApp extends Component {
     render() {
         return (
             <div id="app">
-                {!this.props.userState.endTime && (
+                {!this.props.userState.assessmentEndTime && (
                     <Header />
                 )}
                 <Body />
-                {!this.props.userState.endTime && (
+                {!this.props.userState.assessmentEndTime && (
                     <SideMenu />
                 )}
                 {this.props.alertState.alertProps &&

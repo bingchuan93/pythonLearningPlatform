@@ -16,9 +16,9 @@ const userState = (state = initialState, action) => {
             return { ...initialState };
         case 'ASSESSMENT_MODE/START':
             const endTime = new Date((new Date()).getTime() + (payload.duration * 60000));
-            return { ...state, endTime: endTime, assessmentSubmission: { quizId: payload.quizId, submittedAnswers: {} } };
+            return { ...state, assessmentEndTime: endTime, assessmentSubmission: { quizId: payload.quizId, submittedAnswers: {} } };
         case 'ASSESSMENT_MODE/EXIT':
-            return { ...state, endTime: null, assessmentSubmission: null };
+            return { ...state, assessmentEndTime: null, assessmentSubmission: null };
         case 'ASSESSMENT/ANSWER':
             const clonedAnswers = _.cloneDeep(state.assessmentSubmission.submittedAnswers);
             clonedAnswers[payload.questionId] = payload.answers;
