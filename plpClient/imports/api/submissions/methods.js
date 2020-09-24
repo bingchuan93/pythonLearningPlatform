@@ -18,7 +18,9 @@ Meteor.methods({
                     Object.entries(submissions).forEach(([key, value]) => {
                         const relatedQuestion = _.find(relatedQuestions, { _id: new Mongo.ObjectID(key) });
                         if (relatedQuestion) {
-                            const correctAnswerId = _.filter(relatedQuestion.answers, { isCorrect: true }).map((correctAnswer) => correctAnswer.id);
+                            const correctAnswerId = _.filter(relatedQuestion.answers, { isCorrect: true }).map(
+                                (correctAnswer) => correctAnswer.id
+                            );
                             if (relatedQuestion.type != 'coding') {
                                 if (relatedQuestion.type == 'multiple-choice-multi-answer') {
                                     value.forEach((submittedAnswer) => {
@@ -33,18 +35,49 @@ Meteor.methods({
                                         marks += relatedQuestion.marksPerCorrectAnswer;
                                     }
                                 }
+                            } else {
+                                let result = HTTP.call('POST', 'http://localhost:5000/testCode', {
+                                    data: {
+                                        function: value,
+                                        testCases: relatedQuestion.testCases,
+                                    },
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                    },
+                                });
+                                result = JSON.parse(result.content);
+                                if (result.success) {
+                                    result.testCaseResults.forEach((testCaseResult) => {
+                                        console.log(testCaseResult);
+                                        if (testCaseResult.runSuccess) {
+                                            let isCorrect = true;
+                                            const parsedAnswer = JSON.parse(testCaseResult.answer);
+                                            parsedAnswer.some((elm, idx) => {
+                                                if (elm !== testCaseResult.result[idx]) {
+                                                    isCorrect = false;
+                                                    return true;
+                                                }
+                                            })
+                                            if (isCorrect) {
+                                                marks += relatedQuestion.marksPerCorrectTestCase;
+                                            }
+                                        }
+                                    });
+                                }
                             }
                         }
-                    })
+                    });
                 }
             }
-            ['createdAt', 'services', 'passwordUpdatedAt', 'updatedAt', 'createdAt', 'isArchived'].forEach(key => delete student[key]);
+            ['createdAt', 'services', 'passwordUpdatedAt', 'updatedAt', 'createdAt', 'isArchived'].forEach(
+                (key) => delete student[key]
+            );
 
             Submissions.insert({
                 student: student,
                 assessmentId: quiz._id,
                 answers: submissions,
-                marks: marks
+                marks: marks,
             });
             return;
         } catch (e) {
@@ -54,5 +87,5 @@ Meteor.methods({
             }
             throw new Meteor.Error('error', 'Fail to submit quiz');
         }
-    }
-})
+    },
+});

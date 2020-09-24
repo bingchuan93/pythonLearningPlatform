@@ -18,7 +18,6 @@ const ChildModal = (props) => {
 class BaseModal extends Component {
     closeModal = (afterCloseModal) => {
         if (afterCloseModal) {
-            console.log('afterclose');
             afterCloseModal();
         }
         this.props.dispatch({ type: 'MODAL/CLOSE' });

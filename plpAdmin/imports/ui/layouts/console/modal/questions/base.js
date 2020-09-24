@@ -32,7 +32,6 @@ class QuestionBase extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props);
         if (this.props.id) {
             this.getQuestion(this.props.id);
         }
@@ -133,7 +132,6 @@ class QuestionBase extends Component {
                                             onChange={e => {
                                                 let clonedAnswers = _.cloneDeep(this.state.form.answers);
                                                 const questionType = _.find(constants.questionTypes, { value: e.value });
-                                                console.log(questionType);
                                                 if (questionType && questionType.maxAnswer) {
                                                     if (clonedAnswers.length == 0) {
                                                         for (let i = 0; i < questionType.maxAnswer; i++) {

@@ -1,5 +1,7 @@
 import flask
 from flask import request, jsonify
+import sys
+import ast
 
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -44,14 +46,24 @@ def test_code():
     print('TEST')
     if request.method == 'POST':
         posted_data = request.get_json()
-        x = 5
-        code = 'print(posted_data["num"] + x)'
-        exec(code)
-        # print(type(posted_data['num']))
-        # print(type(posted_data['str']))
-        return "SUCCESS"
-        # params = posted_data['params']
-        # print(params)
-    return "FAIL"
+        test_cases = posted_data["testCases"]
+        for test_case in test_cases:
+            print(test_case)
+            try:
+                testing_value = ast.literal_eval(test_case["content"])
+                exec(posted_data["function"], globals())
+                result_value = yourFunction(testing_value)
+                test_case['result'] = result_value
+                test_case['runSuccess'] = True
+            except:
+                print(sys.exc_info()[0])
+                test_case['runSuccess'] = False
+        return {
+            'success': True,
+            'testCaseResults': test_cases
+        }
+    return {
+        'succes': False
+    }
 
 app.run(port=7000)

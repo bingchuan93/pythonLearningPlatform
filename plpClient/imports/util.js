@@ -7,31 +7,35 @@ export const getTutorialGroupOptions = (callback) => {
             result.forEach((element) => {
                 options.push({
                     label: element.name,
-                    value: element._id.valueOf()
-                })
+                    value: element._id.valueOf(),
+                });
             });
             callback(options);
         }
-    })
-}
+    });
+};
 
 export const getTotalMarks = (questions) => {
     return questions.reduce((accumulator, currentValue) => {
-        currentValue.answers.forEach((answer) => {
-            if (answer.isCorrect) {
-                accumulator += currentValue.marksPerCorrectAnswer;
-            }
-        })
+        if (currentValue.type != 'coding') {
+            currentValue.answers.forEach((answer) => {
+                if (answer.isCorrect) {
+                    accumulator += currentValue.marksPerCorrectAnswer;
+                }
+            });
+        } else {
+            accumulator += currentValue.testCases.length * currentValue.marksPerCorrectTestCase;
+        }
         return accumulator;
-    }, 0 );
-}
+    }, 0);
+};
 
 export const getMatchedRoute = (route, matchingRoutes) => {
-	for (var key in matchingRoutes) {
-		const matched = matchPath(route, matchingRoutes[key]);
-		if (matched) {
-			return { ...matchingRoutes[key], matched };
-		}
-	}
-	return false;
+    for (var key in matchingRoutes) {
+        const matched = matchPath(route, matchingRoutes[key]);
+        if (matched) {
+            return { ...matchingRoutes[key], matched };
+        }
+    }
+    return false;
 };
