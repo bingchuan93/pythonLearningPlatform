@@ -37,9 +37,11 @@ class AssessmentBase extends Component {
                 questions: [],
                 questionIds: [],
                 duration: 0,
+                timeLeftBeforeWarning: 5,
                 noOfAttempts: 0,
                 startDate: null,
                 endDate: null,
+                showMarks: false,
                 isArchived: false,
             },
         };
@@ -66,11 +68,13 @@ class AssessmentBase extends Component {
                         description: result.description,
                         participatingTutorialGroups: result.participatingTutorialGroups,
                         duration: result.duration,
+                        timeLeftBeforeWarning: result.timeLeftBeforeWarning,
                         questionIds: result.questionIds,
                         questions: result.questions,
                         noOfAttempts: result.noOfAttempts,
                         startDate: result.startDate,
                         endDate: result.endDate,
+                        showMarks: result.showMarks,
                         isArchived: result.isArchived,
                     },
                 });
@@ -304,6 +308,31 @@ class AssessmentBase extends Component {
                             <FormGroup>
                                 <Row form>
                                     <Col md={4}>
+                                        <Label className="control-label mb-0 font-weight-bold">Time Left Before Warning (mins)</Label>
+                                    </Col>
+                                    <Col md={8}>
+                                        <NumberFormat
+                                            thousandSeparator={false}
+                                            decimalScale={0}
+                                            fixedDecimalScale={true}
+                                            className="form-control"
+                                            value={form.timeLeftBeforeWarning}
+                                            onValueChange={(result) => {
+                                                this.setState({
+                                                    form: {
+                                                        ...form,
+                                                        timeLeftBeforeWarning: result.floatValue,
+                                                    },
+                                                });
+                                            }}
+                                            readOnly={this.props.mode == 'view'}
+                                        />
+                                    </Col>
+                                </Row>
+                            </FormGroup>
+                            <FormGroup>
+                                <Row form>
+                                    <Col md={4}>
                                         <Label className="control-label mb-0 font-weight-bold">No of Attempts</Label>
                                     </Col>
                                     <Col md={8}>
@@ -442,6 +471,32 @@ class AssessmentBase extends Component {
                                                 }
                                             }}
                                             readOnly={this.props.mode == 'view'}
+                                        />
+                                    </Col>
+                                </Row>
+                            </FormGroup>
+                            <FormGroup>
+                                <Row form>
+                                    <Col md={4}>
+                                        <Label className="control-label mb-0 font-weight-bold">Show Marks?</Label>
+                                    </Col>
+                                    <Col md={8}>
+                                        <Switch
+                                            checked={form.showMarks}
+                                            uncheckedIcon={false}
+                                            checkedIcon={false}
+                                            onColor={'#3b9e57'}
+                                            offColor={'#9e3b3b'}
+                                            onChange={(value) => {
+                                                this.setState({
+                                                    form: {
+                                                        ...form,
+                                                        showMarks: value,
+                                                    },
+                                                });
+                                            }}
+                                            disabled={this.props.mode == 'view'}
+                                            className="react-switch"
                                         />
                                     </Col>
                                 </Row>

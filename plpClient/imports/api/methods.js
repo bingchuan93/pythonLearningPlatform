@@ -16,10 +16,8 @@ Meteor.methods({
                     'Content-Type': 'application/json'
                 }
             });
-            console.log(JSON.parse(result.content));
             return result;
         } catch (e) {
-            console.log(e);
         }
     }
 })

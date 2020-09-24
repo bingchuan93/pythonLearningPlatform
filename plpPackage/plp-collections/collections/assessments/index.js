@@ -104,6 +104,18 @@ assessments.schema = new SimpleSchema({
         optional: true,
         label: 'End Date'
     },
+    timeLeftBeforeWarning: {
+        type: Number,
+        optional: false,
+        label: 'Time Left Before Warning',
+        defaultValue: 5, 
+    }, 
+    showMarks: {
+        type: Boolean,
+        optional: false,
+        label: 'Show Marks',
+        defaultValue: false, 
+    }, 
     isArchived: {
         type: Boolean,
         optional: false,

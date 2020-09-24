@@ -56,7 +56,7 @@ class QuestionViewer extends Component {
                                             showLineNumbers: true,
                                             tabSize: 2,
                                         }}
-                                        />
+                                    />
                                 </div>
                             )}
                     </>
@@ -116,31 +116,19 @@ class QuestionViewer extends Component {
                     <Button
                         color="default"
                         disabled={this.state.currentQuestion <= 1}
-                        onClick={() => {
-                            if (this.props.quizEnded) {
-                                this.props.endQuiz();
-                            } else {
-                                this.setState({ currentQuestion: this.state.currentQuestion - 1 })
-                            }
-                        }}
+                        onClick={() => this.setState({ currentQuestion: this.state.currentQuestion - 1 })}
                     >
                         Previous
                         </Button>
-                    <Button
-                        color="default"
-                        disabled={this.state.currentQuestion >= this.props.assessment.questions.length}
-                        onClick={() => {
-                            if (this.props.quizEnded) {
-                                this.props.endQuiz();
-                            } else {
-                                this.setState({ currentQuestion: this.state.currentQuestion + 1 });
-                            }
-                        }}
-                    >
-                        Next
+                <Button
+                    color="default"
+                    disabled={this.state.currentQuestion >= this.props.assessment.questions.length}
+                    onClick={() => this.setState({ currentQuestion: this.state.currentQuestion + 1 })}
+                >
+                    Next
                     </Button>
-                </div>
             </div>
+            </div >
         )
     }
 }

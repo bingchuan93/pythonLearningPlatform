@@ -22,7 +22,7 @@ const contentRoutes = [{
     title: 'Lessons',
     component: Lessons,
     exact: true,
-    showInSideMenu: true
+    showInSideMenu: false
 }, {
     path: '/quizzes',
     name: 'quizzes',

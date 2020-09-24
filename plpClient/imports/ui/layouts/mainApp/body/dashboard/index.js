@@ -7,20 +7,18 @@ import SVGIcon from '/imports/ui/components/icons/svgIcon';
 class Dashboard extends Component {
     testButton = () => {
         Meteor.call('Misc.testFlask', '12345', (error, result) => {
-            console.log(error);
-            console.log(result);
         });
     }
     render() {
         return (
             <div className="dashboard">
                 <Row className="pt-5">
-                    <Col className="mb-3">
+                    {/* <Col className="mb-3">
                         <div className="menu-button lesson clickable p-3" onClick={() => this.props.dispatch(push('/lessons'))} >
                             <SVGIcon icon="lesson" marginLeft="auto" marginRight="auto" />
                             <div className="mt-3 text-center font-lg">Lessons</div>
                         </div>
-                    </Col>
+                    </Col> */}
                     <Col className="mb-3">
                         <div className="menu-button quiz clickable p-3" onClick={() => this.props.dispatch(push('/quizzes'))} >
                             <SVGIcon icon="quiz" marginLeft="auto" marginRight="auto" />
@@ -28,9 +26,9 @@ class Dashboard extends Component {
                         </div>
                     </Col>
                     <Col className="mb-3">
-                        <div className="menu-button test clickable p-3" onClick={() => this.props.dispatch(push('/tests'))} >
+                        <div className="menu-button test clickable p-3" onClick={() => this.props.dispatch(push('/practice'))} >
                             <SVGIcon icon="test" marginLeft="auto" marginRight="auto" />
-                            <div className="mt-3 text-center font-lg">Tests</div>
+                            <div className="mt-3 text-center font-lg">Practice</div>
                         </div>
                     </Col>
                 </Row>
@@ -42,10 +40,10 @@ class Dashboard extends Component {
                         </div>
                     </Col>
                 </Row>
-                <Row className="pt-3">
+                {/* <Row className="pt-3">
                     Practice corner
                     <Button onClick={this.testButton}>Run</Button>
-                </Row>
+                </Row> */}
             </div>
         );
     }

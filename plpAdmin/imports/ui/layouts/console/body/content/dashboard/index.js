@@ -5,6 +5,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Link } from 'react-router-dom';
 import FontAwesomeIcon from '/imports/ui/components/fontAwesomeIcon';
 
+import './dashboard.css';
 class Dashboard extends Component {
     render() {
         return (
@@ -47,6 +48,19 @@ class Dashboard extends Component {
 											<div className="d-flex flex-column justify-content-around align-items-end">
 												<div className="font-lg">Assessments</div>
 												<div className="font-lg" style={{ fontWeight: 'bold' }}>{this.props.assessmentCount}</div>
+											</div>
+                                        </CardBody>
+                                    </Card>
+                                </Link>
+                            </Col>
+                            <Col xs={12} md={4} lg={4}>
+                                <Link to="/assessments" style={{ color: '#333' }}>
+                                    <Card>
+                                        <CardBody className="d-flex justify-content-between align-items-center">
+                                            <FontAwesomeIcon name='list-ol' size="2x"/>
+											<div className="d-flex flex-column justify-content-around align-items-end">
+												<div className="font-lg">Questions</div>
+												<div className="font-lg" style={{ fontWeight: 'bold' }}>{this.props.questionCount}</div>
 											</div>
                                         </CardBody>
                                     </Card>

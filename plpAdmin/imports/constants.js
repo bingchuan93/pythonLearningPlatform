@@ -8,8 +8,7 @@ const constants = {
     },
     assessmentTypes: {
         quiz: 'Quiz',
-        test: 'Test',
-        exam: 'Exam'
+        practice: 'Practice',
     },
     questionTypes: {
         multipleChoiceSingleAnswer: {

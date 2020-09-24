@@ -13,7 +13,6 @@ class StartQuiz extends Component {
             isQuizFetching: true,
             quiz: null,
             seconds: 0,
-            quizEnded: false
         }
     }
 
@@ -27,7 +26,6 @@ class StartQuiz extends Component {
             if (new Date(this.props.userState.assessmentEndTime).getTime() > new Date().getTime()) {
                 this.startTimer();
             } else {
-                this.enterEndQuizMode();
                 this.endQuiz();
             }
         }
@@ -47,12 +45,6 @@ class StartQuiz extends Component {
 
     componentWillUnmount() {
         clearInterval(this.timer);
-    }
-
-    componentDidUpdate(prevProps, prevState) {
-        if (!prevState.quizEnded && this.state.quizEnded) {
-            this.displayMessage('Your quiz has ended. Please complete this final question. Moving off from this final question or clicking the "End Quiz" button will end the quiz');
-        }
     }
 
     displayMessage = (message) => {
@@ -76,34 +68,34 @@ class StartQuiz extends Component {
         this.timer = setInterval(() => {
             const timeLeft = (new Date(this.props.userState.assessmentEndTime).getTime() - new Date().getTime()) / 1000;
             if (timeLeft < 0) {
-                this.enterEndQuizMode();
+                this.endQuiz();
             } else {
                 this.setState({
                     seconds: timeLeft
                 });
             }
+            if (!this.props.userState.hasWarned && (timeLeft < (this.state.quiz.timeLeftBeforeWarning * 60))) {
+                this.displayMessage(`You have less than ${this.state.quiz.timeLeftBeforeWarning} minute${this.state.quiz.timeLeftBeforeWarning > 1 ? 's' : ''} left.`);
+                this.props.dispatch({ type: "ASSESSMENT_MODE/WARN" });
+            }
         }, 1000);
     }
 
     endQuiz = () => {
+        clearInterval(this.timer);
         const { quizId, submittedAnswers } = this.props.userState.assessmentSubmission;
         Meteor.call('Submissions.submitQuiz', quizId, submittedAnswers, (error, result) => {
             if (!error) {
                 this.props.dispatch({ type: "ASSESSMENT_MODE/EXIT" });
                 this.props.dispatch(push('/quizzes'));
-                this.displayMessage('exam ended');
+                this.displayMessage('Quiz has ended');
             }
         })
     }
 
-    enterEndQuizMode = () => {
-        this.setState({ quizEnded: true, seconds: 0 });
-        clearInterval(this.timer);
-    }
-
     render() {
-        const { isQuizFetching, quiz, quizEnded } = this.state;
-        
+        const { isQuizFetching, quiz } = this.state;
+
         return (
             <>
                 {!isQuizFetching ? (
@@ -115,20 +107,14 @@ class StartQuiz extends Component {
                             <div>
                                 <div className="d-flex justify-content-end align-items-center">
                                     <Badge className="font-md py-2" color="danger" style={{ minWidth: 100 }}>{Math.floor(this.state.seconds / 3600).toString().padStart(2, "0")}:{Math.floor((this.state.seconds % 3600) / 60).toString().padStart(2, "0")}:{Math.floor(this.state.seconds % 60).toString().padStart(2, "0")}</Badge>
-                                    <Button color={quizEnded ? "success" : "secondary"} className="ml-3" size="sm" onClick={() => {
-                                        this.enterEndQuizMode();
-                                        this.endQuiz();
-                                    }}>End Quiz</Button>
+                                    <Button color="secondary" className="ml-3" size="sm" onClick={() => this.endQuiz()}>End Quiz</Button>
                                 </div>
                                 {this.state.isQuizFetching ? (
                                     <div className="text-center">
                                         <ActivityIndicator />
                                     </div>
                                 ) : (
-                                        <QuestionViewer quizEnded={quizEnded} endQuiz={() => {
-                                            this.enterEndQuizMode();
-                                            this.endQuiz();
-                                        }} assessment={quiz} />
+                                        <QuestionViewer assessment={quiz} />
                                     )}
                             </div>
                         ) : (

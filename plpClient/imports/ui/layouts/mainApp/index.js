@@ -18,9 +18,6 @@ class MainApp extends Component {
     }
 
     checkForOngoingQuizAndReroute = () => {
-        console.log('test');
-        console.log(this.props.router.location.pathname);
-        console.log(this.props.userState);
         if (this.props.userState.assessmentEndTime) {
             if (this.props.router.location.pathname != `/quizzes/${this.props.userState.assessmentSubmission.quizId}`) {
                 this.props.dispatch(replace(`/quizzes/${this.props.userState.assessmentSubmission.quizId}`));

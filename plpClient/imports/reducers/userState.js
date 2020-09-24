@@ -4,6 +4,7 @@ const initialState = {
     user: null,
     assessmentEndTime: null,
     assessmentSubmission: null,
+    hasWarned: false,
 };
 
 const userState = (state = initialState, action) => {
@@ -18,11 +19,13 @@ const userState = (state = initialState, action) => {
             const endTime = new Date((new Date()).getTime() + (payload.duration * 60000));
             return { ...state, assessmentEndTime: endTime, assessmentSubmission: { quizId: payload.quizId, submittedAnswers: {} } };
         case 'ASSESSMENT_MODE/EXIT':
-            return { ...state, assessmentEndTime: null, assessmentSubmission: null };
+            return { ...state, assessmentEndTime: null, assessmentSubmission: null, hasWarned: false };
+        case 'ASSESSMENT_MODE/WARN':
+            return { ...state, hasWarned: true }
         case 'ASSESSMENT/ANSWER':
             const clonedAnswers = _.cloneDeep(state.assessmentSubmission.submittedAnswers);
             clonedAnswers[payload.questionId] = payload.answers;
-            return { ...state, assessmentSubmission: { ...state.assessmentSubmission, submittedAnswers: clonedAnswers}}
+            return { ...state, assessmentSubmission: { ...state.assessmentSubmission, submittedAnswers: clonedAnswers } }
     }
     return state;
 }
