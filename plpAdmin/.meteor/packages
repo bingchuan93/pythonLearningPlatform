@@ -25,3 +25,4 @@ static-html
 accounts-password@1.6.0
 react-meteor-data@2.0.1
 bingchuan:plp-collections
+natestrauser:publish-performant-counts
