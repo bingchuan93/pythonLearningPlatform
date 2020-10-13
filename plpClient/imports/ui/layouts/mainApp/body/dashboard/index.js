@@ -32,17 +32,13 @@ class Dashboard extends Component {
                         </div>
                     </Col>
                 </Row>
-                <Row className="pt-3">
+                {/* <Row className="pt-3">
                     <Col>
                         <div className="menu-button resume d-flex flex-row justify-content-center align-contents-center clickable p-3">
                             <SVGIcon icon="start" height={125} width={125} />
                             <div className="d-flex flex-column justify-content-center ml-3 font-xl">Resume Lesson</div>
                         </div>
                     </Col>
-                </Row>
-                {/* <Row className="pt-3">
-                    Practice corner
-                    <Button onClick={this.testButton}>Run</Button>
                 </Row> */}
             </div>
         );

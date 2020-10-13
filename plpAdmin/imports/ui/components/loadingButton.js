@@ -28,9 +28,16 @@ class LoadingButton extends Component {
         const { children, isLoading, appState, dispatch, ...restProps } = this.props;
         return (
             <Button {...restProps} disabled={isLoading}>
-                <div ref={this.buttonContentRef} style={{ minWidth: '50px', display: 'inline-flex', justifyContent: 'center', alignItems: 'center' }}>
+                <div
+                    ref={this.buttonContentRef}
+                    style={{
+                        minWidth: '50px',
+                        display: 'inline-flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
                     {isLoading ? (
-                        <ActivityIndicator height={10} fill={this.props.fill} stroke="#FFF"/>
+                        <ActivityIndicator height={10} fill={this.props.fill} stroke="#FFF" />
                     ) : (
                             children
                         )}
