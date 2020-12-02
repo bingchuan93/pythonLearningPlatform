@@ -82,6 +82,7 @@ class StartQuiz extends Component {
     }
 
     endQuiz = () => {
+        console.log(this.props.userState.assessmentSubmission);
         clearInterval(this.timer);
         const { quizId, submittedAnswers } = this.props.userState.assessmentSubmission;
         Meteor.call('Submissions.submitQuiz', quizId, submittedAnswers, (error, result) => {
@@ -95,7 +96,7 @@ class StartQuiz extends Component {
 
     render() {
         const { isQuizFetching, quiz } = this.state;
-
+        console.log(this.state);
         return (
             <>
                 {!isQuizFetching ? (

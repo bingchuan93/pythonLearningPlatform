@@ -11,3 +11,10 @@ blue - productivity (quiz/exercise (maybe))
 text
 #221E22
 #3F4045
+
+Run flask
+export FLASK_APP=index.py
+flask run
+
+def yourFunction(arr):
+    retrun arr[::-1]
