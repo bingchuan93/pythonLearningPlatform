@@ -242,4 +242,23 @@ File Structure:
   /collections
   - All collection related files
 
-    
+    /{collectionName}
+    - Folders for each collection
+
+      /index.js
+      - Specific collection's schema structure
+
+    /index.js
+    - Consolidate all the collection for exporting at plp-server.js
+
+  /package.js
+  - Config file for meteor package creation
+
+  /plp-client.js
+  - Indicates the file that is exported to the client side of which ever program that installs this package
+
+  /plp-package-tests.js
+  - For testing this meteor package
+
+  /plp-server.js
+  - Indicates the file that is exported to the server side of which ever program that installs this package
