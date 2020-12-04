@@ -162,3 +162,84 @@ File Structure:
 
           /header
           - Component for the header UI
+
+          /modal
+          - Component for modal rendering
+
+            /{modalNameFolders}
+            - Modal components for its specific modules
+
+              /base.js
+              - Base modal containing base structure of the modal
+
+              /create.js
+              - Creation modal utilizing base.js by only passing mode as create and other necessary props
+              
+              /update.js
+              - Creation modal utilizing base.js by only passing mode as update and other necessary props
+              
+              /view.js
+              - Creation modal utilizing base.js by only passing mode as view and other necessary props
+
+            /index.js
+            - Toggles and renders the correct modal based on current route. Matches to see if it matched any modal routes.
+
+          /index.js
+          - High level component for structuring header, body, modal and alerts
+
+        /landingPage
+        - Components for UI before user signs in
+
+          /page.js
+          - Page general layout for specific pages
+
+          /signIn.js
+          - Sign in page component inheriting base page.js
+
+          /signUp.js
+          - Sign up page component inheriting base page.js
+
+      /root.js
+      - Root component for redux, persist gate and router to wrap the highest level component
+
+    /constants.js
+    - Constant values used in other components or util files
+
+    /history.js
+    - File for creating browsing history and exporting for store.js
+
+    /store.js
+    - File for constructing redux with saga middleware, router middleware, persist store, history and running saga
+
+    /util.js
+    - Utility functions shared by multiple components.
+  
+  /private
+  - Not used
+
+  /public
+  - Contain font files and images used in the program
+
+  /server
+  - Runs server files that is specified in the startup files inside this folder
+
+/plpClient
+- Student Platform Codes.
+- Same file structure as /plpAdmin with the exception of the following
+
+  /imports/api/methods.js
+  - This method.js file is not in any folder as the method it contains is not specific to 1 module or collection
+
+  /imports/ui/layouts/mainApp
+  - Similar to plpAdmin's console folder, it contain the UI components after user's log in
+
+  /config.js
+  - For specifying program level configurations
+
+/plpPackage
+- Python learning platform specific package containing all the collection's structure and index setups
+
+  /collections
+  - All collection related files
+
+    
